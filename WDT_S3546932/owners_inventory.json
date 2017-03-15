@@ -1,0 +1,17 @@
+[
+  {
+    "ID": 1,
+    "ProductName": "Rabbit",
+    "CurrentStock": 2
+  },
+  {
+    "ID": 2,
+    "ProductName": "Hat",
+    "CurrentStock": 1
+  },
+  {
+    "ID": 3,
+    "ProductName": "Svengali Deck",
+    "CurrentStock": 10
+  }
+]

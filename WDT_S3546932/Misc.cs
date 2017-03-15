@@ -114,7 +114,7 @@ namespace WDT_S3546932
                             updateQuantity(StoreName + "_inventory.json", ProductName, Quantity);
                         }
 
-                        //Delete the request from the StockRequests file
+                        //Write Down Stock Request as Success
                         break;
                     }
                 }else { if (request.ID != requestID) { continue; } }  

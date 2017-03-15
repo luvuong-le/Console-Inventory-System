@@ -19,7 +19,7 @@ namespace WDT_S3546932
 
         public override String JsonReader(String fileName)
         {
-            StreamReader r = new StreamReader(fileName);
+            StreamReader r = new StreamReader(fileName);    
 
             string json = r.ReadToEnd();
 
@@ -32,6 +32,7 @@ namespace WDT_S3546932
         {
             dynamic productList = JsonConvert.DeserializeObject(JsonReader(fileName));
 
+            displayMessage("Updating: " + fileName);
             foreach (var product in productList)
             {
 
@@ -113,13 +114,14 @@ namespace WDT_S3546932
                         {
                             updateQuantity("owners_inventory.json", ProductName, Quantity);
                             updateQuantity("stockrequests.json", ProductName, Quantity);
+                            if (request.StoreName == StoreName)
+                            {
+                                updateQuantity(StoreName + "_inventory.json", ProductName, Quantity);
+                            }
                         }
                         // Go into file of Owner Inventory and Corresponding Store File and Update the quantity of the request
                     
-                        if (request.StoreName == StoreName)
-                        {
-                            updateQuantity(StoreName + "_inventory.json", ProductName, Quantity);
-                        }
+                       
                         break;
                     }
                 }else { if (request.ID != requestID) { continue; } }  

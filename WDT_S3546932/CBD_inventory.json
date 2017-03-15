@@ -4,8 +4,9 @@
     "StoreName": "CBD",
     "ProductRequested": "Rabbit",
     "Quantity": 2,
-    "CurrentStock": 2,
-    "StockAvailability": true
+    "CurrentStock": 0,
+    "StockAvailability": true,
+    "Processed": false
   },
   {
     "ID": 2,

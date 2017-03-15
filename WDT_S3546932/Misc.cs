@@ -35,7 +35,7 @@ namespace WDT_S3546932
             foreach (var product in productList)
             {
 
-                if (product.ProductName == ProductName || product.ProductRequested == ProductName)
+                if (product.ProductName == ProductName || product.ProductRequested == ProductName && product.Processed != true)
                 {
                     displayMessage("Product Name Found");
                     if (product.CurrentStock >= Quantity)
@@ -44,18 +44,21 @@ namespace WDT_S3546932
                         product.CurrentStock = product.CurrentStock - Quantity;
                         String productStock = product.CurrentStock;
                         Console.WriteLine("New Current Stock: " + product.CurrentStock);
-                        Console.WriteLine("Update Complete"); break;
+                        Console.WriteLine("Update Complete");
+                        if (product.Processed == false) { product.Processed = true; }
+                        break;
                     }else
                     {
                         displayMessage("Cannot Update.");
                     }
                 }
+         
               
             }
 
             var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
             System.IO.File.WriteAllText(fileName, updatedList);
-            Console.WriteLine(updatedList);
+            //Console.WriteLine(updatedList);
     
         }
 
@@ -106,15 +109,17 @@ namespace WDT_S3546932
                         String ProductName = request.ProductRequested;
                         int Quantity = request.Quantity;
                         String StoreName = request.StoreName;
+                        if(request.Processed == false)
+                        {
+                            updateQuantity("owners_inventory.json", ProductName, Quantity);
+                            updateQuantity("stockrequests.json", ProductName, Quantity);
+                        }
                         // Go into file of Owner Inventory and Corresponding Store File and Update the quantity of the request
-                        updateQuantity("owners_inventory.json", ProductName,Quantity);
-                        updateQuantity("stockrequests.json", ProductName, Quantity);
+                    
                         if (request.StoreName == StoreName)
                         {
                             updateQuantity(StoreName + "_inventory.json", ProductName, Quantity);
                         }
-
-                        //Write Down Stock Request as Success
                         break;
                     }
                 }else { if (request.ID != requestID) { continue; } }  

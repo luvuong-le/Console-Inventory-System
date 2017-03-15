@@ -5,7 +5,8 @@
     "ProductRequested": "Rabbit",
     "Quantity": 2,
     "CurrentStock": 2,
-    "StockAvailability": true
+    "StockAvailability": true,
+    "Processed": true
   },
   {
     "ID": 2,
@@ -13,7 +14,8 @@
     "ProductRequested": "Hat",
     "Quantity": 1,
     "CurrentStock": 1,
-    "StockAvailability": true
+    "StockAvailability": true,
+    "Processed": false
   },
   {
     "ID": 3,
@@ -21,6 +23,7 @@
     "ProductRequested": "Svengali Deck",
     "Quantity": 10,
     "CurrentStock": 8,
-    "StockAvailability": false
+    "StockAvailability": false,
+    "Processed": false
   }
 ]

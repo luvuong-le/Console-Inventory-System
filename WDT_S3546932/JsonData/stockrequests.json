@@ -4,7 +4,7 @@
     "StoreName": "CBD",
     "ProductRequested": "Rabbit",
     "Quantity": 2,
-    "CurrentStock": 2,
+    "CurrentStock": 10,
     "StockAvailability": true,
     "Processed": true
   },
@@ -13,17 +13,17 @@
     "StoreName": "CBD",
     "ProductRequested": "Hat",
     "Quantity": 1,
-    "CurrentStock": 1,
+    "CurrentStock": 0,
     "StockAvailability": true,
-    "Processed": false
+    "Processed": true
   },
   {
     "ID": 3,
-    "StoreName": "Olinda",
+    "StoreName": "North",
     "ProductRequested": "Svengali Deck",
     "Quantity": 10,
-    "CurrentStock": 8,
-    "StockAvailability": false,
-    "Processed": false
+    "CurrentStock": 5,
+    "StockAvailability": true,
+    "Processed": true
   }
 ]

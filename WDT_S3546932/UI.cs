@@ -6,26 +6,53 @@ using System.Threading.Tasks;
 
 namespace WDT_S3546932
 {
-    abstract public class UI
+
+    interface ICommands
     {
         //Displays Title 
-        abstract public void displayTitle (String title);
+        void displayTitle(String title);
 
         //Displays a Message to the User
-        abstract public void displayMessage (String message);
+        void displayMessage(String message);
 
         //Displays an [ERROR] Message
-        abstract public void displayError(String error);
+        void displayError(String error);
+
+        //Takes in a file name and reads through the json file //
+        String JsonReader(String fileName);
+    }
+
+    abstract class OwnerCLI
+    {
 
         //Displays all the products in Owner Inventory 
         abstract public void displayAllProductLines();
-    
-        abstract public String JsonReader(String fileName);
 
         // Display All Stock Requests // 
         abstract public void displayAllStockRequests();
 
+        abstract public void displayAllStockRequestBool();
+
+        //Updates the quantities During runtime and  saves to file //
         abstract public void updateQuantity(string fileName, string ProductName, int Quantity);
 
     }
+
+    abstract class CustomerCLI
+    {
+
+    }
+
+    abstract class FranchiseCLI
+    {
+
+    }
 }
+
+//PolyMorphism this
+//Create classes for each menu methods 
+ /*
+ * For adding new inventory, create the JSON OBJECTs based ont he JsonObjects Class 
+ * Json deserialize and serialize
+ * 
+ */

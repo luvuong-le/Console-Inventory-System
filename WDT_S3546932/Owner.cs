@@ -95,13 +95,13 @@ namespace WDT_S3546932
 
         public void stockRequest()
         {
-            Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15}", "ID", "Store", "Product", "Quantity", "Current Stock", "Stock Availability");
+            Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,15}", "ID", "Store", "Product", "Quantity", "Current Stock", "Stock Availability", "Processed");
             List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(command.JsonReader("JsonData/stockrequests.json"));
                 
                 foreach (var request in productList)
                 {
-                        Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15}",
-                        request.ID, request.StoreName, request.ProductRequested, request.Quantity, request.CurrentStock, request.StockAvailability);
+                        Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,20}",
+                        request.ID, request.StoreName, request.ProductRequested, request.Quantity, request.CurrentStock, request.StockAvailability, request.Processed);
                 }
 
             command.displayMessage("Enter Request To Process[ID]: ");
@@ -116,7 +116,7 @@ namespace WDT_S3546932
                 if (request.ID == requestID)
                 {
                     command.displayMessage("Request Found");
-                    if (request.StockAvailability == true || request.Quantity > request.CurrentStock)
+                    if (request.StockAvailability == false || request.Quantity > request.CurrentStock || request.Processed == true)
                     {
                         command.displayMessage("Unavailable Stock to complete this request");
                     }

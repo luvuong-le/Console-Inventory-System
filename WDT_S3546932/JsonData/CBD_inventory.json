@@ -5,8 +5,8 @@
     "ProductRequested": "Rabbit",
     "Quantity": 2,
     "CurrentStock": 0,
-    "StockAvailability": true,
-    "Processed": false
+    "Processed": false,
+    "StockAvailability": true
   },
   {
     "ID": 2,
@@ -14,6 +14,7 @@
     "ProductRequested": "Hat",
     "Quantity": 1,
     "CurrentStock": 0,
+    "Processed": false,
     "StockAvailability": true
   }
 ]

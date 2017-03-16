@@ -1,17 +1,29 @@
 [
   {
     "ID": 1,
-    "ProductName": "Rabbit",
-    "CurrentStock": 10
+    "StoreName": null,
+    "ProductRequested": null,
+    "Quantity": 0,
+    "CurrentStock": 10,
+    "Processed": false,
+    "StockAvailability": false
   },
   {
     "ID": 2,
-    "ProductName": "Hat",
-    "CurrentStock": 0
+    "StoreName": null,
+    "ProductRequested": null,
+    "Quantity": 0,
+    "CurrentStock": 0,
+    "Processed": false,
+    "StockAvailability": false
   },
   {
     "ID": 3,
-    "ProductName": "Svengali Deck",
-    "CurrentStock": 0
+    "StoreName": null,
+    "ProductRequested": null,
+    "Quantity": 0,
+    "CurrentStock": 0,
+    "Processed": false,
+    "StockAvailability": false
   }
 ]

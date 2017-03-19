@@ -11,6 +11,8 @@ namespace WDT_S3546932
     /* ---------- Base Class []----------- */
     abstract class Menu
     {
+        private List<Stock> productList { get;  set; } 
+
         public abstract void displayMenu();
 
         private static string string_usr_inp; private static int usrInp;
@@ -47,6 +49,7 @@ namespace WDT_S3546932
         public class OwnerMenu : Menu
         {
             Owner Owner = new Owner();
+
             public override void displayMenu()
             {
                 command.displayTitle(" \n Welcome to Marvellous Magic (Owner)");
@@ -58,8 +61,8 @@ namespace WDT_S3546932
 
                     switch (usrInp)
                     {
-                        case 1: command.displayMessage("Displaying All Stock Requests"); Owner.displayAllStockRequests(); continue;
-                        case 2: command.displayMessage("Displaying Stock Requests (True/False)"); Owner.displayAllStockRequestBool(); continue;
+                        case 1: command.displayMessage("Displaying All Stock Requests"); Owner.displayAllStockRequests(productList); continue;
+                        case 2: command.displayMessage("Displaying Stock Requests (True/False)"); Owner.displayAllStockRequestBool(productList); continue;
                         case 3: command.displayMessage("Displaying All Product Lines"); Owner.displayAllProductLines(); continue;
                         case 4: Menu.mainMenu main = new Menu.mainMenu();  main.displayMenu(); continue;
                         case 5: Environment.Exit(0); continue;

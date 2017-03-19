@@ -10,13 +10,13 @@ namespace WDT_S3546932
     interface ICommands
     {
         //Displays Title 
-        void displayTitle(String title);
+        string displayTitle(String title);
 
         //Displays a Message to the User
-        void displayMessage(String message);
+        string displayMessage(String message);
 
         //Displays an [ERROR] Message
-        void displayError(String error);
+        string displayError(String error);
 
         //Takes in a file name and reads through the json file //
         string JsonReader(String fileName);
@@ -26,12 +26,12 @@ namespace WDT_S3546932
     {
 
         //Displays all the products in Owner Inventory 
-        abstract public void displayAllProductLines();
+        abstract public List<OwnerStock> displayAllProductLines();
 
         // Display All Stock Requests // 
-        abstract public void displayAllStockRequests();
+        abstract public List<Stock> displayAllStockRequests(List<Stock> StockList);
 
-        abstract public void displayAllStockRequestBool();
+        abstract public List<Stock> displayAllStockRequestBool(List<Stock> StockList);
 
         //Updates the quantities During runtime and  saves to file //
         abstract public void updateQuantity(string fileName, string ProductName, int Quantity);
@@ -45,6 +45,11 @@ namespace WDT_S3546932
 
     abstract class FranchiseCLI
     {
+        abstract public void displayInventory(string StoreName);
+
+        abstract public void displayInventoryThres(int Threshold);
+
+        abstract public void AddNewInventory();
 
     }
 }

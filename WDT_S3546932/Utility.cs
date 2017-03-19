@@ -12,11 +12,11 @@ namespace WDT_S3546932
 {
     class Utility : ICommands
     {
-        public  void displayTitle(String title) { Console.WriteLine(title); Console.WriteLine("---------------------------"); }
+        public  string displayTitle(String title) { Console.WriteLine(title); Console.WriteLine("---------------------------");  return title; }
 
-        public  void displayMessage(String message) { Console.WriteLine("\n" + message + "\n"); }
+        public  string displayMessage(String message) { Console.WriteLine("\n" + message + "\n"); return message; }
 
-        public  void displayError(String error) { Console.WriteLine("\n [ERROR] " + error + "\n"); }
+        public  string displayError(String error) { Console.WriteLine("\n [ERROR] " + error + "\n"); return error; }
 
         public  string JsonReader(string fileName)
         {

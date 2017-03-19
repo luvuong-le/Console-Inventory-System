@@ -23,4 +23,15 @@ namespace WDT_S3546932
             public Boolean StockAvailability { get; set; }
 
     }
+
+    class OwnerStock
+    {
+        public int ID { get; set; }
+
+        public string ProductName { get; set; }
+
+        public int CurrentStock { get; set; }
+
+        public Boolean StockAvailability { get; set; }
+    }
 }

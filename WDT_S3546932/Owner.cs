@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WDT_S3546932
@@ -11,7 +12,7 @@ namespace WDT_S3546932
 
     class Owner : OwnerCLI
     {
-        CLI command = new CLI();
+        Utility command = new Utility();
         
 
         public override void updateQuantity(string fileName, string ProductName, int Quantity)
@@ -27,9 +28,11 @@ namespace WDT_S3546932
                     command.displayMessage("Product Name Found");
                     if (product.CurrentStock >= Quantity)
                     {
-                        command.displayMessage("Current Stock: " + product.CurrentStock);
+                        command.displayMessage("Updating....");
+                        Thread.Sleep(2000);
+                        command.displayMessage("Current Stock: {0} " + product.CurrentStock);
                         product.CurrentStock = product.CurrentStock - Quantity;
-                        command.displayMessage("New Current Stock: " + product.CurrentStock);
+                        command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
                         command.displayMessage("Update Complete");
                         if (product.Processed == false) { product.Processed = true; }
                         break;
@@ -49,20 +52,22 @@ namespace WDT_S3546932
 
         public override void displayAllProductLines()
         {
-
-            Console.WriteLine("{0,5} {1,15} {2,15}", "ID", "Product Name", "Current Stock");
-
-            List<JsonObjects.ProductLineObjects> productList = JsonConvert.DeserializeObject<List<JsonObjects.ProductLineObjects>>(command.JsonReader("JsonData/owners_inventory.json"));
-
-            foreach (var product in productList)
+            try
             {
-                Console.WriteLine("{0,5} {1,15} {2,15}", product.ID, product.ProductName, product.CurrentStock);
+                Console.WriteLine("{0,5} {1,15} {2,15}", "ID", "Product Name", "Current Stock");
+
+                List<OwnerStock> productList = JsonConvert.DeserializeObject<List<OwnerStock>>(command.JsonReader("JsonData/owners_inventory.json"));
+                foreach (var product in productList)
+                {
+                    Console.WriteLine("{0,5} {1,15} {2,15}", product.ID, product.ProductName, product.CurrentStock);
+                }
+            } catch(Exception){
+                command.displayError("");
             }
         }
 
         public override void displayAllStockRequests()
         {
-
             stockRequest();
         }
 
@@ -95,9 +100,8 @@ namespace WDT_S3546932
 
         public void stockRequest()
         {
-            Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,15}", "ID", "Store", "Product", "Quantity", "Current Stock", "Stock Availability", "Processed");
-            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(command.JsonReader("JsonData/stockrequests.json"));
-                
+                Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,15}", "ID", "Store", "Product", "Quantity", "Current Stock", "Stock Availability", "Processed");
+                List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(command.JsonReader("JsonData/stockrequests.json"));
                 foreach (var request in productList)
                 {
                         Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,20}",
@@ -130,7 +134,7 @@ namespace WDT_S3546932
                         {
                             updateQuantity("JsonData/owners_inventory.json", ProductName, Quantity);
                             updateQuantity("JsonData/stockrequests.json", ProductName, Quantity);
-                            if (request.StoreName == StoreName)
+                            if (request.StoreName == StoreName && request.Processed == false)
                             {
                                 updateQuantity("JsonData/" + StoreName + "_inventory.json", ProductName, Quantity);
                             }

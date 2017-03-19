@@ -15,7 +15,7 @@ namespace WDT_S3546932
 
         private static string string_usr_inp; private static int usrInp;
 
-        CLI command = new CLI();
+        Utility command = new Utility();
 
         /* ---------- Displays The Main Menu  ------------------ */
         public class mainMenu : Menu

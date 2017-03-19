@@ -19,7 +19,7 @@ namespace WDT_S3546932
         void displayError(String error);
 
         //Takes in a file name and reads through the json file //
-        String JsonReader(String fileName);
+        string JsonReader(String fileName);
     }
 
     abstract class OwnerCLI

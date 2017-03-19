@@ -8,6 +8,6 @@ namespace WDT_S3546932
 {
     class Customer : CustomerCLI
     {
-        CLI command = new CLI();
+        Utility command = new Utility();
     }
 }

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace WDT_S3546932
 {
-    class CLI : ICommands
+    class Utility : ICommands
     {
         public  void displayTitle(String title) { Console.WriteLine(title); Console.WriteLine("---------------------------"); }
 
@@ -18,14 +18,22 @@ namespace WDT_S3546932
 
         public  void displayError(String error) { Console.WriteLine("\n [ERROR] " + error + "\n"); }
 
-        public  String JsonReader(String fileName)
+        public  string JsonReader(string fileName)
         {
-            StreamReader r = new StreamReader(fileName);
+            String json = " ";
 
-            string json = r.ReadToEnd();
+            try
+            {
+                StreamReader r = new StreamReader(fileName);
 
-            r.Close();
+                json = r.ReadToEnd();
 
+                r.Close();
+
+            }catch(FileNotFoundException e){
+                displayMessage(e.Message);
+                Menu.OwnerMenu Omenu = new Menu.OwnerMenu(); Omenu.displayMenu();
+            }
             return json;
         }
     }

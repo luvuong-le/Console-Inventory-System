@@ -55,7 +55,7 @@
     <Compile Include="FranchiseOwner.cs" />
     <Compile Include="JsonObjects.cs" />
     <Compile Include="Menu.cs" />
-    <Compile Include="CLI.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="Owner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

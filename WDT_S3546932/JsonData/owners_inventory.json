@@ -2,7 +2,7 @@
   {
     "ID": 1,
     "ProductName": "Rabbit",
-    "CurrentStock": 10,
+    "CurrentStock": 6,
     "StockAvailability": true
   },
   {
@@ -13,8 +13,8 @@
   },
   {
     "ID": 3,
-    "ProductName":  "Svengali Deck",
-    "CurrentStock": 0,
-    "StockAvailability": false
+    "ProductName": "Svengali Deck",
+    "CurrentStock": 5,
+    "StockAvailability": true
   }
 ]

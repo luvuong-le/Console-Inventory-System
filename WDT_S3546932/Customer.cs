@@ -9,5 +9,15 @@ namespace WDT_S3546932
     class Customer : CustomerCLI
     {
         Utility command = new Utility();
+
+        public override List<StoreStock> displayProduct()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void displayWorkShop()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

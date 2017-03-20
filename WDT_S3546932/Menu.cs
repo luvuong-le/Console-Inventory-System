@@ -11,8 +11,6 @@ namespace WDT_S3546932
     /* ---------- Base Class []----------- */
     abstract class Menu
     {
-        private List<Stock> productList { get;  set; } 
-
         public abstract void displayMenu();
 
         private static string string_usr_inp; private static int usrInp;
@@ -49,6 +47,7 @@ namespace WDT_S3546932
         public class OwnerMenu : Menu
         {
             Owner Owner = new Owner();
+            private List<Stock> productList { get; set; }
 
             public override void displayMenu()
             {
@@ -75,24 +74,29 @@ namespace WDT_S3546932
         public class FranchiseOwner : Menu
         {
             //FranchiseOwner Franchise = new FranchiseOwner();
+            Franchise franchiseOwner = new Franchise();
+            bool StoreName = false;
 
             public override void displayMenu()
             {
                 do
                 {
-                    command.displayMessage("Enter Store ID: "); string storeID = Console.ReadLine(); command.displayMessage("Store ID: " + storeID);
-                    command.displayTitle("\n Welcome to Marvellous Magic (Franchise Holder - Olinda)");
-                    command.displayMessage(" 1. Display Inventory \n 2. Display Inventory (Threshold) \n 3. Add New Inventory Item \n 4. Return to Main Menu \n 5. Exit");
-                    Console.Write("\n Enter Option [1] - [4]: "); string_usr_inp = Console.ReadLine(); Int32.TryParse(string_usr_inp, out usrInp);
-
-                    switch (usrInp)
+                    command.displayMessageOneLine("Enter Store Name: "); string storeName = Console.ReadLine(); command.displayMessage("Store Name: " + storeName); StoreName = true; //Change to Store ID for 
+                    while (StoreName == true)
                     {
-                        case 1: command.displayMessage("Displaying All Stock Requests"); continue;
-                        case 2: command.displayMessage("Displaying Stock Requests (True/False)"); continue;
-                        case 3: command.displayMessage("Displaying All Product Lines"); continue;
-                        case 4: Menu.mainMenu main = new Menu.mainMenu(); main.displayMenu(); continue;
-                        case 5: Environment.Exit(0); continue;
-                        default: command.displayError("Must be in Range of [1] - [5]!"); continue;
+                        command.displayTitle("\n Welcome to Marvellous Magic (Franchise Holder - Olinda) Store: " + storeName);
+                        command.displayMessage(" 1. Display Inventory \n 2. Display Inventory (Threshold) \n 3. Add New Inventory Item \n 4. Return to Main Menu \n 5. Exit");
+                        Console.Write("\n Enter Option [1] - [4]: "); string_usr_inp = Console.ReadLine(); Int32.TryParse(string_usr_inp, out usrInp);
+
+                        switch (usrInp)
+                        {
+                            case 1: command.displayMessage("Displaying Inventory"); franchiseOwner.displayInventory(storeName); continue;
+                            case 2: command.displayMessage("Displaying Inventory Threshold"); continue;
+                            case 3: command.displayMessage("Adding New Inventory Item"); continue;
+                            case 4: Menu.mainMenu main = new Menu.mainMenu(); main.displayMenu(); continue;
+                            case 5: Environment.Exit(0); continue;
+                            default: command.displayError("Must be in Range of [1] - [5]!"); continue;
+                        }
                     }
                 } while (usrInp != 5);
             } 

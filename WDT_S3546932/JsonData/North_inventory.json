@@ -2,18 +2,15 @@
   {
     "ID": 1,
     "StoreName": "CBD",
-    "ProductRequested": "Rabbit",
-    "Quantity": 2,
+    "ProductName": "Rabbit",
     "CurrentStock": 0,
-    "StockAvailability": true,
-    "Processed": false
+    "ReStock": true
   },
   {
     "ID": 2,
     "StoreName": "CBD",
-    "ProductRequested": "Hat",
-    "Quantity": 1,
+    "ProductName": "Hat",
     "CurrentStock": 1,
-    "StockAvailability": true
+    "ReStock": true
   }
 ]

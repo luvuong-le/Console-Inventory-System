@@ -15,8 +15,20 @@ namespace WDT_S3546932
         //Displays a Message to the User
         string displayMessage(String message);
 
+        string displayMessageOneLine(string message);
+
         //Displays an [ERROR] Message
         string displayError(String error);
+
+    }
+
+    interface JCommands
+    {
+        void updateQuantityStockRequest(string fileName, string ProductName, int Quantity);
+
+        void updateQuantityOwner(string fileName, string ProductName, int Quantity);
+
+        void updateQuantityStore(string fileName, string ProductName, int Quantity);
 
         //Takes in a file name and reads through the json file //
         string JsonReader(String fileName);
@@ -34,30 +46,25 @@ namespace WDT_S3546932
         abstract public List<Stock> displayAllStockRequestBool(List<Stock> StockList);
 
         //Updates the quantities During runtime and  saves to file //
-        abstract public void updateQuantity(string fileName, string ProductName, int Quantity);
+       // abstract public void updateQuantity(string fileName, string ProductName, int Quantity);
 
     }
 
     abstract class CustomerCLI
     {
+        abstract public List<StoreStock> displayProduct();
 
+        abstract public void displayWorkShop();
     }
 
     abstract class FranchiseCLI
     {
-        abstract public void displayInventory(string StoreName);
+        abstract public List<StoreStock> displayInventory(string StoreName);
 
-        abstract public void displayInventoryThres(int Threshold);
+        abstract public List<StoreStock> displayInventoryThres(int Threshold);
 
         abstract public void AddNewInventory();
 
+        abstract public void requestForStock(String productName, String FileName, String StoreName); 
     }
 }
-
-//PolyMorphism this
-//Create classes for each menu methods 
- /*
- * For adding new inventory, create the JSON OBJECTs based ont he JsonObjects Class 
- * Json deserialize and serialize
- * 
- */

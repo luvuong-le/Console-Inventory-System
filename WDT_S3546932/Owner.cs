@@ -13,42 +13,7 @@ namespace WDT_S3546932
     class Owner : OwnerCLI
     {
         Utility command = new Utility();
-        
-
-        public override void updateQuantity(string fileName, string ProductName, int Quantity)
-        {
-            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(command.JsonReader(fileName));
-
-            command.displayMessage("Updating: " + fileName);
-            foreach (var product in productList)
-            {
-
-                if (product.ProductRequested == ProductName || product.ProductRequested == ProductName && product.Processed != true)
-                {
-                    command.displayMessage("Product Name Found");
-                    if (product.CurrentStock >= Quantity)
-                    {
-                        command.displayMessage("Updating....");
-                        Thread.Sleep(2000);
-                        command.displayMessage("Current Stock: {0} " + product.CurrentStock);
-                        product.CurrentStock = product.CurrentStock - Quantity;
-                        command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
-                        command.displayMessage("Update Complete");
-                        if (product.Processed == false) { product.Processed = true; }
-                        break;
-                    }
-                    else
-                    {
-                        command.displayMessage("Cannot Update.");
-                    }
-                }
-            }
-
-            var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
-            File.WriteAllText(fileName, updatedList);
-            //Console.WriteLine(updatedList);
-            
-        }
+        JsonUtility jsonCommand = new JsonUtility();
 
         public override List<OwnerStock> displayAllProductLines()
         {
@@ -57,7 +22,7 @@ namespace WDT_S3546932
             {
                 Console.WriteLine("{0,5} {1,15} {2,15}", "ID", "Product Name", "Current Stock");
 
-                productList = JsonConvert.DeserializeObject<List<OwnerStock>>(command.JsonReader("JsonData/owners_inventory.json"));
+                productList = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader("JsonData/owners_inventory.json"));
                 foreach (var product in productList)
                 {
                     Console.WriteLine("{0,5} {1,15} {2,15}", product.ID, product.ProductName, product.CurrentStock);
@@ -76,10 +41,9 @@ namespace WDT_S3546932
 
         public override List<Stock> displayAllStockRequestBool(List<Stock> productList)
         {
-
             command.displayMessage("Enter [True/False]: "); String choice = Console.ReadLine();
 
-            productList = JsonConvert.DeserializeObject<List<Stock>>(command.JsonReader("JsonData/stockrequests.json"));
+            productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader("JsonData/stockrequests.json"));
 
             foreach (var request in productList)
             {
@@ -104,10 +68,11 @@ namespace WDT_S3546932
             return productList;
         }
 
+        // Calls and Updates Details in StockRequest.json, Storename.json, OwnersInventory.json //
         public List<Stock> stockRequest(List<Stock> productList)
         {
                 Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,15}", "ID", "Store", "Product", "Quantity", "Current Stock", "Stock Availability", "Processed");
-                productList = JsonConvert.DeserializeObject<List<Stock>>(command.JsonReader("JsonData/stockrequests.json"));
+                productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader("JsonData/stockrequests.json"));
                 foreach (var request in productList)
                 {
                         Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,20}",
@@ -139,11 +104,11 @@ namespace WDT_S3546932
                             String StoreName = request.StoreName;
                             if (request.Processed == false)
                             {
-                                updateQuantity("JsonData/owners_inventory.json", ProductName, Quantity);
-                                updateQuantity("JsonData/stockrequests.json", ProductName, Quantity);
+                            jsonCommand.updateQuantityOwner("JsonData/owners_inventory.json", ProductName, Quantity);
+                            jsonCommand.updateQuantityStockRequest("JsonData/stockrequests.json", ProductName, Quantity);
                                 if (request.StoreName == StoreName && request.Processed == false)
                                 {
-                                    updateQuantity("JsonData/" + StoreName + "_inventory.json", ProductName, Quantity);
+                                jsonCommand.updateQuantityStore("JsonData/" + StoreName + "_inventory.json", ProductName, Quantity);
                                 }
                             }
                             break;

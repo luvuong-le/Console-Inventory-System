@@ -8,9 +8,6 @@ namespace WDT_S3546932
 {
     class Stock
     {
-
-        
-
             public int ID { get; set; }
 
             public string StoreName { get; set; }

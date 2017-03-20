@@ -20,7 +20,10 @@ namespace WDT_S3546932
         public string displayMessageOneLine(String message) { Console.Write(message); return message; }
 
         public  string displayError(String error) { Console.WriteLine("\n [ERROR] " + error + "\n"); return error; }
-       
+
+        public  string getCurrentDirectory() { string path = Directory.GetCurrentDirectory(); return path; }
+
+        public string getJsonDataDirectory(string filename) { string path = Directory.GetCurrentDirectory() + "/JsonData/" + filename; return path; } 
     }
 }
 

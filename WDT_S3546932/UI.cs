@@ -20,6 +20,10 @@ namespace WDT_S3546932
         //Displays an [ERROR] Message
         string displayError(String error);
 
+        string getCurrentDirectory();
+
+        string getJsonDataDirectory(string filename);
+
     }
 
     interface JCommands
@@ -32,6 +36,8 @@ namespace WDT_S3546932
 
         //Takes in a file name and reads through the json file //
         string JsonReader(String fileName);
+
+        int lastRequestID(); 
     }
 
     abstract class OwnerCLI
@@ -44,6 +50,8 @@ namespace WDT_S3546932
         abstract public List<Stock> displayAllStockRequests(List<Stock> StockList);
 
         abstract public List<Stock> displayAllStockRequestBool(List<Stock> StockList);
+
+        abstract public int checkCurrentStock(string productName);
 
         //Updates the quantities During runtime and  saves to file //
        // abstract public void updateQuantity(string fileName, string ProductName, int Quantity);

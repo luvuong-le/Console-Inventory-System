@@ -36,6 +36,19 @@ namespace WDT_S3546932
             return json;
         }
 
+        public int lastRequestID()
+        {
+            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests") + ".json"));
+            int ID = 0;
+            foreach(var reqID in productList)
+            {
+                //Find the last ID Number 
+                ID = reqID.ID;
+                
+            }
+            return ID;
+        }
+
         public void updateQuantityStockRequest(string fileName, string ProductName, int Quantity)
         {
             List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(fileName));

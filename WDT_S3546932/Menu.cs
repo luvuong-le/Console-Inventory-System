@@ -81,7 +81,7 @@ namespace WDT_S3546932
             {
                 do
                 {
-                    command.displayMessageOneLine("Enter Store Name: "); string storeName = Console.ReadLine(); command.displayMessage("Store Name: " + storeName); StoreName = true; //Change to Store ID for 
+                    command.displayMessageOneLine("\nEnter Store Name: "); string storeName = Console.ReadLine(); StoreName = true; //Change to Store ID for 
                     while (StoreName == true)
                     {
                         command.displayTitle("\n Welcome to Marvellous Magic (Franchise Holder - Olinda) Store: " + storeName);
@@ -90,7 +90,7 @@ namespace WDT_S3546932
 
                         switch (usrInp)
                         {
-                            case 1: command.displayMessage("Displaying Inventory"); franchiseOwner.displayInventory(storeName); continue;
+                            case 1: command.displayMessage("Displaying Inventory for: " + storeName); franchiseOwner.displayInventory(storeName); continue;
                             case 2: command.displayMessage("Displaying Inventory Threshold"); continue;
                             case 3: command.displayMessage("Adding New Inventory Item"); continue;
                             case 4: Menu.mainMenu main = new Menu.mainMenu(); main.displayMenu(); continue;

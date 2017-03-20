@@ -22,7 +22,7 @@ namespace WDT_S3546932
             {
                 Console.WriteLine("{0,5} {1,15} {2,15}", "ID", "Product Name", "Current Stock");
 
-                productList = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader("JsonData/owners_inventory.json"));
+                productList = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners") + "_inventory.json"));
                 foreach (var product in productList)
                 {
                     Console.WriteLine("{0,5} {1,15} {2,15}", product.ID, product.ProductName, product.CurrentStock);
@@ -43,7 +43,7 @@ namespace WDT_S3546932
         {
             command.displayMessage("Enter [True/False]: "); String choice = Console.ReadLine();
 
-            productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader("JsonData/stockrequests.json"));
+            productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("stockrequests") + ".json"));
 
             foreach (var request in productList)
             {
@@ -72,7 +72,7 @@ namespace WDT_S3546932
         public List<Stock> stockRequest(List<Stock> productList)
         {
                 Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,15}", "ID", "Store", "Product", "Quantity", "Current Stock", "Stock Availability", "Processed");
-                productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader("JsonData/stockrequests.json"));
+                productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("stockrequests") + ".json"));
                 foreach (var request in productList)
                 {
                         Console.WriteLine("{0,5} {1,10} {2,15} {3,10} {4,10} {5,15} {6,20}",
@@ -104,11 +104,11 @@ namespace WDT_S3546932
                             String StoreName = request.StoreName;
                             if (request.Processed == false)
                             {
-                            jsonCommand.updateQuantityOwner("JsonData/owners_inventory.json", ProductName, Quantity);
-                            jsonCommand.updateQuantityStockRequest("JsonData/stockrequests.json", ProductName, Quantity);
+                            jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners") + "_inventory.json", ProductName, Quantity);
+                            jsonCommand.updateQuantityStockRequest(command.getJsonDataDirectory("stockrequests") + ".json", ProductName, Quantity);
                                 if (request.StoreName == StoreName && request.Processed == false)
                                 {
-                                jsonCommand.updateQuantityStore("JsonData/" + StoreName + "_inventory.json", ProductName, Quantity);
+                                jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName) + "_inventory.json", ProductName, Quantity);
                                 }
                             }
                             break;
@@ -118,6 +118,23 @@ namespace WDT_S3546932
                     else { if (request.ID != requestID) { continue; } }
                 }
             return productList;
+        }
+
+        public override int checkCurrentStock(string productName)
+        {
+            List<OwnerStock> ownerStock = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners") + "_inventory.json"));
+
+            int CurrentStock = 0;
+
+            foreach (var stock in ownerStock)
+            {
+                if(productName == stock.ProductName)
+                {
+                    CurrentStock = stock.CurrentStock;
+                }
+            }
+
+            return CurrentStock;
         }
     }
 }

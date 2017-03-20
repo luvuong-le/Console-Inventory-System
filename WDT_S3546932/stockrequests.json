@@ -1,0 +1,11 @@
+[
+  {
+    "ID": 1,
+    "StoreName": "CBD",
+    "ProductRequested": "Rabbit",
+    "Quantity": 5,
+    "CurrentStock": 6,
+    "Processed": false,
+    "StockAvailability": true
+  }
+]

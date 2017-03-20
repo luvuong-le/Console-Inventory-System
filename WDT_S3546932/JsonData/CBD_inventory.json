@@ -10,7 +10,7 @@
     "ID": 2,
     "StoreName": "CBD",
     "ProductName": "Hat",
-    "CurrentStock": 1,
-    "ReStock": true
+    "CurrentStock": 5,
+    "ReStock": false
   }
 ]

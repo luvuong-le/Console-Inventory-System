@@ -22,7 +22,9 @@ namespace WDT_S3546932
 
         string getCurrentDirectory();
 
-        string getJsonDataDirectory(string filename);
+        string getJsonDataDirectory(string filename, string folder);
+
+        String[] getStoreNames();
 
     }
 
@@ -71,7 +73,7 @@ namespace WDT_S3546932
 
         abstract public List<StoreStock> displayInventoryThres(int Threshold);
 
-        abstract public void AddNewInventory();
+        abstract public void AddNewInventory(String StoreName);
 
         abstract public void requestForStock(String productName, String FileName, String StoreName); 
     }

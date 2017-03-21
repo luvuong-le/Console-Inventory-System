@@ -23,7 +23,19 @@ namespace WDT_S3546932
 
         public  string getCurrentDirectory() { string path = Directory.GetCurrentDirectory(); return path; }
 
-        public string getJsonDataDirectory(string filename) { string path = Directory.GetCurrentDirectory() + "/JsonData/" + filename; return path; } 
+        public string getJsonDataDirectory(string filename, string folder) { string path = Directory.GetCurrentDirectory() + folder + filename; return path; } 
+
+        public String[] getStoreNames()
+        { 
+            String[] filenames = Directory.GetFiles(getCurrentDirectory() + "/Stores");
+            
+            foreach(string file in filenames)
+            {
+                Console.Write("[" + Path.GetFileNameWithoutExtension(file).Split('_')[0] +  "]" + " ");
+            }
+            
+            return filenames;
+        }
     }
 }
 

@@ -12,5 +12,11 @@
     "ProductName": "Hat",
     "CurrentStock": 5,
     "ReStock": false
+  },
+  { "ID": 3,
+    "StoreName": "CBD",
+    "ProductName": "Svengali Deck",
+    "CurrentStock": 5,
+    "ReStock": false
   }
 ]

@@ -25,7 +25,6 @@ namespace WDT_S3546932
                 json = r.ReadToEnd();
 
                 r.Close();
-
             }
             catch (FileNotFoundException e)
             {
@@ -38,7 +37,7 @@ namespace WDT_S3546932
 
         public int lastRequestID()
         {
-            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests") + ".json"));
+            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests" ,"/Stock/") + ".json"));
             int ID = 0;
             foreach(var reqID in productList)
             {

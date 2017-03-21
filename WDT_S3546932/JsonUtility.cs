@@ -14,6 +14,7 @@ namespace WDT_S3546932
     class JsonUtility : JCommands
     {
         Utility command = new Utility();
+
         public string JsonReader(string fileName)
         {
             String json = " ";
@@ -46,6 +47,27 @@ namespace WDT_S3546932
                 
             }
             return ID;
+        }
+
+        public bool matchID(string storename, int ItemID)
+        {
+            List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storename, "/Stores/") + "_inventory.json"));
+
+            foreach (var reqID in productList)
+            {
+                if (reqID.ID == ItemID && ItemID <= productList.Count)
+                {
+                    command.displayMessage("Found Match");
+                    return true;
+                }
+                else if(ItemID > productList.Count)
+                {
+                    command.displayMessage("There is no entry with that ID. Please Enter a Valid ID");
+                    return false;
+                }
+              
+            }
+            return false;
         }
 
         public void updateQuantityStockRequest(string fileName, string ProductName, int Quantity)

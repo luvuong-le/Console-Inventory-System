@@ -39,6 +39,8 @@ namespace WDT_S3546932
         //Takes in a file name and reads through the json file //
         string JsonReader(String fileName);
 
+        bool matchID(string storename, int ItemID);
+
         int lastRequestID(); 
     }
 
@@ -62,7 +64,7 @@ namespace WDT_S3546932
 
     abstract class CustomerCLI
     {
-        abstract public List<StoreStock> displayProduct();
+        abstract public List<StoreStock> displayProduct(string StoreName);
 
         abstract public void displayWorkShop();
     }

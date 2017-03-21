@@ -126,7 +126,7 @@ namespace WDT_S3546932
 
                         switch (usrInp)
                         {
-                            case 1: command.displayMessage("Displaying Products"); customer.displayProduct();  continue;
+                            case 1: command.displayMessage("Displaying Products"); customer.displayProduct(storeName);  continue;
                             case 2: command.displayMessage("Displaying Workshops"); continue;
                             case 3: Menu.mainMenu main = new Menu.mainMenu(); main.displayMenu(); continue;
                             case 4: Environment.Exit(0); continue;

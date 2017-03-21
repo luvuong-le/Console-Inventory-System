@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,7 +45,7 @@ namespace WDT_S3546932
             }
 
             //Loop Through and Find what products the store doesnt have //
-            /*using (var Owner = OwnerProducts.GetEnumerator())
+            using (var Owner = OwnerProducts.GetEnumerator())
             using (var Store = storeStock.GetEnumerator())
             {
                 while(Owner.MoveNext() && Store.MoveNext())
@@ -52,27 +53,31 @@ namespace WDT_S3546932
                     var OwnerProduct = Owner.Current;
                     var StoreProduct = Store.Current;
 
-                    if(OwnerProduct.ProductName == StoreProduct.ProductName)
+                    if (OwnerProduct.ProductName == StoreProduct.ProductName)
                     {
-                        command.displayMessageOneLine("Product is in Store: "); command.displayMessageOneLine(OwnerProduct.ProductName);
-                    }
-                    else if(OwnerProduct.ProductName != StoreProduct.ProductName)
-                    {
-                        command.displayMessage("Product is not in Store: " + OwnerProduct.ProductName);
-
-                        /*command.displayMessage("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
+                        command.displayMessage("Product is in Store: " + StoreProduct.ProductName);
+                        /*foreach (var add in OwnerProducts)
+                        {
+                            Console.WriteLine("{0,5} {1,15} {2,15}", add.ID, add.ProductName, add.CurrentStock);
+                        }
+                        command.displayMessage("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
                         if (choice == "yes" || choice == "Yes")
                         {
-                           requestForStock(item1.ProductName, command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", storeName);
+                            requestForStock(OwnerProduct.ProductName, command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", storeName);
                         }
-                        else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
+                        else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }*/
+                    }
+                    else if(OwnerProduct.ProductName != StoreProduct.ProductName && StoreProduct.ProductName == null)
+                    {
+                        command.displayMessage("Product is not in Store: " + OwnerProduct.ProductName);
                         break; 
                    }
+
                 }
-            }*/
+            }
 
             // FINISH OFF //
-            foreach (var product in OwnerProducts) //3//
+            /*foreach (var product in OwnerProducts) //3//
             {
                 foreach (var store in storeStock) //2//
                 {
@@ -83,7 +88,7 @@ namespace WDT_S3546932
                     }
                 }
 
-            }
+            }*/
         }
 
         //Display Inventory and Request For Stock in StockRequest.json //

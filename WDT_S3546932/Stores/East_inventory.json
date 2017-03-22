@@ -1,16 +1,23 @@
 [
   {
     "ID": 1,
-    "StoreName": "CBD",
+    "Store": null,
     "ProductName": "Rabbit",
     "CurrentStock": 5,
     "ReStock": true
   },
   {
     "ID": 2,
-    "StoreName": "CBD",
+    "Store": null,
     "ProductName": "Hat",
     "CurrentStock": 5,
+    "ReStock": false
+  },
+  {
+    "ID": 3,
+    "Store": "East",
+    "ProductName": "Svengali Deck",
+    "CurrentStock": 1,
     "ReStock": false
   }
 ]

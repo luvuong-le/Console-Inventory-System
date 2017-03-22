@@ -80,8 +80,12 @@ namespace WDT_S3546932
             {
                 do
                 {
-                    command.displayMessageOneLine("\nCurrent Stores are: "); command.getStoreNames();
-                    command.displayMessageOneLine("\n\nEnter Store Name: "); string storeName = Console.ReadLine(); StoreName = true; //Change to Store ID for submission //
+                    command.displayMessageOneLine("\nCurrent Stores are: "); command.printAllStoreNames(command.getStoreNames());
+                    command.displayMessageOneLine("\n\nEnter Store Name: "); string storeName = Console.ReadLine(); //Change to Store ID for submission //
+                    if (command.checkStoreName(storeName, command.getStoreNames()) == true)
+                    {
+                        StoreName = true;
+                    }
                     //Check if Store name equals Current Store Names //
                     while (StoreName == true)
                     {
@@ -92,7 +96,7 @@ namespace WDT_S3546932
                         switch (usrInp)
                         {
                             case 1: command.displayMessage("Displaying Inventory for: " + storeName); franchiseOwner.displayInventory(storeName); continue;
-                            case 2: command.displayMessage("Displaying Inventory Threshold"); continue;
+                            case 2: command.displayMessage("Displaying Inventory Threshold"); franchiseOwner.displayInventoryThres(storeName);  continue;
                             case 3: command.displayMessage("Adding New Inventory Item"); franchiseOwner.AddNewInventory(storeName); continue;
                             case 4: Menu.mainMenu main = new Menu.mainMenu(); main.displayMenu(); continue;
                             case 5: Environment.Exit(0); continue;
@@ -115,8 +119,12 @@ namespace WDT_S3546932
             {
                 do
                 {
-                    command.displayMessageOneLine("\nCurrent Stores are: "); command.getStoreNames();
-                    command.displayMessageOneLine("\n\nEnter Store Name: "); string storeName = Console.ReadLine(); StoreName = true; //Change to Store ID for submission //
+                    command.displayMessageOneLine("\nCurrent Stores are: "); command.printAllStoreNames(command.getStoreNames());
+                    command.displayMessageOneLine("\n\nEnter Store Name: "); string storeName = Console.ReadLine(); //Change to Store ID for submission //
+                    if (command.checkStoreName(storeName, command.getStoreNames()) == true)
+                    {
+                        StoreName = true;
+                    }
                     //Check if Store name equals Current Store Names //
                     while (StoreName == true)
                     {

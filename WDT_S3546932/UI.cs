@@ -26,6 +26,10 @@ namespace WDT_S3546932
 
         String[] getStoreNames();
 
+        bool checkStoreName(string storeName, String[] filenames);
+
+        void printAllStoreNames(String[] filenames);
+
     }
 
     interface JCommands
@@ -75,7 +79,7 @@ namespace WDT_S3546932
     {
         abstract public List<StoreStock> displayInventory(string StoreName);
 
-        abstract public List<StoreStock> displayInventoryThres(int Threshold);
+        abstract public List<StoreStock> displayInventoryThres(string StoreName);
 
         abstract public void AddNewInventory(String StoreName);
 

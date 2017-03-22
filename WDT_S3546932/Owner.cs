@@ -13,6 +13,7 @@ namespace WDT_S3546932
     class Owner : OwnerCLI
     {
         Utility command = new Utility();
+
         JsonUtility jsonCommand = new JsonUtility();
 
         public override List<OwnerStock> displayAllProductLines()
@@ -20,12 +21,12 @@ namespace WDT_S3546932
             List<OwnerStock> productList = null;
             try
             {
-                Console.WriteLine("{0,5} {1,15} {2,15}", "ID", "Product Name", "Current Stock");
+                Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
 
                 productList = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
                 foreach (var product in productList)
                 {
-                    Console.WriteLine("{0,5} {1,15} {2,15}", product.ID, product.ProductName, product.CurrentStock);
+                    Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock);
                 }
             } catch(Exception){
                 command.displayError("");

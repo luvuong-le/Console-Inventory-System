@@ -130,9 +130,9 @@ namespace WDT_S3546932
                     {
                         command.displayMessage("Updating....");
                         Thread.Sleep(2000);
-                        command.displayMessage("Current Stock: {0} " + product.CurrentStock);
+                        command.displayMessage("Current Stock: " + product.CurrentStock);
                         product.CurrentStock = product.CurrentStock - Quantity;
-                        command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
+                        command.displayMessage("New Current Stock: " + product.CurrentStock);
                         command.displayMessage("Update Complete");
                         break;
                     }
@@ -145,7 +145,6 @@ namespace WDT_S3546932
 
             var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
             File.WriteAllText(fileName, updatedList);
-            //Console.WriteLine(updatedList);
         }
 
         public void updateQuantityStore(string fileName, string ProductName, int Quantity)

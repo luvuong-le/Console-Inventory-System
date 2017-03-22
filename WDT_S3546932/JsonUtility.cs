@@ -166,7 +166,7 @@ namespace WDT_S3546932
                         product.CurrentStock = product.CurrentStock - Quantity;
                         command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
                         command.displayMessage("Update Complete");
-                        if (product.ReStock == false) { product.ReStock = true; }
+                        if (product.ReStock == false && product.CurrentStock == 0) { product.ReStock = true; }
                         break;
                     }
                     else

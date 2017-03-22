@@ -4,13 +4,13 @@
     "Store": "CBD",
     "ProductName": "Rabbit",
     "CurrentStock": 5,
-    "ReStock": true
+    "ReStock": false
   },
   {
     "ID": 2,
     "Store": "CBD",
     "ProductName": "Hat",
-    "CurrentStock": 5,
+    "CurrentStock": 4,
     "ReStock": false
   },
   {
@@ -52,8 +52,8 @@
     "ID": 9,
     "Store": "CBD",
     "ProductName": "Advanced Magic Set",
-    "CurrentStock": 1,
-    "ReStock": false
+    "CurrentStock": 0,
+    "ReStock": true
   },
   {
     "ID": 10,

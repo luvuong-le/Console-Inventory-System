@@ -68,12 +68,71 @@ namespace WDT_S3546932
             else if (jsonCommand.matchID(storeName, item_ID) == true) //Checks if the ID input was valid
             {
                 command.displayMessageOneLine("Please Enter the Amount you would like to Purchase Also: "); string quant = Console.ReadLine(); int Quantity; Int32.TryParse(quant, out Quantity);
+
+                foreach (var product in store)
+                {
+                    if (product.ID == item_ID)
+                    {
+                        command.displayMessageOneLine("\nYouve chosen the Product");
+
+                        Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
+
+                        command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
+
+                        if (choice == "yes" || choice == "Yes" || choice == "y")
+                        {
+                            //Process purchase product  //
+                            purchaseProduct(product.ProductName, storeName, Quantity);
+                            command.displayMessage("Keep Purchasing [Yes/No]"); string more = Console.ReadLine();
+                            if (more == "yes" || more == "Yes" || more == "y")
+                            {
+                                productListCount = 0;
+                                displayProduct(storeName);
+                            }
+                            else if (more == "yes" || more == "Yes" || more == "y")
+                            {
+
+                            }
+                        }
+                        else if (choice == "No" || choice == "no" || choice == "n") { command.displayMessage("Ok. Returning to Menu"); }
+                        return;
+                    }else
+                    {
+                        command.displayError("Not enough Stock");
+                    }
+                }
             }
         }
 
         public override void displayWorkShop()
         {
             throw new NotImplementedException();
+        }
+
+        public override void purchaseProduct(String productName, String StoreName, int Quantity)
+        {
+            List<StoreStock> storeStock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"));
+
+            //Looping through the Stock Class//
+            foreach (var product in storeStock)
+            {
+                if (productName == product.ProductName && product.CurrentStock >= Quantity)
+                {
+                    command.displayMessage("There is Stock Left");
+                    jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", productName, Quantity);
+                    break;
+                }
+                else if (productName == product.ProductName && product.CurrentStock < Quantity)
+                {
+                    command.displayError("Sorry We have: " + product.CurrentStock + " In Stock at the moment");
+                    return;
+                }
+                else if (productName == product.ProductName && product.CurrentStock == 0)
+                {
+                    command.displayError("We do not have any in stock at the moment");
+                    return;
+                }
+            }
         }
     }
 }

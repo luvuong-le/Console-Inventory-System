@@ -73,6 +73,8 @@ namespace WDT_S3546932
         abstract public List<StoreStock> displayProduct(string StoreName);
 
         abstract public void displayWorkShop();
+
+        abstract public void purchaseProduct(String productName, String StoreName, int Quantity);
     }
 
     abstract class FranchiseCLI

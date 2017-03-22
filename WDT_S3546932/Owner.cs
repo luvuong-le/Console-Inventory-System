@@ -109,7 +109,7 @@ namespace WDT_S3546932
                             jsonCommand.updateQuantityStockRequest(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", ProductName, Quantity);
                                 if (request.StoreName == StoreName && request.Processed == false)
                                 {
-                                jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", ProductName, Quantity);
+                                jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", ProductName, Quantity, "add");
                                 }
                             }
                             break;

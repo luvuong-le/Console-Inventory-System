@@ -38,7 +38,7 @@ namespace WDT_S3546932
 
         void updateQuantityOwner(string fileName, string ProductName, int Quantity);
 
-        void updateQuantityStore(string fileName, string ProductName, int Quantity);
+        void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract);
 
         //Takes in a file name and reads through the json file //
         string JsonReader(String fileName);

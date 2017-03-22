@@ -119,7 +119,7 @@ namespace WDT_S3546932
                 if (productName == product.ProductName && product.CurrentStock >= Quantity)
                 {
                     command.displayMessage("There is Stock Left");
-                    jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", productName, Quantity);
+                    jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", productName, Quantity, "minus");
                     break;
                 }
                 else if (productName == product.ProductName && product.CurrentStock < Quantity)

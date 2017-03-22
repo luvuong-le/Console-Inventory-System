@@ -102,6 +102,7 @@ namespace WDT_S3546932
                         command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
                         command.displayMessage("Update Complete");
                         if (product.Processed == false) { product.Processed = true; }
+                        if (product.CurrentStock == 0) { product.StockAvailability = false; }
                         break;
                     }
                     else
@@ -134,6 +135,7 @@ namespace WDT_S3546932
                         product.CurrentStock = product.CurrentStock - Quantity;
                         command.displayMessage("New Current Stock: " + product.CurrentStock);
                         command.displayMessage("Update Complete");
+                        if(product.CurrentStock == 0) { product.StockAvailability = false; }
                         break;
                     }
                     else
@@ -147,7 +149,7 @@ namespace WDT_S3546932
             File.WriteAllText(fileName, updatedList);
         }
 
-        public void updateQuantityStore(string fileName, string ProductName, int Quantity)
+        public void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract)
         {
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(fileName));
 
@@ -163,7 +165,7 @@ namespace WDT_S3546932
                         command.displayMessage("Updating....");
                         Thread.Sleep(2000);
                         command.displayMessage("Current Stock: {0} " + product.CurrentStock);
-                        product.CurrentStock = product.CurrentStock - Quantity;
+                        if(addSubtract == "minus") { product.CurrentStock = product.CurrentStock - Quantity;  } else if(addSubtract == "add") { product.CurrentStock = product.CurrentStock + Quantity; }
                         command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
                         command.displayMessage("Update Complete");
                         if (product.ReStock == false && product.CurrentStock == 0) { product.ReStock = true; }

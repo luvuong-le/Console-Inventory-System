@@ -15,7 +15,7 @@
     "Quantity": 1,
     "CurrentStock": 0,
     "Processed": true,
-    "StockAvailability": true
+    "StockAvailability": false
   },
   {
     "ID": 3,

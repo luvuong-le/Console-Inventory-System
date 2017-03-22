@@ -16,5 +16,11 @@
     "ProductName": "Svengali Deck",
     "CurrentStock": 5,
     "StockAvailability": true
+  },
+  {
+    "ID": 4,
+    "ProductName": "Magic Wand",
+    "CurrentStock": 5,
+    "StockAvailability": true
   }
 ]

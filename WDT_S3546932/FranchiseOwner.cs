@@ -44,51 +44,73 @@ namespace WDT_S3546932
                 Console.WriteLine("{0,5} {1,15} {2,15}", store.ID, store.ProductName, store.CurrentStock);
             }
 
-            //Loop Through and Find what products the store doesnt have //
-            using (var Owner = OwnerProducts.GetEnumerator())
-            using (var Store = storeStock.GetEnumerator())
+            int ownerCount=  OwnerProducts.Count; int storeCount = storeStock.Count;
+
+            if(storeCount != ownerCount)
             {
-                while(Owner.MoveNext() && Store.MoveNext())
+                command.displayMessage("You are missing the following Items");
+
+                //Go through each file and return the IDs // 
+                List<int> storeList = new List<int>();
+
+                foreach (var store in storeStock)
                 {
-                    var OwnerProduct = Owner.Current;
-                    var StoreProduct = Store.Current;
+                    storeList.Add(store.ID);
+                }
 
-                    if (OwnerProduct.ProductName == StoreProduct.ProductName)
+                List<int> ownerList = new List<int>();
+
+                foreach (var owner in OwnerProducts)
+                {
+                    ownerList.Add(owner.ID);
+                }
+                //For each ID Array returned compare the two arrays//
+
+                List<int> difference = ownerList.Except(storeList).ToList(); //Compare the OwnerInventory to the Store and determine which ID they do not have //
+
+                // Go through the Owner Stock and make  REQUEST TO STOCK and update to the store file and add that item in ///
+
+                foreach (var product in OwnerProducts)
+                {
+                    foreach (var id in difference)
                     {
-                        command.displayMessage("Product is in Store: " + StoreProduct.ProductName);
-                        /*foreach (var add in OwnerProducts)
+                        if (product.ID == id)
                         {
-                            Console.WriteLine("{0,5} {1,15} {2,15}", add.ID, add.ProductName, add.CurrentStock);
+                            Console.WriteLine("{0,5} {1,15} {2,15}", product.ID, product.ProductName, product.CurrentStock);
                         }
-                        command.displayMessage("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                        if (choice == "yes" || choice == "Yes")
-                        {
-                            requestForStock(OwnerProduct.ProductName, command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", storeName);
-                        }
-                        else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }*/
                     }
-                    else if(OwnerProduct.ProductName != StoreProduct.ProductName && StoreProduct.ProductName == null)
-                    {
-                        command.displayMessage("Product is not in Store: " + OwnerProduct.ProductName);
-                        break; 
-                   }
+                }
 
+                command.displayMessageOneLine("\nEnter Item ID Number to Purchase or Function: "); string ID = Console.ReadLine(); int itemID; Int32.TryParse(ID, out itemID);
+
+                //Prompt User to Choose an ID Number and Request it Based on the List //
+                foreach (var test in difference) {
+                    foreach (var product in OwnerProducts)
+                    {
+                        if (itemID != test)
+                        {
+                            command.displayError("Please choose an ID from the List"); return;
+                        }
+                        else if (itemID == test && product.ID == itemID) {
+                            command.displayMessageOneLine("\nPlease Enter the Amount you would like to Purchase Also: "); string quant = Console.ReadLine(); int Quantity; Int32.TryParse(quant, out Quantity);
+
+                            command.displayMessageOneLine("Youve chosen the Product");
+
+                            Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
+
+                            command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
+                            if (choice == "yes" || choice == "Yes")
+                            {
+                                //Process Add Inventory //
+                                AddProduct(product.ProductName, storeName, Quantity);
+
+                            }
+                            else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
+                            return;
+                        }
+                    }
                 }
             }
-
-            // FINISH OFF //
-            /*foreach (var product in OwnerProducts) //3//
-            {
-                foreach (var store in storeStock) //2//
-                {
-                    while (store.ProductName.Equals(product.ProductName))
-                    {
-                        command.displayMessage("Found Item: " + product.ProductName);
-                        break;
-                    }
-                }
-
-            }*/
         }
 
         //Display Inventory and Request For Stock in StockRequest.json //
@@ -98,7 +120,7 @@ namespace WDT_S3546932
             String storeNameFile = command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json";
 
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
-
+           
             Console.WriteLine("{0,5} {1,15} {2,15} {3,15}", "ID", "Product Name", "Current Stock", "Re-Stock");
 
             foreach (var product in productList)
@@ -115,7 +137,7 @@ namespace WDT_S3546932
                 {
                     if (product.ReStock == true && product.CurrentStock >= thres)
                     {
-                        requestForStock(product.ProductName, command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", StoreName);
+                        requestForStock(product.ProductName, StoreName);
                         break;
                     }
                     else
@@ -124,7 +146,7 @@ namespace WDT_S3546932
                         command.displayMessage("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
                         if (choice == "yes" || choice == "Yes")
                         {
-                            requestForStock(product.ProductName, command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", StoreName);
+                            requestForStock(product.ProductName, StoreName);
                         } else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
                         break;
                     }
@@ -141,7 +163,7 @@ namespace WDT_S3546932
         }
 
         //Request For Stock, Appends to the StockRequest.json File//
-        public override void requestForStock(string productName, string FileName, string StoreName)
+        public override void requestForStock(string productName, string StoreName)
         { 
             command.displayMessage("Requesting Stock");
 
@@ -173,6 +195,36 @@ namespace WDT_S3546932
             //Append the Results and convert the Object back into a JSON String //
             var appendRequest = JsonConvert.SerializeObject(stock, Formatting.Indented);
             File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", appendRequest);
+            Console.WriteLine(appendRequest);
+        }
+
+        public override void AddProduct(String productName, String StoreName, int Quantity)
+        {
+            //Creating a new Local List of type Stock//
+            List<StoreStock> stock = new List<StoreStock>();
+
+            //Reading through the stockrequests.json file and with that jsonData, converting the json data into Object List<Stock> //
+            using (var streamReader = new StreamReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"))
+            {
+                var jsonData = streamReader.ReadToEnd(); stock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonData);
+                //Console.WriteLine(jsonData);
+            }
+
+            List<OwnerStock> ownerInventory = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
+
+            //Looping through the Stock Class//
+            foreach (var product in ownerInventory)
+            {
+                if (productName == product.ProductName)
+                {
+                    //Adding a new Object using the already available stock object //
+                    stock.Add(new StoreStock(product.ID, StoreName, productName, product.CurrentStock = Quantity, false));
+                }
+            }
+
+            //Append the Results and convert the Object back into a JSON String //
+            var appendRequest = JsonConvert.SerializeObject(stock, Formatting.Indented);
+            File.WriteAllText(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", appendRequest);
             Console.WriteLine(appendRequest);
         }
     }

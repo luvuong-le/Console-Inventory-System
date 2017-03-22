@@ -41,7 +41,9 @@ namespace WDT_S3546932
 
         bool matchID(string storename, int ItemID);
 
-        int lastRequestID(); 
+        int lastRequestID();
+
+        List<int> returnAllIDs(string storeName);
     }
 
     abstract class OwnerCLI
@@ -77,6 +79,8 @@ namespace WDT_S3546932
 
         abstract public void AddNewInventory(String StoreName);
 
-        abstract public void requestForStock(String productName, String FileName, String StoreName); 
+        abstract public void requestForStock(String productName, String StoreName);
+
+        abstract public void AddProduct(String productName, String StoreName, int Quantity);
     }
 }

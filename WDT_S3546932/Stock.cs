@@ -44,6 +44,8 @@ namespace WDT_S3546932
             public int CurrentStock { get; set; }
 
             public Boolean StockAvailability { get; set; }
+
+ 
     }
 
     class StoreStock
@@ -57,5 +59,14 @@ namespace WDT_S3546932
             public int CurrentStock { get; set; }
 
             public Boolean ReStock { get; set; }
+
+            public StoreStock(int ID, string Store, string ProductName, int CurrentStock, Boolean ReStock)
+            {
+                this.ID = ID;
+                this.Store = Store;
+                this.ProductName = ProductName;
+                this.CurrentStock = CurrentStock;
+                this.ReStock = ReStock; 
+            }
     }
 }

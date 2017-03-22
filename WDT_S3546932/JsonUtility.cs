@@ -36,6 +36,19 @@ namespace WDT_S3546932
             return json;
         }
 
+        public List<int> returnAllIDs(String storeName)
+        {
+            List<StoreStock> storeProducts = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storeName, "/Stores/") + "_inventory.json"));
+            List<OwnerStock> ownerProducts = JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + ".json"));
+
+            List<int> storeList = new List<int>();
+            foreach(var store in storeProducts)
+            {
+                storeList.Add(store.ID);
+            }
+            return storeList;
+        }
+
         public int lastRequestID()
         {
             List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests" ,"/Stock/") + ".json"));
@@ -44,7 +57,6 @@ namespace WDT_S3546932
             {
                 //Find the last ID Number 
                 ID = reqID.ID;
-                
             }
             return ID;
         }

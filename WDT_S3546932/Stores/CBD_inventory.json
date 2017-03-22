@@ -1,16 +1,30 @@
 [
   {
     "ID": 1,
-    "StoreName": "CBD",
+    "Store": "CBD",
     "ProductName": "Rabbit",
     "CurrentStock": 5,
     "ReStock": true
   },
   {
     "ID": 2,
-    "StoreName": "CBD",
+    "Store": "CBD",
     "ProductName": "Hat",
     "CurrentStock": 5,
+    "ReStock": false
+  },
+  {
+    "ID": 3,
+    "Store": "CBD",
+    "ProductName": "Svengali Deck",
+    "CurrentStock": 2,
+    "ReStock": false
+  },
+  {
+    "ID": 4,
+    "Store": "CBD",
+    "ProductName": "Magic Wand",
+    "CurrentStock": 3,
     "ReStock": false
   }
 ]

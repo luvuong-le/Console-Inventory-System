@@ -3,7 +3,7 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 5,
+    "CurrentStock": 4,
     "ReStock": false
   },
   {
@@ -60,6 +60,13 @@
     "Store": "CBD",
     "ProductName": "Blooming Flower Trick",
     "CurrentStock": 2,
+    "ReStock": false
+  },
+  {
+    "ID": 11,
+    "Store": "CBD",
+    "ProductName": "Colour Change Hanky",
+    "CurrentStock": 3,
     "ReStock": false
   }
 ]

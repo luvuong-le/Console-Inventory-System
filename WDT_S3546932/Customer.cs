@@ -14,7 +14,7 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
-        int productListCount = 0; int nextPageDisplay = 5;
+        int productListCount = 0;
 
         public override List<StoreStock> displayProduct(string store)
         {
@@ -38,18 +38,33 @@ namespace WDT_S3546932
 
         public void customerOptions(string storeName, List<StoreStock> store)
         {
-            command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu | 'C' Complete Transaction | ID Number Based on Item]");
+            command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | ID Number Based on Item]");
 
             command.displayMessageOneLine("Enter Item ID Number to Purchase or Function: "); string user_inp = Console.ReadLine(); int item_ID; Int32.TryParse(user_inp, out item_ID);
 
             if (user_inp == "P" || user_inp == "p")
             {
-                int nextPageTotal = productListCount + nextPageDisplay;
                 command.displayMessage("Going to Next Page");
+
+                foreach (var product in store)
+                {
+                        if (product.ID > productListCount && productListCount <= store.Count)
+                        {
+                            Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock);
+                            productListCount++;
+                        }else if(product.ID < productListCount && productListCount >= store.Count) { command.displayError("End Of Items...Returning to first page"); productListCount = 0; displayProduct(storeName); break; }
+
+                }
+                customerOptions(storeName, store);
+            }
+            else if(user_inp == "B" || user_inp == "b")
+            {
+                command.displayMessage("Going to Previous Page");
+                productListCount = 0;
                 Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
                 foreach (var product in store)
                 {
-                    if (product.ID > productListCount && productListCount <= nextPageTotal)
+                    if (productListCount < 5)
                     {
                         Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock);
                         productListCount++;
@@ -67,7 +82,14 @@ namespace WDT_S3546932
             }
             else if (jsonCommand.matchID(storeName, item_ID) == true) //Checks if the ID input was valid
             {
-                command.displayMessageOneLine("Please Enter the Amount you would like to Purchase Also: "); string quant = Console.ReadLine(); int Quantity; Int32.TryParse(quant, out Quantity);
+                int Quantity;
+                command.displayMessageOneLine("Please Enter the Amount you would like to Purchase: "); string quant = Console.ReadLine();
+                while (!Int32.TryParse(quant, out Quantity))
+                {
+                    command.displayError("Input must be a number!");
+                    productListCount = 0;
+                    return;
+                }
 
                 foreach (var product in store)
                 {
@@ -89,24 +111,37 @@ namespace WDT_S3546932
                                 productListCount = 0;
                                 displayProduct(storeName);
                             }
-                            else if (more == "yes" || more == "Yes" || more == "y")
+                            else if (more == "no" || more == "No" || more == "n")
                             {
-
+                                //Create Variable here such as purchaseComplete = true; //
+                                command.displayMessage("Ok. Returning to Menu"); return;
                             }
                         }
-                        else if (choice == "No" || choice == "no" || choice == "n") { command.displayMessage("Ok. Returning to Menu"); }
-                        return;
+                        else if (choice == "No" || choice == "no" || choice == "n")
+                        {
+                            //purchaseComplete = false //
+                            command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
+                            //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
+                            if (workshop == "Yes") { command.displayMessage("WorkShop Times: "); break; } else { command.displayMessage("Ok. Returning to Menu"); }
+                        }
                     }else
                     {
                         command.displayError("Not enough Stock");
+                        break;
                     }
                 }
             }
         }
 
-        public override void displayWorkShop()
+        public override void displayWorkShop(string storeName)
         {
-            throw new NotImplementedException();
+            List<Workshop> workshops = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshop.json"));
+
+            Console.WriteLine("{0,15} {1,15} {2,25} {3,25}", "Name", "Session", "Time", "Booking Reference");
+            foreach (var booking in workshops)
+            {
+                Console.WriteLine("{0,15} {1,15} {2,25} {3,25}", booking.Name, booking.Session, booking.Time, booking.BookingRef);
+            }
         }
 
         public override void purchaseProduct(String productName, String StoreName, int Quantity)

@@ -67,10 +67,16 @@
     </Compile>
     <Compile Include="Stock.cs" />
     <Compile Include="UI.cs" />
+    <Compile Include="Workshop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Workshops\East_workshop.json" />
+    <None Include="Workshops\West_workshop.json" />
+    <None Include="Workshops\South_workshop.json" />
+    <None Include="Workshops\North_workshop.json" />
+    <None Include="Workshops\CBD_workshop.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

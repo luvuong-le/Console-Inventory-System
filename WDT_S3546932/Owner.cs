@@ -16,6 +16,7 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
+        #region displayAllProductLines
         public override List<OwnerStock> displayAllProductLines()
         {
             List<OwnerStock> productList = null;
@@ -33,13 +34,17 @@ namespace WDT_S3546932
             }
             return productList;
         }
+        #endregion
 
+        #region displayStockRequests
         public override List<Stock> displayAllStockRequests(List<Stock> productList)
         {
             stockRequest(productList);
             return productList;
         }
+        #endregion
 
+        #region displayStockRequestsBool
         public override List<Stock> displayAllStockRequestBool(List<Stock> productList)
         {
             command.displayMessage("Enter [True/False]: "); String choice = Console.ReadLine();
@@ -68,7 +73,9 @@ namespace WDT_S3546932
             }
             return productList;
         }
+        #endregion
 
+        #region StockRequest
         // Calls and Updates Details in StockRequest.json, Storename.json, OwnersInventory.json //
         public List<Stock> stockRequest(List<Stock> productList)
         {
@@ -120,7 +127,10 @@ namespace WDT_S3546932
                 }
             return productList;
         }
+        #endregion
 
+
+        #region checkCurrentStock
         public override int checkCurrentStock(string productName)
         {
             List<OwnerStock> ownerStock = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
@@ -137,5 +147,6 @@ namespace WDT_S3546932
 
             return CurrentStock;
         }
+        #endregion
     }
 }

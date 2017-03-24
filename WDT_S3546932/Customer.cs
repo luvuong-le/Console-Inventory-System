@@ -16,6 +16,7 @@ namespace WDT_S3546932
 
         int productListCount = 0;
 
+        #region displayProduct
         public override List<StoreStock> displayProduct(string store)
         {
             List<StoreStock> products = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(store, "/Stores/") + "_inventory.json"));
@@ -35,7 +36,9 @@ namespace WDT_S3546932
 
             return products;
         }
+        #endregion
 
+        #region CustomerOptions
         public void customerOptions(string storeName, List<StoreStock> store)
         {
             command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | ID Number Based on Item]");
@@ -122,7 +125,7 @@ namespace WDT_S3546932
                             //purchaseComplete = false //
                             command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
                             //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                            if (workshop == "Yes") { command.displayMessage("WorkShop Times: "); break; } else { command.displayMessage("Ok. Returning to Menu"); }
+                            if (workshop == "Yes") { command.displayMessage("WorkShop Times: "); break; } else { command.displayMessage("Ok. Returning to Menu"); break; }
                         }
                     }else
                     {
@@ -133,6 +136,9 @@ namespace WDT_S3546932
             }
         }
 
+        #endregion
+
+        #region displayWorkshops
         public override void displayWorkShop(string storeName)
         {
             List<Workshop> workshops = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshop.json"));
@@ -143,7 +149,9 @@ namespace WDT_S3546932
                 Console.WriteLine("{0,15} {1,15} {2,25} {3,25}", booking.Name, booking.Session, booking.Time, booking.BookingRef);
             }
         }
+        #endregion
 
+        #region purchaseProduct
         public override void purchaseProduct(String productName, String StoreName, int Quantity)
         {
             List<StoreStock> storeStock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"));
@@ -169,5 +177,6 @@ namespace WDT_S3546932
                 }
             }
         }
+        #endregion
     }
 }

@@ -17,6 +17,7 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
+        #region AddInventory
         //Add New Inventory 
         public override void AddNewInventory(string storeName)
         {
@@ -107,7 +108,9 @@ namespace WDT_S3546932
                 }
             }
         }
+        #endregion
 
+        #region DisplayInventory
         //Display Inventory and Request For Stock in StockRequest.json //
         public override List<StoreStock> displayInventory(string StoreName)
         {
@@ -150,7 +153,9 @@ namespace WDT_S3546932
 
             return productList;
         }
+        #endregion
 
+        #region DisplayInventoryThres
         // Display Inventory Based on Threshold
         public override List<StoreStock> displayInventoryThres(string StoreName)
         {
@@ -197,7 +202,9 @@ namespace WDT_S3546932
 
             return productList;
         }
+        #endregion
 
+        #region requestStock
         //Request For Stock, Appends to the StockRequest.json File//
         public override void requestForStock(string productName, string StoreName)
         { 
@@ -233,7 +240,9 @@ namespace WDT_S3546932
             File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", appendRequest);
             Console.WriteLine(appendRequest);
         }
+        #endregion
 
+        #region addProduct
         public override void AddProduct(String productName, String StoreName, int Quantity)
         {
             //Creating a new Local List of type Stock//
@@ -273,4 +282,5 @@ namespace WDT_S3546932
             Console.WriteLine(appendRequest);
         }
     }
+    #endregion
 }

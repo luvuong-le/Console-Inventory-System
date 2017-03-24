@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WDT_S3546932
 {
+    #region Stock
     class Stock
     {
             public int ID { get; set; }
@@ -32,9 +33,11 @@ namespace WDT_S3546932
                 this.Processed = Processed;
                 this.StockAvailability = StockAvailability;
             }
-
+      
     }
+    #endregion
 
+    #region OwnerStock
     class OwnerStock
     {
             public int ID { get; set; }
@@ -47,7 +50,9 @@ namespace WDT_S3546932
 
  
     }
+    #endregion
 
+    #region StoreStock
     class StoreStock
     {
             public int ID { get; set; }
@@ -69,4 +74,5 @@ namespace WDT_S3546932
                 this.ReStock = ReStock; 
             }
     }
+    #endregion
 }

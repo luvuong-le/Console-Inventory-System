@@ -85,7 +85,7 @@ namespace WDT_S3546932
                     if (command.checkStoreName(storeName, command.getStoreNames()) == true)
                     {
                         StoreName = true;
-                    }
+                    } else { command.displayError("No Such Store"); displayMenu(); }
                     //Check if Store name equals Current Store Names //
                     while (StoreName == true)
                     {
@@ -124,7 +124,7 @@ namespace WDT_S3546932
                     if (command.checkStoreName(storeName, command.getStoreNames()) == true)
                     {
                         StoreName = true;
-                    }
+                    }else { command.displayError("No Such Store"); displayMenu(); }
                     //Check if Store name equals Current Store Names //
                     while (StoreName == true)
                     {

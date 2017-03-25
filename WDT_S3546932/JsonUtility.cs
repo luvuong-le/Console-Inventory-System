@@ -70,6 +70,7 @@ namespace WDT_S3546932
                 if (reqID.ID == ItemID && ItemID <= productList.Count)
                 {
                     command.displayMessage("Found Match");
+                    command.displayMessage(reqID.ProductName);
                     return true;
                 }
                 else if(ItemID > productList.Count)

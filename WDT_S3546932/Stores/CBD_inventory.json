@@ -3,50 +3,50 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 3,
-    "ReStock": false
+    "CurrentStock": 4,
+    "ReStock": true
   },
   {
     "ID": 2,
     "Store": "CBD",
     "ProductName": "Hat",
     "CurrentStock": 4,
-    "ReStock": false
+    "ReStock": true
   },
   {
     "ID": 3,
     "Store": "CBD",
     "ProductName": "Svengali Deck",
-    "CurrentStock": 2,
-    "ReStock": false
+    "CurrentStock": 4,
+    "ReStock": true
   },
   {
     "ID": 4,
     "Store": "CBD",
-    "ProductName": "Magic Wand",
-    "CurrentStock": 3,
-    "ReStock": false
+    "ProductName": "Floating Hankerchief",
+    "CurrentStock": 6,
+    "ReStock": true
   },
   {
     "ID": 5,
     "Store": "CBD",
     "ProductName": "Magic Wand",
-    "CurrentStock": 5,
+    "CurrentStock": 4,
     "ReStock": false
   },
   {
     "ID": 6,
     "Store": "CBD",
     "ProductName": "Cards",
-    "CurrentStock": 10,
+    "CurrentStock": 8,
     "ReStock": false
   },
   {
     "ID": 7,
     "Store": "CBD",
     "ProductName": "Magician Cape",
-    "CurrentStock": 1,
-    "ReStock": false
+    "CurrentStock": 0,
+    "ReStock": true
   },
   {
     "ID": 9,

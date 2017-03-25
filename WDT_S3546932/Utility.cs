@@ -53,6 +53,28 @@ namespace WDT_S3546932
             }
             return false;
         }
+
+        public bool checkInt(string request, int Quantity)
+        {
+            int returnedQuant;
+
+            if (!Int32.TryParse(request, out returnedQuant))
+            {
+                displayError("Input must be a number!");
+                return false;
+            }
+            return true;
+        }
+
+        public int convertInt(string StringToConvert)
+        {
+            int convertedInt;
+
+            Int32.TryParse(StringToConvert, out convertedInt);
+
+            return convertedInt;
+
+        }
     }
 }
 

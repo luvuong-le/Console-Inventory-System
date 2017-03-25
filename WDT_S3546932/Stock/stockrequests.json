@@ -25,5 +25,32 @@
     "CurrentStock": 5,
     "Processed": true,
     "StockAvailability": true
+  },
+  {
+    "ID": 4,
+    "StoreName": "CBD",
+    "ProductRequested": "Rabbit",
+    "Quantity": 0,
+    "CurrentStock": 4,
+    "Processed": false,
+    "StockAvailability": true
+  },
+  {
+    "ID": 5,
+    "StoreName": "CBD",
+    "ProductRequested": "Rabbit",
+    "Quantity": 0,
+    "CurrentStock": 4,
+    "Processed": false,
+    "StockAvailability": true
+  },
+  {
+    "ID": 6,
+    "StoreName": "CBD",
+    "ProductRequested": "Rabbit",
+    "Quantity": 0,
+    "CurrentStock": 4,
+    "Processed": false,
+    "StockAvailability": true
   }
 ]

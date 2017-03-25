@@ -30,6 +30,8 @@ namespace WDT_S3546932
 
         void printAllStoreNames(String[] filenames);
 
+        bool checkInt(String request, int Quantity);
+
     }
 
     interface JCommands
@@ -85,7 +87,7 @@ namespace WDT_S3546932
 
         abstract public void AddNewInventory(String StoreName);
 
-        abstract public void requestForStock(String productName, String StoreName);
+        abstract public void requestForStock(String productName, String StoreName, int Quantity);
 
         abstract public void AddProduct(String productName, String StoreName, int Quantity);
     }

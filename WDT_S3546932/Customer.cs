@@ -14,11 +14,16 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
-        int productListCount = 0;
+        int productListCount; int purchaseNumber = 0;
+
+        bool purchaseComplete = false; bool bookedWorkShop = false;
+
+        List<customerPurchase> itemCart = new List<customerPurchase>();
 
         #region displayProduct
         public override List<StoreStock> displayProduct(string store)
         {
+            productListCount = 0;
             List<StoreStock> products = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(store, "/Stores/") + "_inventory.json"));
 
             Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
@@ -82,55 +87,58 @@ namespace WDT_S3546932
             else if (user_inp == "C" || user_inp == "c")
             {
                 command.displayMessage("Completing Transaction");
+                if (purchaseComplete == true) { command.displayMessage("Printing Reciept: ");  printReciept(itemCart);  }
             }
             else if (jsonCommand.matchID(storeName, item_ID) == true) //Checks if the ID input was valid
-            {
-                int Quantity;
+            { 
                 command.displayMessageOneLine("Please Enter the Amount you would like to Purchase: "); string quant = Console.ReadLine();
-                while (!Int32.TryParse(quant, out Quantity))
+                int Quantity = command.convertInt(quant);
+                if (command.checkInt(quant, Quantity) == true)
                 {
-                    command.displayError("Input must be a number!");
-                    productListCount = 0;
-                    return;
-                }
-
-                foreach (var product in store)
-                {
-                    if (product.ID == item_ID)
+                    while (purchaseComplete == false)
                     {
-                        command.displayMessageOneLine("\nYouve chosen the Product");
-
-                        Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
-
-                        command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-
-                        if (choice == "yes" || choice == "Yes" || choice == "y")
+                        foreach (var product in store)
                         {
-                            //Process purchase product  //
-                            purchaseProduct(product.ProductName, storeName, Quantity);
-                            command.displayMessage("Keep Purchasing [Yes/No]"); string more = Console.ReadLine();
-                            if (more == "yes" || more == "Yes" || more == "y")
+                            if (product.ID == item_ID && product.CurrentStock >= Quantity)
                             {
-                                productListCount = 0;
-                                displayProduct(storeName);
+                                command.displayMessageOneLine("\nYouve chosen the Product");
+
+                                Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
+
+                                command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
+
+                                if (choice == "yes" || choice == "Yes" || choice == "y")
+                                {
+                                    //Process purchase product  //
+                                    addProduct(itemCart, store, product.ProductName, product.Store, Quantity);
+                                    purchaseProduct(product.ProductName, storeName, Quantity);
+                                    command.displayMessage("Keep Purchasing [Yes/No]"); string more = Console.ReadLine();
+                                    if (more == "yes" || more == "Yes" || more == "y")
+                                    {
+                                        productListCount = 0;
+                                        displayProduct(storeName);
+                                    }
+                                    else if (more == "no" || more == "No" || more == "n")
+                                    {
+                                        //Create Variable here such as purchaseComplete = true; //
+                                        purchaseComplete = true;
+                                        command.displayMessage("Ok. Returning to Menu"); return;
+                                    }
+                                }
+                                else if (choice == "No" || choice == "no" || choice == "n")
+                                {
+                                    purchaseComplete = false;
+                                    command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
+                                    //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
+                                    if (workshop == "Yes") { command.displayMessage("WorkShop Times: "); bookedWorkShop = true; break; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; break; }
+                                }
                             }
-                            else if (more == "no" || more == "No" || more == "n")
+                            else if (product.CurrentStock <= Quantity) { command.displayError("Not enough stock"); return; }
+                            else
                             {
-                                //Create Variable here such as purchaseComplete = true; //
-                                command.displayMessage("Ok. Returning to Menu"); return;
+                                continue;
                             }
                         }
-                        else if (choice == "No" || choice == "no" || choice == "n")
-                        {
-                            //purchaseComplete = false //
-                            command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
-                            //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                            if (workshop == "Yes") { command.displayMessage("WorkShop Times: "); break; } else { command.displayMessage("Ok. Returning to Menu"); break; }
-                        }
-                    }else
-                    {
-                        command.displayError("Not enough Stock");
-                        break;
                     }
                 }
             }
@@ -178,5 +186,43 @@ namespace WDT_S3546932
             }
         }
         #endregion
+
+        public List<customerPurchase> printReciept(List<customerPurchase> products)
+        {
+            command.displayTitle("Printed Reciept: ");
+            command.displayMessage("Items: ");
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                Console.WriteLine("Item Number: " + products[i].purchaseItemNumber + 
+                    "Product: " + products[i].ProductName + 
+                    "Quantity: " + products[i].Quantity + 
+                    "Store Purchased: " + products[i].Store);
+            }
+            return products;
+        }
+
+        public void addProduct(List<customerPurchase> purchasedProducts, List<StoreStock> store, String productName, String StoreName, int Quantity)
+        {
+            //Looping through the Stock Class//
+            foreach (var product in store)
+            {
+                if (productName == product.ProductName && product.CurrentStock > Quantity)
+                {
+                    //Adding a new Object using the already available stock object //
+                    purchasedProducts.Add(new customerPurchase(purchaseNumber + 1, StoreName, productName, Quantity));
+                }
+                else if (productName == product.ProductName && product.CurrentStock < Quantity)
+                {
+                    command.displayError("Sorry We have: " + product.CurrentStock + " In Stock at the moment");
+                    return;
+                }
+                else if (productName == product.ProductName && product.CurrentStock == 0)
+                {
+                    command.displayError("We do not have any in stock at the moment");
+                    return;
+                }
+            }
+        }
     }
 }

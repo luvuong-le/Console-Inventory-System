@@ -119,38 +119,43 @@ namespace WDT_S3546932
 
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
            
-            Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock", "Re-Stock");
+            Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock");
 
             foreach (var product in productList)
             {
-                Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock, product.ReStock);
-            }
-
-            command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestProcess = Console.ReadLine();
-            int requestID; Int32.TryParse(requestProcess, out requestID);  command.displayMessage("[Request number]: " + requestID);
-
-            foreach (var product in productList)
-            {
-                if (product.ID == requestID)
+                if (product.CurrentStock <= thres)
+                Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true);
+                else
                 {
-                    if (product.ReStock == true && product.CurrentStock >= thres)
-                    {
-                        requestForStock(product.ProductName, StoreName);
-                        break;
-                    }
-                    else
-                    {
-                        command.displayError("Cannot make a request");
-                        command.displayMessage("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                        if (choice == "yes" || choice == "Yes")
-                        {
-                            requestForStock(product.ProductName, StoreName);
-                        } else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
-                        break;
-                    }
+                Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = false);
                 }
             }
 
+            int requestID = 0; int Quantity = 0; 
+
+            if (command.checkInt("\nEnter Request To Process[ID]: ", requestID) == true && command.checkInt("Please Enter the Amount you would like to Purchase:　", Quantity) == true)
+            { 
+                foreach (var product in productList)
+                {
+                    if (product.ID == requestID)
+                    {
+                        if (product.ReStock == true)
+                        {
+                            requestForStock(product.ProductName, StoreName, Quantity);
+                            break;
+                        }
+                        else
+                        {
+                            command.displayError("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
+                            if (choice == "yes" || choice == "Yes")
+                            {
+                                requestForStock(product.ProductName, StoreName, Quantity);
+                            } else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
+                            break;
+                        }
+                    }
+                }
+            }
             return productList;
         }
         #endregion
@@ -168,36 +173,31 @@ namespace WDT_S3546932
 
             foreach (var product in productList)
             {
-                if (product.CurrentStock >= thres)
+                if (product.CurrentStock <= thres)
                 {
-                    Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock, product.ReStock);
+                    Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true);
                 }
             }
 
             command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestProcess = Console.ReadLine();
             int requestID; Int32.TryParse(requestProcess, out requestID); command.displayMessage("[Request number]: " + requestID);
+            command.displayMessageOneLine("Please Enter the Amount you would like to Request: "); string quant = Console.ReadLine(); int Quantity; Int32.TryParse(quant, out Quantity);
 
             foreach (var product in productList)
             {
-                if (product.ID == requestID)
-                {
-                    if (product.ReStock == true && product.CurrentStock >= thres)
+                    if (product.ReStock == true && product.CurrentStock <= thres)
                     {
-                        requestForStock(product.ProductName, StoreName);
-                        break;
+                        if (product.ID == requestID)
+                        {
+                            requestForStock(product.ProductName, StoreName, Quantity);
+                            break;
+                        }
                     }
                     else
                     {
-                        command.displayError("Cannot make a request");
-                        command.displayMessage("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                        if (choice == "yes" || choice == "Yes")
-                        {
-                            requestForStock(product.ProductName, StoreName);
-                        }
-                        else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
+                        command.displayError("Not in the List");
                         break;
                     }
-                }
             }
 
             return productList;
@@ -206,7 +206,7 @@ namespace WDT_S3546932
 
         #region requestStock
         //Request For Stock, Appends to the StockRequest.json File//
-        public override void requestForStock(string productName, string StoreName)
+        public override void requestForStock(string productName, string StoreName, int Quantity)
         { 
             command.displayMessage("Requesting Stock");
 
@@ -231,7 +231,7 @@ namespace WDT_S3546932
                     if (storeProduct.CurrentStock > owner.checkCurrentStock(storeProduct.ProductRequested)) { storeProduct.StockAvailability = false; } else { storeProduct.StockAvailability = true; }
 
                     //Adding a new Object using the already available stock object //
-                    stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName, storeProduct.ProductRequested, storeProduct.CurrentStock, owner.checkCurrentStock(productName), false, storeProduct.StockAvailability));
+                    stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName, storeProduct.ProductRequested, Quantity, owner.checkCurrentStock(productName), false, storeProduct.StockAvailability));
                 }
             }
 

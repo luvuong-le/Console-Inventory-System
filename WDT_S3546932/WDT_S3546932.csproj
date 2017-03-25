@@ -85,6 +85,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\" />
     <Folder Include="Stock\" />
     <Folder Include="Stores\" />
   </ItemGroup>

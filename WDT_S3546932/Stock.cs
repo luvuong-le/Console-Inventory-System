@@ -75,4 +75,24 @@ namespace WDT_S3546932
             }
     }
     #endregion
+
+    class customerPurchase
+    {
+        public int purchaseItemNumber { get; set; }
+
+        public string Store { get; set; }
+
+        public string ProductName { get; set; }
+
+        public int Quantity { get; set; }
+
+        public customerPurchase(int purchaseItemNumber, string Store, string ProductName, int Quantity)
+        {
+            this.purchaseItemNumber = purchaseItemNumber;
+            this.Store = Store;
+            this.ProductName = ProductName;
+            this.Quantity = Quantity;
+        }
+
+    }
 }

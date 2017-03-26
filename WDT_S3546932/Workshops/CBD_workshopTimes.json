@@ -1,0 +1,31 @@
+﻿[
+  {
+    "type": "morning",
+    "sessionTimes": "8:30 - 10:30",
+    "numBooking": 0,
+    "availability": 10,
+    "full":  false
+  },
+  {
+    "type": "morning",
+    "sessionTimes": "10:30 - 12:30",
+    "numBooking": 0,
+    "availability": 10,
+    "full":  false
+
+  },
+  {
+    "type": "afternoon",
+    "sessionTimes": "12:30 - 2:30",
+    "numBooking": 0,
+    "availability": 10,
+    "full":  false
+  },
+  {
+    "type": "afternoon",
+    "sessionTimes": "2:30 - 4:30",
+    "numBooking": 0,
+    "availability": 10,
+    "full":  false
+  }
+]

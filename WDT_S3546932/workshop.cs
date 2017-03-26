@@ -27,6 +27,14 @@ namespace WDT_S3546932
 
     class WorkshopTimes
     {
-        public string SessionTimes; 
+        public string type; 
+
+        public string sessionTimes;
+
+        public int numBooking;
+
+        public int avabililty;
+
+        public bool full; 
     }
 }

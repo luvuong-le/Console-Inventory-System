@@ -72,11 +72,15 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Workshops\East_workshop.json" />
-    <None Include="Workshops\West_workshop.json" />
-    <None Include="Workshops\South_workshop.json" />
-    <None Include="Workshops\North_workshop.json" />
-    <None Include="Workshops\CBD_workshop.json" />
+    <None Include="Workshops\North_workshopTimes.json" />
+    <None Include="Workshops\East_workshopTimes.json" />
+    <None Include="Workshops\South_workshopTimes.json" />
+    <None Include="Workshops\West_workshopTimes.json" />
+    <None Include="Workshops\East_bookings.json" />
+    <None Include="Workshops\West_bookings.json" />
+    <None Include="Workshops\South_bookings.json" />
+    <None Include="Workshops\North_bookings.json" />
+    <None Include="Workshops\CBD_bookings.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -88,6 +92,9 @@
     <Folder Include="bin\" />
     <Folder Include="Stock\" />
     <Folder Include="Stores\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Workshops\CBD_workshopTimes.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

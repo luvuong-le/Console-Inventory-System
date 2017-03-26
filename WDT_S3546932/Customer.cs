@@ -159,12 +159,12 @@ namespace WDT_S3546932
         #region displayWorkshops
         public override void displayWorkShop(string storeName)
         {
-            List<Workshop> workshops = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshop.json"));
+            List<WorkshopTimes> workshops = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
 
-            Console.WriteLine("{0,15} {1,15} {2,25} {3,25}", "Name", "Session", "Time", "Booking Reference");
-            foreach (var booking in workshops)
+            Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15}", "Type", "Session Times", "Number of People Booked", "Availability", "Full");
+            foreach (var session in workshops)
             {
-                Console.WriteLine("{0,15} {1,15} {2,25} {3,25}", booking.Name, booking.Session, booking.Time, booking.BookingRef);
+                Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15}", session.type, session.sessionTimes, session.numBooking, session.avabililty, session.full);
             }
         }
         #endregion

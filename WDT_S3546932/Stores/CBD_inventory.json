@@ -3,70 +3,70 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 4,
+    "CurrentStock": 0,
     "ReStock": true
   },
   {
     "ID": 2,
     "Store": "CBD",
     "ProductName": "Hat",
-    "CurrentStock": 4,
+    "CurrentStock": 0,
     "ReStock": true
   },
   {
     "ID": 3,
     "Store": "CBD",
     "ProductName": "Svengali Deck",
-    "CurrentStock": 4,
+    "CurrentStock": 0,
     "ReStock": true
   },
   {
     "ID": 4,
     "Store": "CBD",
     "ProductName": "Floating Hankerchief",
-    "CurrentStock": 6,
+    "CurrentStock": 0,
     "ReStock": true
   },
   {
     "ID": 5,
     "Store": "CBD",
     "ProductName": "Magic Wand",
-    "CurrentStock": 4,
-    "ReStock": false
+    "CurrentStock": 0,
+    "ReStock": true
   },
   {
     "ID": 6,
     "Store": "CBD",
     "ProductName": "Cards",
-    "CurrentStock": 8,
-    "ReStock": false
+    "CurrentStock": 0,
+    "ReStock": true
   },
   {
     "ID": 7,
     "Store": "CBD",
     "ProductName": "Magician Cape",
-    "CurrentStock": 0,
+    "CurrentStock": 2,
     "ReStock": true
   },
   {
     "ID": 9,
     "Store": "CBD",
     "ProductName": "Advanced Magic Set",
-    "CurrentStock": 0,
+    "CurrentStock": 9,
     "ReStock": true
   },
   {
     "ID": 10,
     "Store": "CBD",
     "ProductName": "Blooming Flower Trick",
-    "CurrentStock": 2,
-    "ReStock": false
+    "CurrentStock": 8,
+    "ReStock": true
   },
   {
     "ID": 11,
     "Store": "CBD",
     "ProductName": "Colour Change Hanky",
-    "CurrentStock": 3,
+    "CurrentStock": 5,
     "ReStock": false
   }
 ]

@@ -164,7 +164,7 @@ namespace WDT_S3546932
                     if (product.CurrentStock >= Quantity)
                     {
                         command.displayMessage("Updating....");
-                        Thread.Sleep(2000);
+                        //Thread.Sleep(2000);
                         command.displayMessage("Current Stock: {0} " + product.CurrentStock);
                         if(addSubtract == "minus") { product.CurrentStock = product.CurrentStock - Quantity;  } else if(addSubtract == "add") { product.CurrentStock = product.CurrentStock + Quantity; }
                         command.displayMessage("New Current Stock: {0} " + product.CurrentStock);

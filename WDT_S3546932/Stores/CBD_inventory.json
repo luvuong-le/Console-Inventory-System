@@ -24,7 +24,7 @@
     "ID": 4,
     "Store": "CBD",
     "ProductName": "Floating Hankerchief",
-    "CurrentStock": 0,
+    "CurrentStock": 2,
     "ReStock": true
   },
   {
@@ -45,28 +45,28 @@
     "ID": 7,
     "Store": "CBD",
     "ProductName": "Magician Cape",
-    "CurrentStock": 2,
+    "CurrentStock": 0,
     "ReStock": true
   },
   {
     "ID": 9,
     "Store": "CBD",
     "ProductName": "Advanced Magic Set",
-    "CurrentStock": 9,
+    "CurrentStock": 8,
     "ReStock": true
   },
   {
     "ID": 10,
     "Store": "CBD",
     "ProductName": "Blooming Flower Trick",
-    "CurrentStock": 8,
+    "CurrentStock": 1,
     "ReStock": true
   },
   {
     "ID": 11,
     "Store": "CBD",
     "ProductName": "Colour Change Hanky",
-    "CurrentStock": 5,
+    "CurrentStock": 4,
     "ReStock": false
   }
 ]

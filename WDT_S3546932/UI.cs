@@ -32,6 +32,8 @@ namespace WDT_S3546932
 
         bool checkInt(String request, int Quantity);
 
+        string generateBookingReference(int size);
+
     }
 
     interface JCommands

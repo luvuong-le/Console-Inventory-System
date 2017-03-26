@@ -65,20 +65,24 @@ namespace WDT_S3546932
         {
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storename, "/Stores/") + "_inventory.json"));
 
-            foreach (var reqID in productList)
+            if (productList.Any(item => item.ID == ItemID))
             {
-                if (reqID.ID == ItemID && ItemID <= productList.Count)
+                foreach (var reqID in productList)
                 {
-                    command.displayMessage("Found Match");
-                    command.displayMessage(reqID.ProductName);
-                    return true;
+                    if (reqID.ID == ItemID)
+                    {
+                        command.displayMessage("Found Match");
+                        command.displayMessage(reqID.ProductName);
+                        return true;
+                    }
+                    else if (reqID.ID != ItemID)
+                    {
+                        continue;
+                    }
                 }
-                else if(ItemID > productList.Count)
-                {
-                    command.displayMessage("There is no entry with that ID. Please Enter a Valid ID");
-                    return false;
-                }
-              
+            }else
+            {
+                command.displayError("No Such ID"); 
             }
             return false;
         }

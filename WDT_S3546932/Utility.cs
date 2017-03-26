@@ -13,6 +13,8 @@ namespace WDT_S3546932
 {
     class Utility : ICommands
     {
+        Random random = new Random();
+
         public  string displayTitle(String title) { Console.WriteLine(title); Console.WriteLine("---------------------------");  return title; }
 
         public  string displayMessage(String message) { Console.WriteLine("\n" + message + "\n"); return message; }
@@ -74,6 +76,15 @@ namespace WDT_S3546932
 
             return convertedInt;
 
+        }
+
+        public string generateBookingReference(int size)
+        {
+            string numbers = "0123456789";
+            var chars = Enumerable.Range(0, size).
+                Select(x => numbers[random.Next(0, numbers.Length)]);
+
+            return new string(chars.ToArray());
         }
     }
 }

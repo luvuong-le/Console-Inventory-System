@@ -128,7 +128,9 @@ namespace WDT_S3546932
                                         {
                                             //Create Variable here such as purchaseComplete = true; //
                                             purchaseComplete = true;
-                                            command.displayMessage("Ok. Returning to Menu"); return;
+                                            command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
+                                            //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
+                                            if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
                                         }
                                     }
                                     else if (choice == "No" || choice == "no" || choice == "n")
@@ -136,11 +138,11 @@ namespace WDT_S3546932
                                         purchaseComplete = false;
                                         command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
                                         //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                                        if (workshop == "Yes") { command.displayMessage("WorkShop Times: "); bookedWorkShop = true; break; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; break; }
+                                        if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
                                     }
                                 }
-                                else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName); }
-                                else if (product.CurrentStock == 0) { command.displayError("0 in Stock "); displayProduct(storeName); }
+                                else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName); return; }
+                                else if (product.CurrentStock == 0) { command.displayError("0 in Stock "); displayProduct(storeName); return; }
                             }
                             else
                             {
@@ -217,10 +219,23 @@ namespace WDT_S3546932
             //Looping through the Stock Class//
             foreach (var product in store)
             {
-                if (productName == product.ProductName && product.CurrentStock > Quantity)
-                { 
-                    //Adding a new Object using the already available stock object //
-                    purchasedProducts.Add(new customerPurchase(purchaseNumber ++, StoreName, productName, Quantity));
+                if (productName == product.ProductName && product.CurrentStock >= Quantity)
+                {
+                    if (purchasedProducts.Any(purchase => purchase.ProductName == productName))
+                    {
+                            //Adding a new Object using the already available stock object //
+                        foreach(var item in purchasedProducts)
+                        {
+                            if (item.ProductName == productName)
+                            {
+                                item.Quantity += Quantity;
+                            }
+                        }
+                    }else
+                    {
+                        //Adding a new Object using the already available stock object //
+                        purchasedProducts.Add(new customerPurchase(purchaseNumber++, StoreName, productName, Quantity));
+                    }
                 }
                 else if (productName == product.ProductName && product.CurrentStock < Quantity)
                 {
@@ -233,6 +248,20 @@ namespace WDT_S3546932
                     return;
                 }
             }
+        }
+
+        public void bookWorkshop()
+        {
+            command.displayMessageOneLine("Enter Name: "); string name = Console.ReadLine();
+            Console.WriteLine();
+            string bookingRef = command.generateBookingReference(7);
+            command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n");
+            //addBooking(name, bookingRef);
+        }
+
+        public void addBooking(string name, string bookingRef, string time, string session)
+        {
+
         }
     }
 }

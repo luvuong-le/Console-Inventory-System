@@ -15,9 +15,9 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
-        int productListCount; int purchaseNumber = 0; double purchaseTotal = 100.00; int bookedTotal = 0;
+        int productListCount; int purchaseNumber = 0; double purchaseTotal = 100.00; int bookedTotal = 0; 
 
-        bool purchaseComplete = false;
+        bool purchaseComplete = false; bool bookRef = false;
 
         List<customerPurchase> itemCart = new List<customerPurchase>();
 
@@ -286,6 +286,7 @@ namespace WDT_S3546932
 
         public void bookWorkshop(List<WorkshopTimes> workshopTimes, string storeName)
         {
+            string bookingRef = null;
             Console.WriteLine("You have Booked into " + bookedTotal + " Workshops");
             command.displayMessageOneLine("\n\nEnter the Workshop ID you would like to book into: "); string book = Console.ReadLine();
             int workshopTime = command.convertInt(book);
@@ -303,9 +304,10 @@ namespace WDT_S3546932
                     {
                         command.displayMessageOneLine("Enter Name: "); string name = Console.ReadLine();
                         Console.WriteLine();
-                        string bookingRef = command.generateBookingReference(7);
-                        command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n");
-                        addBooking(workshopTimes, workshopTime, storeName, name, bookingRef, chosen.sessionTimes, chosen.type);
+                        if (bookRef == false) { bookingRef = command.generateBookingReference(7); bookRef = true;   addBooking(workshopTimes, workshopTime, storeName, name, bookingRef, chosen.sessionTimes, chosen.type);}
+
+                        else if (bookRef == true){ command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n"); addBooking(workshopTimes, workshopTime, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
+                      
                         break;
                     }
                     else
@@ -322,6 +324,8 @@ namespace WDT_S3546932
         public void addBooking(List<WorkshopTimes> workshopTimes, int ID, string storename, string name, string bookingRef, string time, string session)
         {
             command.displayMessage("Added Booking");
+
+            List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storename, "/Workshops/") + "_bookings.json"));
 
             //Creating a new Local List of type Stock//
             List<Workshop> workshop = new List<Workshop>();
@@ -344,6 +348,9 @@ namespace WDT_S3546932
                     }
 
                     updateBookingDetails(workshopTimes, ID, storename, name, bookingRef, time, session);
+                } else if (ID == times.ID && session == times.type && time == times.sessionTimes)
+                {
+                    command.displayMessage("Cannot Add Booking");
                 }
             }
 
@@ -360,20 +367,23 @@ namespace WDT_S3546932
                 if (ID == times.ID)
                 {
                     command.displayMessage("BOOKING FOUND");
-                    if (session == times.type && time == times.sessionTimes)
+                    if (times.avabililty > 0)
                     {
                         command.displayMessage("Updating....");
                         Thread.Sleep(2000);
                         times.numBooking = times.numBooking + 1; times.avabililty = times.avabililty - 1;
                         command.displayMessage("Nmber Of People Booked In: " + times.numBooking); command.displayMessage("Nmber Of Places Left: " + times.avabililty);
                         command.displayMessage("Update Complete");
-                        if(times.avabililty == 0) { times.full = true; }
+                        if (times.avabililty == 0) { times.full = true; }
                         break;
-                    }
-                    else
+                    }else
                     {
-                        command.displayMessage("Cannot Update.");
+                        command.displayMessage("Sorry No Places Available");
                     }
+                }
+                else
+                {
+                    continue;
                 }
             }
 

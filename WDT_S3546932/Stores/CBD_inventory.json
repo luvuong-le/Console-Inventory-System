@@ -3,7 +3,7 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 0,
+    "CurrentStock": 10,
     "ReStock": true
   },
   {
@@ -59,7 +59,7 @@
     "ID": 10,
     "Store": "CBD",
     "ProductName": "Blooming Flower Trick",
-    "CurrentStock": 1,
+    "CurrentStock": 0,
     "ReStock": true
   },
   {

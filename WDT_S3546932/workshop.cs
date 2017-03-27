@@ -14,9 +14,9 @@ namespace WDT_S3546932
 
         public string Time;
 
-        public int BookingRef;
+        public string BookingRef;
         
-        public Workshop(string Name, string Session, string Time, int BookingRef)
+        public Workshop(string Name, string Session, string Time, string BookingRef)
         {
             this.Name = Name;
             this.Session = Session;
@@ -38,5 +38,15 @@ namespace WDT_S3546932
         public int avabililty;
 
         public bool full; 
+
+        public WorkshopTimes(int ID, string Type, string SessionTimes, int numBooking, int Availability, bool full)
+        {
+            this.ID = ID;
+            this.type = Type;
+            this.sessionTimes = SessionTimes;
+            this.numBooking = numBooking;
+            this.avabililty = Availability;
+            this.full = full;
+        }
     }
 }

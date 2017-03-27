@@ -252,7 +252,6 @@ namespace WDT_S3546932
             using (var streamReader = new StreamReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"))
             {
                 var jsonData = streamReader.ReadToEnd(); stock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonData);
-                //Console.WriteLine(jsonData);
             }
 
             List<OwnerStock> ownerInventory = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));

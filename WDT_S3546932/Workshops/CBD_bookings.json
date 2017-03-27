@@ -1,8 +1,26 @@
-﻿[
+[
   {
-    "Name":  "Bob",
+    "Name": "Bob",
     "Session": "Morning",
-    "Time":  "10:30 - 12:30",
-    "BookingRef" : 8409378
+    "Time": "10:30 - 12:30",
+    "BookingRef": "8409378"
+  },
+  {
+    "Name": "Lu-Vuong",
+    "Session": "morning",
+    "Time": "8:30 - 10:30",
+    "BookingRef": "4543239"
+  },
+  {
+    "Name": "yes",
+    "Session": "morning",
+    "Time": "8:30 - 10:30",
+    "BookingRef": "5371551"
+  },
+  {
+    "Name": "Lu-Vuong",
+    "Session": "morning",
+    "Time": "8:30 - 10:30",
+    "BookingRef": "6031512"
   }
 ]

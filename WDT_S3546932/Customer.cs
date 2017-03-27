@@ -46,7 +46,9 @@ namespace WDT_S3546932
         #region CustomerOptions
         public void customerOptions(string storeName, List<StoreStock> store)
         {
-            command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | ID Number Based on Item]");
+            List<WorkshopTimes> workshopTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
+
+           command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | ID Number Based on Item]");
 
             command.displayMessageOneLine("Enter Item ID Number to Purchase or Function: "); string user_inp = Console.ReadLine(); int item_ID; Int32.TryParse(user_inp, out item_ID);
 
@@ -130,7 +132,7 @@ namespace WDT_S3546932
                                             purchaseComplete = true;
                                             command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
                                             //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                                            if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
+                                            if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
                                         }
                                     }
                                     else if (choice == "No" || choice == "no" || choice == "n")
@@ -138,7 +140,7 @@ namespace WDT_S3546932
                                         purchaseComplete = false;
                                         command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
                                         //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                                        if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
+                                        if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
                                     }
                                 }
                                 else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName); return; }
@@ -250,8 +252,15 @@ namespace WDT_S3546932
             }
         }
 
-        public void bookWorkshop()
+        public void bookWorkshop(List<WorkshopTimes> workshopTimes)
         {
+            command.displayMessageOneLine("Enter the Workshop ID you would like to book into: "); string book = Console.ReadLine();
+            int workshopTime = command.convertInt(book);
+            if (command.checkInt(book, workshopTime))
+            {
+                command.displayMessage("Youve chosen: " + workshopTime);
+            }
+
             command.displayMessageOneLine("Enter Name: "); string name = Console.ReadLine();
             Console.WriteLine();
             string bookingRef = command.generateBookingReference(7);

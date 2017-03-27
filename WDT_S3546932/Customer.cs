@@ -89,7 +89,7 @@ namespace WDT_S3546932
             else if (user_inp == "C" || user_inp == "c")
             {
                 command.displayMessage("Completing Transaction");
-                if (purchaseComplete == true) { printReciept(itemCart);  }
+                if (purchaseComplete == true && itemCart.Count != 0) { printReciept(itemCart);  }
                 else if (purchaseComplete == false) { purchaseComplete = true;  printReciept(itemCart); }
             }
             else if (jsonCommand.matchID(storeName, item_ID) == true) //Checks if the ID input was valid
@@ -98,7 +98,7 @@ namespace WDT_S3546932
                 int Quantity = command.convertInt(quant);
                 if (command.checkInt(quant, Quantity) == true)
                 {
-                    while (purchaseComplete == false)
+                    if (purchaseComplete == false)
                     {
                         foreach (var product in store)
                         {
@@ -132,7 +132,7 @@ namespace WDT_S3546932
                                             purchaseComplete = true;
                                             command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
                                             //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                                            if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
+                                            if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes, storeName); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
                                         }
                                     }
                                     else if (choice == "No" || choice == "no" || choice == "n")
@@ -140,7 +140,7 @@ namespace WDT_S3546932
                                         purchaseComplete = false;
                                         command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
                                         //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                                        if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
+                                        if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes, storeName); bookedWorkShop = true; return; } else { command.displayMessage("Ok. Returning to Menu"); bookedWorkShop = false; return; }
                                     }
                                 }
                                 else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName); return; }
@@ -151,7 +151,7 @@ namespace WDT_S3546932
                                 continue;
                             }
                         }
-                    }
+                    }else if (purchaseComplete == true) { command.displayError("Your Shopping Session has Finished, Please exit and Log back in to Start Fresh"); }
                 }
             }
         }
@@ -163,10 +163,10 @@ namespace WDT_S3546932
         {
             List<WorkshopTimes> workshops = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
 
-            Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15}", "Type", "Session Times", "Number of People Booked", "Availability", "Full");
+            Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15} {5,25}", "ID",  "Type", "Session Times", "Number of People Booked", "Places left", "Workshop Availability");
             foreach (var session in workshops)
             {
-                Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15}", session.type, session.sessionTimes, session.numBooking, session.avabililty, session.full);
+                Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15} {5,25}", session.ID, session.type, session.sessionTimes, session.numBooking, session.avabililty, session.full);
             }
         }
         #endregion
@@ -252,25 +252,45 @@ namespace WDT_S3546932
             }
         }
 
-        public void bookWorkshop(List<WorkshopTimes> workshopTimes)
+        public void bookWorkshop(List<WorkshopTimes> workshopTimes, string storeName)
         {
             command.displayMessageOneLine("Enter the Workshop ID you would like to book into: "); string book = Console.ReadLine();
             int workshopTime = command.convertInt(book);
             if (command.checkInt(book, workshopTime))
             {
                 command.displayMessage("Youve chosen: " + workshopTime);
+                foreach (var chosen in workshopTimes)
+                {
+                    if (chosen.ID == workshopTime)
+                    {
+                        Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15} {5,25}", chosen.ID, chosen.type, chosen.sessionTimes, chosen.numBooking, chosen.avabililty, chosen.full);
+                    }
+
+                    if (command.Continue("Confirm Booking?") == true)
+                    {
+                        command.displayMessageOneLine("Enter Name: "); string name = Console.ReadLine();
+                        Console.WriteLine();
+                        string bookingRef = command.generateBookingReference(7);
+                        command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n");
+                        addBooking(name, bookingRef, chosen.sessionTimes, chosen.type);
+                        break;
+                    }
+                    else
+                    {
+                        command.displayError("Please pick a valid ID or Type 'Exit' to Exit");
+                        displayWorkShop(storeName);
+                        bookWorkshop(workshopTimes, storeName);
+                        break;
+                    }
+                }
             }
 
-            command.displayMessageOneLine("Enter Name: "); string name = Console.ReadLine();
-            Console.WriteLine();
-            string bookingRef = command.generateBookingReference(7);
-            command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n");
-            //addBooking(name, bookingRef);
+
         }
 
         public void addBooking(string name, string bookingRef, string time, string session)
         {
-
+            
         }
     }
 }

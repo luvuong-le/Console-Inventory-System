@@ -86,6 +86,18 @@ namespace WDT_S3546932
 
             return new string(chars.ToArray());
         }
+
+        public bool Continue(string message)
+        {
+            displayMessage(message + "[Yes/No/Exit]");
+            string yesorno = Console.ReadLine();
+
+            if (yesorno.Equals("Yes", StringComparison.CurrentCultureIgnoreCase)){
+                return true;
+            } else if (yesorno.Equals("No", StringComparison.CurrentCultureIgnoreCase)){
+                return false;
+            }   return false;
+        }
     }
 }
 

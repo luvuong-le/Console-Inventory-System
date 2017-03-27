@@ -27,6 +27,8 @@ namespace WDT_S3546932
 
     class WorkshopTimes
     {
+        public int ID; 
+
         public string type; 
 
         public string sessionTimes;

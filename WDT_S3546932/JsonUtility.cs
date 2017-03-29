@@ -71,8 +71,7 @@ namespace WDT_S3546932
                 {
                     if (reqID.ID == ItemID)
                     {
-                        command.displayMessage("Found Match");
-                        command.displayMessage(reqID.ProductName);
+                        command.displayMessageOneLine("\n[SUCCESS] Found Match: " + reqID.ProductName + "\n");
                         return true;
                     }
                     else if (reqID.ID != ItemID)
@@ -185,7 +184,6 @@ namespace WDT_S3546932
 
             var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
             File.WriteAllText(fileName, updatedList);
-            //Console.WriteLine(updatedList);
         }
     }
 }

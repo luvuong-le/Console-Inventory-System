@@ -53,7 +53,7 @@ namespace WDT_S3546932
 
             foreach (var request in productList)
             {
-                if (choice == "True" || choice == "true" || choice == "TRUE")
+                if (choice.Equals("True", StringComparison.OrdinalIgnoreCase))
                 {
                     if (request.StockAvailability == true)
                     {
@@ -61,7 +61,7 @@ namespace WDT_S3546932
                         break;
                     }
                 }
-                else if (choice == "False" || choice == "false" || choice == "FALSE")
+                else if (choice.Equals("False", StringComparison.OrdinalIgnoreCase))
                 {
                     if (request.StockAvailability == false)
                     {

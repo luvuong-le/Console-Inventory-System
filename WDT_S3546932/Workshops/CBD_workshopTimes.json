@@ -1,34 +1,34 @@
 [
   {
     "ID": 1,
-    "type": "morning",
+    "type": "Morning",
     "sessionTimes": "8:30 - 10:30",
-    "numBooking": 7,
-    "avabililty": 3,
-    "full": true
+    "numBooking": 9,
+    "avabililty": 1,
+    "full": false
   },
   {
     "ID": 2,
-    "type": "morning",
+    "type": "Morning",
     "sessionTimes": "10:30 - 12:30",
-    "numBooking": 7,
-    "avabililty": 3,
+    "numBooking": 9,
+    "avabililty": 1,
     "full": false
   },
   {
     "ID": 3,
-    "type": "afternoon",
+    "type": "Afternoon",
     "sessionTimes": "12:30 - 2:30",
-    "numBooking": 0,
-    "avabililty": 10,
+    "numBooking": 3,
+    "avabililty": 7,
     "full": false
   },
   {
     "ID": 4,
-    "type": "afternoon",
+    "type": "Afternoon",
     "sessionTimes": "2:30 - 4:30",
-    "numBooking": 0,
-    "avabililty": 10,
+    "numBooking": 2,
+    "avabililty": 8,
     "full": false
   }
 ]

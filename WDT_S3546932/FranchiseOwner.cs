@@ -95,13 +95,13 @@ namespace WDT_S3546932
                                 Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
 
                                 command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                                if (choice == "yes" || choice == "Yes" || choice == "y")
-                                {
+                                if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                            {
                                     //Process Add Inventory //
                                     AddProduct(product.ProductName, storeName, Quantity);
 
                                 }
-                                else if (choice == "No" || choice == "no" || choice == "n") { command.displayMessage("Ok. Returning to Menu"); }
+                                else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
                                 return;
                             }
                     }
@@ -147,10 +147,10 @@ namespace WDT_S3546932
                         else
                         {
                             command.displayError("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                            if (choice == "yes" || choice == "Yes")
+                            if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                             {
                                 requestForStock(product.ProductName, StoreName, Quantity);
-                            } else if (choice == "No" || choice == "no") { command.displayMessage("Ok. Returning to Menu"); }
+                            } else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
                             break;
                         }
                     }
@@ -262,7 +262,7 @@ namespace WDT_S3546932
                 if (productName == product.ProductName && product.CurrentStock > Quantity)
                 {
                     //Adding a new Object using the already available stock object //
-                    stock.Add(new StoreStock(product.ID, StoreName, productName, product.CurrentStock = Quantity, false));
+                    stock.Add(new StoreStock(product.ID, StoreName, productName, product.CurrentStock = Quantity, false, product.Cost));
                 }else if(productName == product.ProductName && product.CurrentStock < Quantity)
                 {
                     command.displayError("Sorry We have: " + product.CurrentStock + " In Stock at the moment");

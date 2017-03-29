@@ -4,5 +4,11 @@
     "Session": "Morning",
     "Time": "10:30 - 12:30",
     "BookingRef": "8409378"
+  },
+  {
+    "Name": "Lu",
+    "Session": "Afternoon",
+    "Time": "2:30 - 4:30",
+    "BookingRef": "5231083"
   }
 ]

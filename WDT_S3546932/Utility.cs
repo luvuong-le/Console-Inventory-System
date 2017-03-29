@@ -15,13 +15,13 @@ namespace WDT_S3546932
     {
         Random random = new Random();
 
-        public  string displayTitle(String title) { Console.WriteLine(title); Console.WriteLine("---------------------------");  return title; }
+        public  string displayTitle(String title) { Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine(title); Console.WriteLine("-----------------------------------------------"); colourReset(); return title; }
 
         public  string displayMessage(String message) { Console.WriteLine("\n" + message + "\n"); return message; }
 
-        public string displayMessageOneLine(String message) { Console.Write(message); return message; }
+        public string displayMessageOneLine(String message) { Console.Write("\n" + message); return message; }
 
-        public  string displayError(String error) { Console.WriteLine("\n [ERROR] " + error + "\n"); return error; }
+        public  string displayError(String error) { Console.ForegroundColor = ConsoleColor.Red;  Console.WriteLine("\n [ERROR] " + error + "\n"); colourReset(); return error; }
 
         public  string getCurrentDirectory() { string path = Directory.GetCurrentDirectory(); return path; }
 
@@ -31,7 +31,8 @@ namespace WDT_S3546932
         {
             foreach (string store in filenames)
             {
-                Console.Write("[" + Path.GetFileNameWithoutExtension(store).Split('_')[0] + "]" + " ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("[" + Path.GetFileNameWithoutExtension(store).Split('_')[0] + "]" + " "); colourReset();
             }
         }
 
@@ -49,9 +50,9 @@ namespace WDT_S3546932
             for (int i = 0; i < filenames.Length; i++)
             {
                 nameOfStore = Path.GetFileNameWithoutExtension(filenames[i]).Split('_')[0];
-                if (storeName == nameOfStore) { return true; }
+                if (nameOfStore.Equals(storeName, StringComparison.OrdinalIgnoreCase)){ return true; }
 
-                else if (storeName != nameOfStore) { continue; }
+                else if (!nameOfStore.Equals(storeName, StringComparison.OrdinalIgnoreCase)) { continue; }
             }
             return false;
         }
@@ -89,15 +90,19 @@ namespace WDT_S3546932
 
         public bool Continue(string message)
         {
-            displayMessage(message + "[Yes/No/Exit]");
+            displayMessageOneLine(message + "[Yes/No/Exit]: ");
             string yesorno = Console.ReadLine();
 
-            if (yesorno.Equals("Yes", StringComparison.CurrentCultureIgnoreCase)){
+            if (yesorno.Equals("Yes", StringComparison.OrdinalIgnoreCase)){
                 return true;
-            } else if (yesorno.Equals("No", StringComparison.CurrentCultureIgnoreCase)){
+            } else if (yesorno.Equals("No", StringComparison.OrdinalIgnoreCase)){
                 return false;
             }   return false;
         }
+
+        public void colourChange() { Console.ForegroundColor = ConsoleColor.Green; }
+
+        public void colourReset() { Console.ResetColor(); }
     }
 }
 

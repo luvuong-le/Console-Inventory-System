@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace WDT_S3546932
 {
@@ -15,7 +13,7 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
-        int productListCount; int purchaseNumber = 0; double purchaseTotal = 100.00; int bookedTotal = 0; 
+        int productListCount; int purchaseNumber = 0; double purchaseTotal = 0; int bookedTotal = 0; string bookingRef = null;
 
         bool purchaseComplete = false; bool bookRef = false;
 
@@ -27,13 +25,13 @@ namespace WDT_S3546932
             productListCount = 0;
             List<StoreStock> products = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(store, "/Stores/") + "_inventory.json"));
 
-            Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
+            Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", "ID", "Product Name", "Current Stock", "Cost");
 
             foreach (var product in products)
             {
                 if (productListCount < 5)
                 {
-                    Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock);
+                    Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", product.ID, product.ProductName, product.CurrentStock, "$" + product.Cost.ToString("N2"));
                     productListCount++;
                 }
             }
@@ -49,11 +47,11 @@ namespace WDT_S3546932
         {
             List<WorkshopTimes> workshopTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
 
-            command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | ID Number Based on Item]");
+            command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | 'W' Book Workshop | ID Number Based on Item]");
 
             command.displayMessageOneLine("Enter Item ID Number to Purchase or Function: "); string user_inp = Console.ReadLine(); int item_ID; Int32.TryParse(user_inp, out item_ID);
 
-            if (user_inp == "P" || user_inp == "p")
+            if (user_inp.Equals("P", StringComparison.OrdinalIgnoreCase))
             {
                 command.displayMessage("Going to Next Page");
 
@@ -69,7 +67,7 @@ namespace WDT_S3546932
                 }
                 customerOptions(storeName, store);
             }
-            else if (user_inp == "B" || user_inp == "b")
+            else if (user_inp.Equals("B", StringComparison.OrdinalIgnoreCase))
             {
                 command.displayMessage("Going to Previous Page");
                 productListCount = 0;
@@ -84,16 +82,18 @@ namespace WDT_S3546932
                 }
                 customerOptions(storeName, store);
             }
-            else if (user_inp == "R" || user_inp == "r")
+            else if (user_inp.Equals("R", StringComparison.OrdinalIgnoreCase))
             {
                 Menu.CustomerMenu Cmenu = new Menu.CustomerMenu(); Cmenu.displayMenu();
             }
-            else if (user_inp == "C" || user_inp == "c")
+            else if (user_inp.Equals("C", StringComparison.OrdinalIgnoreCase))
             {
                 command.displayMessage("Completing Transaction");
-                if (purchaseComplete == true && itemCart.Count != 0) { printReciept(itemCart, bookedTotal); }
-                else if (purchaseComplete == false) { purchaseComplete = true; printReciept(itemCart, bookedTotal); }
+                if (purchaseComplete == true && itemCart.Count != 0) { printReciept(itemCart, bookedTotal, storeName); }
+                else if (purchaseComplete == false && itemCart.Count != 0) { purchaseComplete = true; printReciept(itemCart, bookedTotal, storeName); }
+                else if(itemCart.Count == 0) { purchaseComplete = false; printReciept(itemCart, bookedTotal, storeName); }
             }
+            else if(user_inp.Equals("W", StringComparison.OrdinalIgnoreCase)) { bookWorkshop(workshopTimes, storeName);  }
             else if (jsonCommand.matchID(storeName, item_ID) == true) //Checks if the ID input was valid
             {
                 command.displayMessageOneLine("Please Enter the Amount you would like to Purchase: "); string quant = Console.ReadLine();
@@ -109,42 +109,45 @@ namespace WDT_S3546932
                                 if (product.CurrentStock >= Quantity)
                                 {
 
-                                    command.displayMessageOneLine("\nYouve chosen the Product");
+                                    command.displayMessageOneLine("|Product: " + product.ProductName + " \n|Quantity: " + Quantity + "\n"); 
 
-                                    Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
+                                    command.displayMessageOneLine("Would you like to Continue [Yes/No]: "); string choice = Console.ReadLine();
 
-                                    command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-
-                                    if (choice == "yes" || choice == "Yes" || choice == "y")
+                                    if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                                     {
                                         //Process purchase product  //
                                         addProduct(itemCart, store, product.ProductName, product.Store, Quantity);
                                         purchaseProduct(product.ProductName, storeName, Quantity);
-                                        command.displayMessage("Keep Purchasing [Yes/No]"); string more = Console.ReadLine();
-                                        if (more == "yes" || more == "Yes" || more == "y")
+                                        purchaseTotal += product.Cost;
+                                        command.displayMessageOneLine("Keep Purchasing [Yes/No]: "); string more = Console.ReadLine();
+                                        if (more.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                                         {
                                             productListCount = 0;
                                             displayProduct(storeName);
                                             continue;
                                         }
-                                        else if (more == "no" || more == "No" || more == "n")
+                                        else if (more.Equals("No", StringComparison.OrdinalIgnoreCase))
                                         {
                                             purchaseComplete = true;
-                                            command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
+                                            command.displayMessageOneLine("Would you like to book into a workshop? [Yes/No]: "); string workshop = Console.ReadLine();
                                             //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
                                             if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes, storeName); return; } else { command.displayMessage("Ok. Returning to Menu"); return; }
                                         }
                                     }
-                                    else if (choice == "No" || choice == "no" || choice == "n")
+                                    else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase))
                                     {
                                         purchaseComplete = false;
-                                        command.displayMessage("Would you like to book into a workshop? [Yes/No]"); string workshop = Console.ReadLine();
+                                        command.displayMessageOneLine("Would you like to book into a workshop? [Yes/No]: "); string workshop = Console.ReadLine();
                                         //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
-                                        if (workshop == "Yes" || workshop == "yes") { displayWorkShop(storeName); bookWorkshop(workshopTimes, storeName); return; } else { command.displayMessage("Ok. Returning to Menu"); return; }
+                                        if (workshop.Equals("Yes", StringComparison.OrdinalIgnoreCase)) { displayWorkShop(storeName); bookWorkshop(workshopTimes, storeName); return; } else { command.displayMessage("Ok. Returning to Menu"); return; }
+                                    }
+                                    else
+                                    {
+                                        command.displayError("Invalid Input! Must be Yes/No");
                                     }
                                 }
                                 else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName); return; }
-                                else if (product.CurrentStock == 0) { command.displayError("0 in Stock "); displayProduct(storeName); return; }
+                                else if (product.CurrentStock == 0) { command.displayError(product.CurrentStock + " in Stock "); displayProduct(storeName); return; }
                             }
                             else
                             {
@@ -159,27 +162,44 @@ namespace WDT_S3546932
 
         #endregion
 
-        #region displayWorkshops
-        public override void displayWorkShop(string storeName)
+        public List<WorkshopTimes> showWorkShopTimes(string storeName)
         {
             List<WorkshopTimes> workshopsTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
 
-            Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15} {5,25}", "ID", "Type", "Session Times", "Number of People Booked", "Places left", "Workshop Availability");
+            command.displayTitle("Session Times");
+            Console.WriteLine("{0,5} {1,25} {2,25} {3,15} {4,15} {5,25}", "ID", "Type", "Session Times", "Number of People Booked", "Places left", "Workshop Availability");
             foreach (var session in workshopsTimes)
             {
-                Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15} {5,25}", session.ID, session.type, session.sessionTimes, session.numBooking, session.avabililty, session.full);
+                Console.WriteLine("{0,5} {1,25} {2,25} {3,15} {4,15} {5,25}", session.ID, session.type, session.sessionTimes, session.numBooking, session.avabililty, session.full);
             }
 
             Console.WriteLine();
 
+            return workshopsTimes;
+        }
+
+        public List<Workshop> showWorkShopBookings(string storeName)
+        {
             List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_bookings.json"));
 
-            Console.WriteLine("{0,15} {1,25} {2,25} {3,15}", "Name", "Session", "Time", "Booking Reference");
+            command.displayTitle("Current Bookings");
+            Console.WriteLine("{0,15} {1,25} {2,25} {3,25}", "Name", "Session", "Time", "Booking Reference");
 
             foreach (var bookings in workshopBookings)
             {
-                Console.WriteLine("{0,15} {1,25} {2,25} {3,15}", bookings.Name, bookings.Session, bookings.Time, bookings.BookingRef);
+                Console.WriteLine("{0,15} {1,25} {2,25} {3,25}", bookings.Name, bookings.Session, bookings.Time, bookings.BookingRef);
             }
+            Console.WriteLine();
+            return workshopBookings;
+        }
+
+        #region displayWorkshops
+        public override void displayWorkShop(string storeName)
+        {
+            showWorkShopTimes(storeName);
+
+            showWorkShopBookings(storeName);
+
         }
         #endregion
 
@@ -211,39 +231,43 @@ namespace WDT_S3546932
         }
         #endregion
 
-        public List<customerPurchase> printReciept(List<customerPurchase> products, int bookedTotal)
+        public List<customerPurchase> printReciept(List<customerPurchase> products, int bookedTotal, string storeName)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+            command.displayTitle("Purchased at: " + storeName.ToUpper() + " LTD"); command.displayMessage("Served By: Lu-Vuong ");
+            Console.WriteLine("Date: " + DateTime.Now + "\n");
+
             if (bookedTotal == 0)
             {
-                command.displayTitle("Printed Reciept: ");
-                command.displayMessage("You have Purchased " + itemCart.Count + " Items");
-
+                command.displayMessage("No Discount Added, Book into a Workshop along with your next purchase to get a 10% Discount!!!");
+                command.displayMessage("Number of Items: " + itemCart.Count);
                 for (int i = 0; i < products.Count; i++)
                 {
-                    Console.WriteLine(" Item Number: " + products[i].purchaseItemNumber +
-                        " Product: " + products[i].ProductName +
-                        " Quantity: " + products[i].Quantity +
-                        " Store Purchased: " + products[i].Store);
+                    Console.WriteLine("Item Number: " + products[i].purchaseItemNumber +
+                        "Product: " + products[i].ProductName +
+                        "Quantity: " + products[i].Quantity +
+                        "Store Purchased: " + products[i].Store);
                     Console.WriteLine();
                 }
-                command.displayMessage("Total Cost:" + purchaseTotal);
+                command.displayMessage("Total Cost: " + purchaseTotal.ToString("N2"));
+                command.displayTitle("THANK YOU FOR SHOPPING WITH US");
+                Console.ResetColor();
                 return products;
             }
             else
             {
-                command.displayTitle("Printed Reciept: Booked Into Workshop! Added 10% Discount on Purchase! ");
-                command.displayMessage("You have Purchased " + itemCart.Count + " Items");
+                command.displayMessage("Printed Reciept: Booked Into Workshop! Added 10% Discount on Purchase! ");
+                command.displayMessage("Number of Items: " + itemCart.Count);
 
                 for (int i = 0; i < products.Count; i++)
                 {
-                    Console.WriteLine(" Item Number: " + products[i].purchaseItemNumber +
-                        " Product: " + products[i].ProductName +
-                        " Quantity: " + products[i].Quantity +
-                        " Store Purchased: " + products[i].Store);
+                    Console.WriteLine("Item Number: " + products[i].purchaseItemNumber +
+                        "Product: " + products[i].ProductName +
+                        "Quantity: " + products[i].Quantity +
+                        "Store Purchased: " + products[i].Store);
                     Console.WriteLine();
                 }
-                command.displayMessage("Total Cost:" + purchaseTotal);
-                return products;
+                command.displayTitle("THANK YOU FOR SHOPPING WITH US"); Console.ResetColor(); return products;
             }
         }
 
@@ -286,45 +310,43 @@ namespace WDT_S3546932
 
         public void bookWorkshop(List<WorkshopTimes> workshopTimes, string storeName)
         {
-            string bookingRef = null;
+            showWorkShopTimes(storeName);
             Console.WriteLine("You have Booked into " + bookedTotal + " Workshops");
-            command.displayMessageOneLine("\n\nEnter the Workshop ID you would like to book into: "); string book = Console.ReadLine();
-            int workshopTime = command.convertInt(book);
-            if (command.checkInt(book, workshopTime))
+            command.displayMessageOneLine("\n\nEnter the Workshop ID you would like to book into: "); string book = Console.ReadLine(); int workshopID = command.convertInt(book);
+            if (command.checkInt(book, workshopID))
             {
-                command.displayMessage("Youve chosen: " + workshopTime);
-                foreach (var chosen in workshopTimes)
+                if (workshopID <= workshopTimes.Count())
                 {
-                    if (chosen.ID == workshopTime)
+                    command.displayMessage("Youve chosen: " + workshopID);
+                    Console.WriteLine("{0,15} {1,25} {2,25}", "ID", "Session Type", "Session Time");
+                    foreach (var chosen in workshopTimes)
                     {
-                        Console.WriteLine("{0,15} {1,25} {2,25} {3,15} {4,15} {5,25}", chosen.ID, chosen.type, chosen.sessionTimes, chosen.numBooking, chosen.avabililty, chosen.full);
-                    }
+                        if (chosen.ID == workshopID)
+                        {
+                            Console.WriteLine("{0,15} {1,25} {2,25}", chosen.ID, chosen.type, chosen.sessionTimes);
 
-                    if (command.Continue("Confirm Booking?") == true)
-                    {
-                        command.displayMessageOneLine("Enter Name: "); string name = Console.ReadLine();
-                        Console.WriteLine();
-                        if (bookRef == false) { bookingRef = command.generateBookingReference(7); bookRef = true;   addBooking(workshopTimes, workshopTime, storeName, name, bookingRef, chosen.sessionTimes, chosen.type);}
+                            if (command.Continue("Confirm Booking?") == true)
+                            {
+                                command.displayMessageOneLine("\nEnter Name: "); string name = Console.ReadLine();
+                                Console.WriteLine();
+                                if (bookRef == false) { bookingRef = command.generateBookingReference(7); bookRef = true; addBooking(workshopTimes, workshopID, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
 
-                        else if (bookRef == true){ command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n"); addBooking(workshopTimes, workshopTime, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
-                      
-                        break;
+                                else if (bookRef == true) { command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n"); addBooking(workshopTimes, workshopID, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
+
+                                break;
+                            }
+                        }
+                        else if (chosen.ID != workshopID)
+                        {
+                            continue;
+                        }
                     }
-                    else
-                    {
-                        command.displayError("Please pick a valid ID or Type 'Exit' to Exit");
-                        displayWorkShop(storeName);
-                        bookWorkshop(workshopTimes, storeName);
-                        break;
-                    }
-                }
-            }
+                }else { command.displayError("No Such ID"); bookWorkshop(workshopTimes, storeName); ; }
+            } else { bookWorkshop(workshopTimes, storeName); }
         }
 
         public void addBooking(List<WorkshopTimes> workshopTimes, int ID, string storename, string name, string bookingRef, string time, string session)
         {
-            command.displayMessage("Added Booking");
-
             List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storename, "/Workshops/") + "_bookings.json"));
 
             //Creating a new Local List of type Stock//
@@ -340,18 +362,28 @@ namespace WDT_S3546932
             {
                 if (ID == times.ID)
                 {
-                    workshop.Add(new Workshop(name, session, time, bookingRef));
                     foreach (var booking in workshop)
                     {
-                        Console.WriteLine("|Name: " + workshop.LastOrDefault().Name + " |Session: " + workshop.LastOrDefault().Session + " |Time: " +
-                                            workshop.LastOrDefault().Time + " |Booking Reference: " + workshop.LastOrDefault().BookingRef); break;
+                        if (times.avabililty > 0)
+                        {
+                            if (checkBooking(name, bookingRef, storename) == false) 
+                            {
+                                workshop.Add(new Workshop(name, session, time, bookingRef));
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("|Name: " + workshop.LastOrDefault().Name + "\n|Session: " + workshop.LastOrDefault().Session + "\n|Time: " +
+                                                    workshop.LastOrDefault().Time + "\n|Booking Reference: " + workshop.LastOrDefault().BookingRef); break;
+                            }else if(checkBooking(name, bookingRef, storename) == true)
+                            {
+                                command.displayError("You are already Booked into this Session"); return;
+                            }
+                        }else
+                        {
+                            command.displayError("Sorry there are no places left for this Session"); return;
+                        }
                     }
-
+                    Console.ResetColor();
                     updateBookingDetails(workshopTimes, ID, storename, name, bookingRef, time, session);
-                } else if (ID == times.ID && session == times.type && time == times.sessionTimes)
-                {
-                    command.displayMessage("Cannot Add Booking");
-                }
+                } 
             }
 
             var addBooking = JsonConvert.SerializeObject(workshop, Formatting.Indented);
@@ -359,26 +391,38 @@ namespace WDT_S3546932
             bookedTotal++;
         }
 
+        public bool checkBooking(string name, string bookingref, string storename)
+        {
+            List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storename, "/Workshops/") + "_bookings.json"));
+
+            foreach (var bookings in workshopBookings)
+            {
+                if (name == bookings.Name)
+                {
+                    if (bookings.BookingRef == bookingRef)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }else { continue; }
+            }
+            return false;
+        }
         public List<WorkshopTimes> updateBookingDetails(List<WorkshopTimes> workshopTimes, int ID, string storename, string name, string bookingRef, string time, string session)
         {
-            command.displayMessage("Updating Booking..");
             foreach (var times in workshopTimes)
             {
                 if (ID == times.ID)
                 {
-                    command.displayMessage("BOOKING FOUND");
                     if (times.avabililty > 0)
                     {
-                        command.displayMessage("Updating....");
-                        Thread.Sleep(2000);
                         times.numBooking = times.numBooking + 1; times.avabililty = times.avabililty - 1;
-                        command.displayMessage("Nmber Of People Booked In: " + times.numBooking); command.displayMessage("Nmber Of Places Left: " + times.avabililty);
-                        command.displayMessage("Update Complete");
+                        command.colourChange(); command.displayMessage("Your Booking is Confirmed!"); command.colourReset();
                         if (times.avabililty == 0) { times.full = true; }
                         break;
-                    }else
-                    {
-                        command.displayMessage("Sorry No Places Available");
                     }
                 }
                 else

@@ -2,7 +2,7 @@
   {
     "ID": 1,
     "ProductName": "Rabbit",
-    "CurrentStock": 4,
+    "CurrentStock": 10,
     "StockAvailability": true
   },
   {
@@ -44,7 +44,7 @@
   {
     "ID": 8,
     "ProductName": "Beginners Magic Set",
-    "CurrentStock": 0,
+    "CurrentStock": 5,
     "StockAvailability": false
   },
   {
@@ -56,13 +56,13 @@
   {
     "ID": 10,
     "ProductName": "Blooming Flower Trick",
-    "CurrentStock": 2,
+    "CurrentStock": 8,
     "StockAvailability": true
   },
   {
     "ID": 11,
     "ProductName": "Colour Change Hanky",
-    "CurrentStock": 2,
+    "CurrentStock": 20,
     "StockAvailability": true
   },
   {
@@ -80,13 +80,13 @@
   {
     "ID": 14,
     "ProductName": "Extending Cane",
-    "CurrentStock": 1,
+    "CurrentStock": 10,
     "StockAvailability": true
   },
   {
     "ID": 15,
     "ProductName": "Magic Table",
-    "CurrentStock": 2,
+    "CurrentStock": 4,
     "StockAvailability": true
   }
 ]

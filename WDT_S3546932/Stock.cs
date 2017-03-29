@@ -48,7 +48,7 @@ namespace WDT_S3546932
 
             public Boolean StockAvailability { get; set; }
 
- 
+            public double Cost { get; set; }
     }
     #endregion
 
@@ -65,13 +65,16 @@ namespace WDT_S3546932
 
             public Boolean ReStock { get; set; }
 
-            public StoreStock(int ID, string Store, string ProductName, int CurrentStock, Boolean ReStock)
+            public double Cost { get; set; }
+
+            public StoreStock(int ID, string Store, string ProductName, int CurrentStock, Boolean ReStock, Double Cost)
             {
                 this.ID = ID;
                 this.Store = Store;
                 this.ProductName = ProductName;
                 this.CurrentStock = CurrentStock;
-                this.ReStock = ReStock; 
+                this.ReStock = ReStock;
+                this.Cost = Cost;
             }
     }
     #endregion

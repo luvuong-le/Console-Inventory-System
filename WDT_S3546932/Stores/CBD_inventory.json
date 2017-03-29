@@ -3,70 +3,80 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 10,
-    "ReStock": true
+    "CurrentStock": 0,
+    "ReStock": true,
+    "Cost": 25.0
   },
   {
     "ID": 2,
     "Store": "CBD",
     "ProductName": "Hat",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 5.00
   },
   {
     "ID": 3,
     "Store": "CBD",
     "ProductName": "Svengali Deck",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 4,
     "Store": "CBD",
     "ProductName": "Floating Hankerchief",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 5,
     "Store": "CBD",
     "ProductName": "Magic Wand",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 6,
     "Store": "CBD",
     "ProductName": "Cards",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 7,
     "Store": "CBD",
     "ProductName": "Magician Cape",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 9,
     "Store": "CBD",
     "ProductName": "Advanced Magic Set",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 10,
     "Store": "CBD",
     "ProductName": "Blooming Flower Trick",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   },
   {
     "ID": 11,
     "Store": "CBD",
     "ProductName": "Colour Change Hanky",
     "CurrentStock": 0,
-    "ReStock": true
+    "ReStock": true,
+    "Cost": 0.0
   }
 ]

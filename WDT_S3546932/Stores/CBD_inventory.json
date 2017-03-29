@@ -3,7 +3,7 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 0,
+    "CurrentStock": 1,
     "ReStock": true,
     "Cost": 25.0
   },
@@ -43,7 +43,7 @@
     "ID": 6,
     "Store": "CBD",
     "ProductName": "Cards",
-    "CurrentStock": 0,
+    "CurrentStock": 10,
     "ReStock": true,
     "Cost": 0.0
   },

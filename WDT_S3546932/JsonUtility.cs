@@ -42,7 +42,7 @@ namespace WDT_S3546932
             List<OwnerStock> ownerProducts = JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + ".json"));
 
             List<int> storeList = new List<int>();
-            foreach(var store in storeProducts)
+            foreach (var store in storeProducts)
             {
                 storeList.Add(store.ID);
             }
@@ -51,9 +51,9 @@ namespace WDT_S3546932
 
         public int lastRequestID()
         {
-            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests" ,"/Stock/") + ".json"));
+            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
             int ID = 0;
-            foreach(var reqID in productList)
+            foreach (var reqID in productList)
             {
                 //Find the last ID Number 
                 ID = reqID.ID;
@@ -79,9 +79,10 @@ namespace WDT_S3546932
                         continue;
                     }
                 }
-            }else
+            }
+            else
             {
-                command.displayError("No Such ID"); 
+                command.displayError("No Such ID");
             }
             return false;
         }
@@ -139,7 +140,7 @@ namespace WDT_S3546932
                         product.CurrentStock = product.CurrentStock - Quantity;
                         command.displayMessage("New Current Stock: " + product.CurrentStock);
                         command.displayMessage("Update Complete");
-                        if(product.CurrentStock == 0) { product.StockAvailability = false; }
+                        if (product.CurrentStock == 0) { product.StockAvailability = false; }
                         break;
                     }
                     else
@@ -163,15 +164,11 @@ namespace WDT_S3546932
 
                 if (product.ProductName == ProductName || product.ProductName == ProductName && product.ReStock != true)
                 {
-                    command.displayMessage("Product Name Found");
                     if (product.CurrentStock >= Quantity)
                     {
-                        command.displayMessage("Updating....");
-                        //Thread.Sleep(2000);
-                        command.displayMessage("Current Stock: {0} " + product.CurrentStock);
-                        if(addSubtract == "minus") { product.CurrentStock = product.CurrentStock - Quantity;  } else if(addSubtract == "add") { product.CurrentStock = product.CurrentStock + Quantity; }
-                        command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
-                        command.displayMessage("Update Complete");
+                        Thread.Sleep(2000);
+                        if (addSubtract == "minus") { product.CurrentStock = product.CurrentStock - Quantity; } else if (addSubtract == "add") { product.CurrentStock = product.CurrentStock + Quantity; }
+                        command.displayMessage("New Current Stock: " + product.CurrentStock);
                         if (product.ReStock == false && product.CurrentStock == 0) { product.ReStock = true; }
                         break;
                     }

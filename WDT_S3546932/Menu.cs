@@ -128,7 +128,7 @@ namespace WDT_S3546932
                     //Check if Store name equals Current Store Names //
                     while (StoreName == true)
                     {
-                        command.displayTitle(" \n Welcome to Marvellous Magic (Customer)" + storeName);
+                        command.displayTitle(" \n Welcome to Marvellous Magic (Customer) Store:" + storeName);
                         command.displayMessage(" 1. Display Products \n 2. Display Workshops \n 3. Return to Main Menu \n 4. Exit");
                         Console.Write("\n Enter Option [1] - [4]: "); string_usr_inp = Console.ReadLine(); Int32.TryParse(string_usr_inp, out usrInp);
 

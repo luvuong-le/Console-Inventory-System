@@ -103,6 +103,7 @@ namespace WDT_S3546932
         public void colourChange() { Console.ForegroundColor = ConsoleColor.Green; }
 
         public void colourReset() { Console.ResetColor(); }
+
     }
 }
 

@@ -15,7 +15,7 @@ namespace WDT_S3546932
     {
         Random random = new Random();
 
-        public  string displayTitle(String title) { Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine(title); Console.WriteLine("-----------------------------------------------"); colourReset(); return title; }
+        public  string displayTitle(String title) { Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("\n" + title); Console.WriteLine("-----------------------------------------------"); colourReset(); return title; }
 
         public  string displayMessage(String message) { Console.WriteLine("\n" + message + "\n"); return message; }
 

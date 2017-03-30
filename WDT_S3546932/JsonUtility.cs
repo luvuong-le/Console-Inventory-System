@@ -90,8 +90,6 @@ namespace WDT_S3546932
         public void updateQuantityStockRequest(string fileName, string ProductName, int Quantity)
         {
             List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(fileName));
-
-            command.displayMessage("Updating: " + fileName);
             foreach (var product in productList)
             {
 
@@ -124,22 +122,14 @@ namespace WDT_S3546932
         public void updateQuantityOwner(string fileName, string ProductName, int Quantity)
         {
             List<OwnerStock> productList = JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(fileName));
-
-            command.displayMessage("Updating: " + fileName);
             foreach (var product in productList)
             {
-
                 if (product.ProductName == ProductName)
                 {
-                    command.displayMessage("Product Name Found");
                     if (product.CurrentStock >= Quantity)
                     {
-                        command.displayMessage("Updating....");
                         Thread.Sleep(2000);
-                        command.displayMessage("Current Stock: " + product.CurrentStock);
                         product.CurrentStock = product.CurrentStock - Quantity;
-                        command.displayMessage("New Current Stock: " + product.CurrentStock);
-                        command.displayMessage("Update Complete");
                         if (product.CurrentStock == 0) { product.StockAvailability = false; }
                         break;
                     }
@@ -157,8 +147,6 @@ namespace WDT_S3546932
         public void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract)
         {
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(fileName));
-
-            command.displayMessage("Updating: " + fileName);
             foreach (var product in productList)
             {
 
@@ -168,7 +156,6 @@ namespace WDT_S3546932
                     {
                         Thread.Sleep(2000);
                         if (addSubtract == "minus") { product.CurrentStock = product.CurrentStock - Quantity; } else if (addSubtract == "add") { product.CurrentStock = product.CurrentStock + Quantity; }
-                        command.displayMessage("New Current Stock: " + product.CurrentStock);
                         if (product.ReStock == false && product.CurrentStock == 0) { product.ReStock = true; }
                         break;
                     }

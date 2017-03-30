@@ -3,9 +3,9 @@
     "ID": 1,
     "type": "Morning",
     "sessionTimes": "8:30 - 10:30",
-    "numBooking": 9,
-    "avabililty": 1,
-    "full": false
+    "numBooking": 6,
+    "avabililty": 4,
+    "full": true
   },
   {
     "ID": 2,
@@ -13,7 +13,7 @@
     "sessionTimes": "10:30 - 12:30",
     "numBooking": 9,
     "avabililty": 1,
-    "full": false
+    "full": true
   },
   {
     "ID": 3,
@@ -21,14 +21,14 @@
     "sessionTimes": "12:30 - 2:30",
     "numBooking": 3,
     "avabililty": 7,
-    "full": false
+    "full": true
   },
   {
     "ID": 4,
     "type": "Afternoon",
     "sessionTimes": "2:30 - 4:30",
-    "numBooking": 2,
-    "avabililty": 8,
+    "numBooking": 10,
+    "avabililty": 0,
     "full": false
   }
 ]

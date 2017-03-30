@@ -1,23 +1,122 @@
 [
   {
     "ID": 1,
-    "Store": null,
+    "Store": "EAST",
     "ProductName": "Rabbit",
-    "CurrentStock": 5,
-    "ReStock": true
+    "CurrentStock": 20,
+    "ReStock": false,
+    "Cost": 25.0
   },
   {
     "ID": 2,
-    "Store": null,
+    "Store": "EAST",
     "ProductName": "Hat",
-    "CurrentStock": 5,
-    "ReStock": false
+    "CurrentStock": 30,
+    "ReStock": false,
+    "Cost": 10.0
   },
   {
     "ID": 3,
-    "Store": "East",
+    "Store": "EAST",
     "ProductName": "Svengali Deck",
-    "CurrentStock": 1,
-    "ReStock": false
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 15.0
+  },
+  {
+    "ID": 4,
+    "Store": "EAST",
+    "ProductName": "Floating Hankerchief",
+    "CurrentStock": 25,
+    "ReStock": false,
+    "Cost": 8.0
+  },
+  {
+    "ID": 5,
+    "Store": "EAST",
+    "ProductName": "Magic Wand",
+    "CurrentStock": 30,
+    "ReStock": false,
+    "Cost": 5.0
+  },
+  {
+    "ID": 6,
+    "Store": "EAST",
+    "ProductName": "Cards",
+    "CurrentStock": 40,
+    "ReStock": false,
+    "Cost": 2.0
+  },
+  {
+    "ID": 7,
+    "Store": "EAST",
+    "ProductName": "Magician Cape",
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 10.0
+  },
+  {
+    "ID": 8,
+    "Store": "EAST",
+    "ProductName": "Beginners Magic Set",
+    "CurrentStock": 8,
+    "ReStock": false,
+    "Cost": 15.0
+  },
+  {
+    "ID": 9,
+    "Store": "EAST",
+    "ProductName": "Advanced Magic Set",
+    "CurrentStock": 5,
+    "ReStock": false,
+    "Cost": 35.0
+  },
+  {
+    "ID": 10,
+    "Store": "EAST",
+    "ProductName": "Blooming Flower Trick",
+    "CurrentStock": 20,
+    "ReStock": false,
+    "Cost": 20.0
+  },
+  {
+    "ID": 11,
+    "Store": "EAST",
+    "ProductName": "Colour Change Hanky",
+    "CurrentStock": 25,
+    "ReStock": false,
+    "Cost": 9.0
+  },
+  {
+    "ID": 12,
+    "Store": "EAST",
+    "ProductName": "Spinning Bowtie",
+    "CurrentStock": 55,
+    "ReStock": false,
+    "Cost": 3.0
+  },
+  {
+    "ID": 13,
+    "Store": "EAST",
+    "ProductName": "Balloon",
+    "CurrentStock": 50,
+    "ReStock": false,
+    "Cost": 2.5
+  },
+  {
+    "ID": 14,
+    "Store": "EAST",
+    "ProductName": "Extending Cane",
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 5.5
+  },
+  {
+    "ID": 15,
+    "Store": "EAST",
+    "ProductName": "Magic Table",
+    "CurrentStock": 12,
+    "ReStock": false,
+    "Cost": 50.0
   }
 ]

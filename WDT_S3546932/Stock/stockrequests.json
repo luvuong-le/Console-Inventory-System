@@ -3,54 +3,18 @@
     "ID": 1,
     "StoreName": "CBD",
     "ProductRequested": "Rabbit",
-    "Quantity": 2,
-    "CurrentStock": 6,
-    "Processed": true,
+    "Quantity": 10,
+    "CurrentStock": 20,
+    "Processed": false,
     "StockAvailability": true
   },
   {
     "ID": 2,
     "StoreName": "CBD",
-    "ProductRequested": "Hat",
-    "Quantity": 1,
-    "CurrentStock": 0,
-    "Processed": true,
+    "ProductRequested": "Extending Cane",
+    "Quantity": 20,
+    "CurrentStock": 15,
+    "Processed": false,
     "StockAvailability": false
-  },
-  {
-    "ID": 3,
-    "StoreName": "North",
-    "ProductRequested": "Svengali Deck",
-    "Quantity": 10,
-    "CurrentStock": 5,
-    "Processed": true,
-    "StockAvailability": true
-  },
-  {
-    "ID": 4,
-    "StoreName": "CBD",
-    "ProductRequested": "Rabbit",
-    "Quantity": 0,
-    "CurrentStock": 4,
-    "Processed": false,
-    "StockAvailability": true
-  },
-  {
-    "ID": 5,
-    "StoreName": "CBD",
-    "ProductRequested": "Rabbit",
-    "Quantity": 0,
-    "CurrentStock": 4,
-    "Processed": false,
-    "StockAvailability": true
-  },
-  {
-    "ID": 6,
-    "StoreName": "CBD",
-    "ProductRequested": "Rabbit",
-    "Quantity": 0,
-    "CurrentStock": 4,
-    "Processed": false,
-    "StockAvailability": true
   }
 ]

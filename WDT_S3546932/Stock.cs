@@ -23,10 +23,10 @@ namespace WDT_S3546932
 
             public Boolean StockAvailability { get; set; }
 
-            public Stock(int ID, string storeName, string productName, int Quantity, int CurrentStock, bool Processed, bool StockAvailability)
+            public Stock(int ID, string StoreName, string productName, int Quantity, int CurrentStock, bool Processed, bool StockAvailability)
             {
                 this.ID = ID;
-                this.StoreName = storeName;
+                this.StoreName = StoreName;
                 this.ProductRequested = productName;
                 this.Quantity = Quantity;
                 this.CurrentStock = CurrentStock;
@@ -67,7 +67,7 @@ namespace WDT_S3546932
 
             public double Cost { get; set; }
 
-            public StoreStock(int ID, string Store, string ProductName, int CurrentStock, Boolean ReStock, Double Cost)
+            public StoreStock(int ID, string Store, string ProductName, int CurrentStock, Boolean ReStock, double Cost)
             {
                 this.ID = ID;
                 this.Store = Store;

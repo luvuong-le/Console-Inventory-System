@@ -1,16 +1,122 @@
 [
   {
     "ID": 1,
-    "StoreName": "CBD",
+    "Store": "NORTH",
     "ProductName": "Rabbit",
-    "CurrentStock": 0,
-    "ReStock": true
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 25.0
   },
   {
     "ID": 2,
-    "StoreName": "CBD",
+    "Store": "NORTH",
     "ProductName": "Hat",
-    "CurrentStock": 1,
-    "ReStock": true
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 10.0
+  },
+  {
+    "ID": 3,
+    "Store": "NORTH",
+    "ProductName": "Svengali Deck",
+    "CurrentStock": 10,
+    "ReStock": false,
+    "Cost": 15.0
+  },
+  {
+    "ID": 4,
+    "Store": "NORTH",
+    "ProductName": "Floating Hankerchief",
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 8.0
+  },
+  {
+    "ID": 5,
+    "Store": "NORTH",
+    "ProductName": "Magic Wand",
+    "CurrentStock": 20,
+    "ReStock": false,
+    "Cost": 5.0
+  },
+  {
+    "ID": 6,
+    "Store": "NORTH",
+    "ProductName": "Cards",
+    "CurrentStock": 40,
+    "ReStock": false,
+    "Cost": 2.0
+  },
+  {
+    "ID": 7,
+    "Store": "NORTH",
+    "ProductName": "Magician Cape",
+    "CurrentStock": 10,
+    "ReStock": false,
+    "Cost": 10.0
+  },
+  {
+    "ID": 8,
+    "Store": "NORTH",
+    "ProductName": "Beginners Magic Set",
+    "CurrentStock": 10,
+    "ReStock": false,
+    "Cost": 15.0
+  },
+  {
+    "ID": 9,
+    "Store": "NORTH",
+    "ProductName": "Advanced Magic Set",
+    "CurrentStock": 5,
+    "ReStock": false,
+    "Cost": 35.0
+  },
+  {
+    "ID": 10,
+    "Store": "NORTH",
+    "ProductName": "Blooming Flower Trick",
+    "CurrentStock": 13,
+    "ReStock": false,
+    "Cost": 20.0
+  },
+  {
+    "ID": 11,
+    "Store": "NORTH",
+    "ProductName": "Colour Change Hanky",
+    "CurrentStock": 40,
+    "ReStock": false,
+    "Cost": 9.0
+  },
+  {
+    "ID": 12,
+    "Store": "NORTH",
+    "ProductName": "Spinning Bowtie",
+    "CurrentStock": 45,
+    "ReStock": false,
+    "Cost": 3.0
+  },
+  {
+    "ID": 13,
+    "Store": "NORTH",
+    "ProductName": "Balloon",
+    "CurrentStock": 30,
+    "ReStock": false,
+    "Cost": 2.5
+  },
+  {
+    "ID": 14,
+    "Store": "NORTH",
+    "ProductName": "Extending Cane",
+    "CurrentStock": 25,
+    "ReStock": false,
+    "Cost": 5.5
+  },
+  {
+    "ID": 15,
+    "Store": "NORTH",
+    "ProductName": "Magic Table",
+    "CurrentStock": 12,
+    "ReStock": false,
+    "Cost": 50.0
   }
 ]

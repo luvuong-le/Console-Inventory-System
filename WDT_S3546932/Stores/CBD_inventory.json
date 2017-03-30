@@ -3,80 +3,120 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 1,
-    "ReStock": true,
+    "CurrentStock": 10,
+    "ReStock": false,
     "Cost": 25.0
   },
   {
     "ID": 2,
     "Store": "CBD",
     "ProductName": "Hat",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 5.00
+    "CurrentStock": 20,
+    "ReStock": false,
+    "Cost": 10.0
   },
   {
     "ID": 3,
     "Store": "CBD",
     "ProductName": "Svengali Deck",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 15.0
   },
   {
     "ID": 4,
     "Store": "CBD",
     "ProductName": "Floating Hankerchief",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 30,
+    "ReStock": false,
+    "Cost": 8.0
   },
   {
     "ID": 5,
     "Store": "CBD",
     "ProductName": "Magic Wand",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 35,
+    "ReStock": false,
+    "Cost": 5.0
   },
   {
     "ID": 6,
     "Store": "CBD",
     "ProductName": "Cards",
-    "CurrentStock": 10,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 40,
+    "ReStock": false,
+    "Cost": 2.0
   },
   {
     "ID": 7,
     "Store": "CBD",
     "ProductName": "Magician Cape",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 15,
+    "ReStock": false,
+    "Cost": 10.0
+  },
+  {
+    "ID": 8,
+    "Store": "CBD",
+    "ProductName": "Beginners Magic Set",
+    "CurrentStock": 8,
+    "ReStock": false,
+    "Cost": 15.0
   },
   {
     "ID": 9,
     "Store": "CBD",
     "ProductName": "Advanced Magic Set",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 5,
+    "ReStock": false,
+    "Cost": 35.0
   },
   {
     "ID": 10,
     "Store": "CBD",
     "ProductName": "Blooming Flower Trick",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 20,
+    "ReStock": false,
+    "Cost": 20.0
   },
   {
     "ID": 11,
     "Store": "CBD",
     "ProductName": "Colour Change Hanky",
-    "CurrentStock": 0,
-    "ReStock": true,
-    "Cost": 0.0
+    "CurrentStock": 45,
+    "ReStock": false,
+    "Cost": 9.0
+  },
+  {
+    "ID": 12,
+    "Store": "CBD",
+    "ProductName": "Spinning Bowtie",
+    "CurrentStock": 59,
+    "ReStock": false,
+    "Cost": 3.0
+  },
+  {
+    "ID": 13,
+    "Store": "CBD",
+    "ProductName": "Balloon",
+    "CurrentStock": 25,
+    "ReStock": false,
+    "Cost": 2.5
+  },
+  {
+    "ID": 14,
+    "Store": "CBD",
+    "ProductName": "Extending Cane",
+    "CurrentStock": 10,
+    "ReStock": false,
+    "Cost": 5.5
+  },
+  {
+    "ID": 15,
+    "Store": "CBD",
+    "ProductName": "Magic Table",
+    "CurrentStock": 10,
+    "ReStock": false,
+    "Cost": 50.0
   }
 ]

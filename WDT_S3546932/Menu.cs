@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,11 @@ namespace WDT_S3546932
     {
         public abstract void displayMenu();
 
+        static JsonUtility jsonCommand = new JsonUtility();
+
         private static string string_usr_inp; private static int usrInp;
 
-        Utility command = new Utility();
+        static Utility command = new Utility();
 
         /* ---------- Displays The Main Menu  ------------------ */
         public class mainMenu : Menu
@@ -47,7 +50,7 @@ namespace WDT_S3546932
         public class OwnerMenu : Menu
         {
             Owner Owner = new Owner();
-            private List<Stock> productList { get; set; }
+            private List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
 
             public override void displayMenu()
             {
@@ -60,9 +63,9 @@ namespace WDT_S3546932
 
                     switch (usrInp)
                     {
-                        case 1: command.displayMessage("Displaying All Stock Requests"); Owner.displayAllStockRequests(productList); continue;
-                        case 2: command.displayMessage("Displaying Stock Requests (True/False)"); Owner.displayAllStockRequestBool(productList); continue;
-                        case 3: command.displayMessage("Displaying All Product Lines"); Owner.displayAllProductLines(); continue;
+                        case 1: command.displayTitle("Displaying All Stock Requests"); Owner.displayAllStockRequests(productList); continue;
+                        case 2: command.displayTitle("Displaying Stock Requests (True/False)"); Owner.displayAllStockRequestBool(productList); continue;
+                        case 3: command.displayTitle("Displaying All Product Lines"); Owner.displayAllProductLines(); continue;
                         case 4: Menu.mainMenu main = new Menu.mainMenu();  main.displayMenu(); continue;
                         case 5: Environment.Exit(0); continue;
                         default: command.displayError("Must be in Range of [1] - [5]!"); continue;

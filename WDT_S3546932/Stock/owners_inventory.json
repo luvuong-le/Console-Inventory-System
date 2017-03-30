@@ -2,91 +2,106 @@
   {
     "ID": 1,
     "ProductName": "Rabbit",
-    "CurrentStock": 10,
-    "StockAvailability": true
+    "CurrentStock": 20,
+    "StockAvailability": true,
+    "Cost": 25.0
   },
   {
     "ID": 2,
     "ProductName": "Hat",
-    "CurrentStock": 10,
-    "StockAvailability": false
+    "CurrentStock": 11,
+    "StockAvailability": false,
+    "Cost": 10.0
   },
   {
     "ID": 3,
     "ProductName": "Svengali Deck",
-    "CurrentStock": 8,
-    "StockAvailability": true
+    "CurrentStock": 7,
+    "StockAvailability": true,
+    "Cost": 15.0
   },
   {
     "ID": 4,
     "ProductName": "Floating Hankerchief",
-    "CurrentStock": 5,
-    "StockAvailability": true
+    "CurrentStock": 10,
+    "StockAvailability": true,
+    "Cost": 8.0
   },
   {
     "ID": 5,
     "ProductName": "Magic Wand",
     "CurrentStock": 15,
-    "StockAvailability": true
+    "StockAvailability": true,
+    "Cost": 5.0
   },
   {
     "ID": 6,
     "ProductName": "Cards",
     "CurrentStock": 20,
-    "StockAvailability": true
+    "StockAvailability": true,
+    "Cost": 2.0
   },
   {
     "ID": 7,
     "ProductName": "Magician Cape",
-    "CurrentStock": 5,
-    "StockAvailability": true
+    "CurrentStock": 7,
+    "StockAvailability": true,
+    "Cost": 10.0
   },
   {
     "ID": 8,
     "ProductName": "Beginners Magic Set",
-    "CurrentStock": 5,
-    "StockAvailability": false
+    "CurrentStock": 2,
+    "StockAvailability": false,
+    "Cost": 15.0
   },
   {
     "ID": 9,
     "ProductName": "Advanced Magic Set",
-    "CurrentStock": 2,
-    "StockAvailability": true
+    "CurrentStock": 5,
+    "StockAvailability": true,
+    "Cost": 35.0
   },
   {
     "ID": 10,
     "ProductName": "Blooming Flower Trick",
-    "CurrentStock": 8,
-    "StockAvailability": true
+    "CurrentStock": 5,
+    "StockAvailability": true,
+    "Cost": 20.0
   },
   {
     "ID": 11,
     "ProductName": "Colour Change Hanky",
-    "CurrentStock": 20,
-    "StockAvailability": true
+    "CurrentStock": 10,
+    "StockAvailability": true,
+    "Cost": 9.0
   },
   {
     "ID": 12,
     "ProductName": "Spinning Bowtie",
-    "CurrentStock": 25,
-    "StockAvailability": true
+    "CurrentStock": 8,
+    "StockAvailability": true,
+    "Cost": 3.0
   },
   {
     "ID": 13,
     "ProductName": "Balloon",
-    "CurrentStock": 5,
-    "StockAvailability": true
+    "CurrentStock": 20,
+    "StockAvailability": true,
+    "Cost": 2.5
   },
   {
     "ID": 14,
     "ProductName": "Extending Cane",
-    "CurrentStock": 10,
-    "StockAvailability": true
+    "CurrentStock": 15,
+    "StockAvailability": true,
+    "Cost": 5.5
   },
   {
     "ID": 15,
     "ProductName": "Magic Table",
     "CurrentStock": 4,
-    "StockAvailability": true
+    "StockAvailability": true,
+    "Cost": 50.0
   }
 ]

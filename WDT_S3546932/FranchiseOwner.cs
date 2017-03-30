@@ -37,14 +37,21 @@ namespace WDT_S3546932
 
             command.displayMessage("Your Store Inventory: ");
             //Display Store Iventory
-            Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
-
-            foreach (var store in storeStock)
+            if (storeStock.Count == 0)
             {
-                Console.WriteLine("{0,10} {1,25} {2,25}", store.ID, store.ProductName, store.CurrentStock);
+                Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("{0,15}", "[ALERT] Nothing in Store Right Now"); command.colourReset();
+            }
+            else
+            {
+                Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
+
+                foreach (var store in storeStock)
+                {
+                    Console.WriteLine("{0,10} {1,25} {2,25}", store.ID, store.ProductName, store.CurrentStock);
+                }
             }
 
-            int ownerCount=  OwnerProducts.Count; int storeCount = storeStock.Count;
+            int ownerCount = OwnerProducts.Count; int storeCount = storeStock.Count;
 
             if(storeCount != ownerCount)
             {
@@ -81,77 +88,105 @@ namespace WDT_S3546932
                     }
                 }
 
-                command.displayMessageOneLine("\nEnter Product ID Number to Add to Store: "); string ID = Console.ReadLine(); int itemID; Int32.TryParse(ID, out itemID);
+                command.displayMessageOneLine("\nEnter Product ID Number to Add to Store: "); string ID = Console.ReadLine(); int itemID = command.convertInt(ID);
 
-                //Prompt User to Choose an ID Number and Request it Based on the List //
-                foreach (var test in difference) {
-                    foreach (var product in OwnerProducts)
+                if (command.checkInt(ID, itemID) == true)
+                {
+                    if (difference.Any(item => item == itemID))
                     {
-                             if (itemID == test && product.ID == itemID) {
-                                command.displayMessageOneLine("\nPlease Enter the Amount you would like to Purchase Also: "); string quant = Console.ReadLine(); int Quantity; Int32.TryParse(quant, out Quantity);
-
-                                command.displayMessageOneLine("\nYouve chosen the Product");
-
-                                Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
-
-                                command.displayMessage("Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                                if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                        //Prompt User to Choose an ID Number and Request it Based on the List //
+                        foreach (var test in difference)
+                        {
+                            foreach (var product in OwnerProducts)
                             {
-                                    //Process Add Inventory //
-                                    AddProduct(product.ProductName, storeName, Quantity);
+                                if (itemID == test && product.ID == itemID)
+                                {
+                                    command.displayMessageOneLine("\nPlease Enter the Amount you would like to add: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
 
+                                    if (command.checkInt(quant, Quantity) == true)
+                                    {
+
+                                        command.displayMessageOneLine("\nYouve chosen the Product");
+
+                                        Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
+
+                                        command.displayMessageOneLine("Would you like to Continue [Yes/No]: "); string choice = Console.ReadLine();
+                                        if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            //Process Add Inventory //
+                                            AddProduct(product.ProductName, storeName, Quantity);
+                                        }
+                                        else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
+                                        return;
+                                    }
                                 }
-                                else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
-                                return;
                             }
+                        }
                     }
+                    else if(difference.Any(item => item != itemID && itemID <= difference.Count)) { command.displayError("You Already have that Item in Stock"); return; } 
+                    else if(difference.Any(item => itemID > item)) { command.displayError("No Such ID"); return; }
                 }
+                }else { command.displayError("You Already Have All Stock In Your Inventory"); return; }
             }
-        }
+
         #endregion
 
         #region DisplayInventory
         //Display Inventory and Request For Stock in StockRequest.json //
         public override List<StoreStock> displayInventory(string StoreName)
         {
-            command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres;  Int32.TryParse(Thres, out thres); 
-            String storeNameFile = command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json";
+            command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres = command.convertInt(Thres);
 
-            List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
-           
-            Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock");
+                String storeNameFile = command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json";
 
-            foreach (var product in productList)
+                List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
+
+            if (command.checkInt(Thres, thres) == true)
             {
-                if (product.CurrentStock <= thres)
-                Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true);
-                else
-                {
-                Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = false);
-                }
-            }
+                Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("\n{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock"); command.colourReset();
 
-            int requestID = 0; int Quantity = 0; 
-
-            if (command.checkInt("\nEnter Request To Process[ID]: ", requestID) == true && command.checkInt("Please Enter the Amount you would like to Purchase:　", Quantity) == true)
-            { 
                 foreach (var product in productList)
                 {
-                    if (product.ID == requestID)
+                    if (product.CurrentStock <= thres)
                     {
-                        if (product.ReStock == true)
+                        command.colourChange();
+                        Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true); command.colourReset();
+                    }else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = false); command.colourReset();
+                    }
+                }
+                command.colourChange(); command.displayMessage("Green: [Threshold that needs Restocking]"); command.colourReset(); Console.ForegroundColor = ConsoleColor.Red; command.displayMessage("Red: [Below Threshold, Does not need Restocking]"); command.colourReset();
+            }
+            else { displayInventory(StoreName); }
+
+            command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid); 
+    
+            if (command.checkInt(requestid, requestID) == true) 
+            {
+                command.displayMessageOneLine("Please Enter the Quantity you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
+                if (command.checkInt(quant, Quantity) == true)
+                {
+                    foreach (var product in productList)
+                    {
+                        if (product.ID == requestID)
                         {
-                            requestForStock(product.ProductName, StoreName, Quantity);
-                            break;
-                        }
-                        else
-                        {
-                            command.displayError("You have enough stock, Would you like to Continue [Yes/No]"); string choice = Console.ReadLine();
-                            if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                            if (product.ReStock == true)
                             {
                                 requestForStock(product.ProductName, StoreName, Quantity);
-                            } else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
-                            break;
+                                break;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red; command.displayMessageOneLine("[ERROR] You have enough stock, Would you like to Continue [Yes/No]: "); string choice = Console.ReadLine(); command.colourReset();
+                                if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    requestForStock(product.ProductName, StoreName, Quantity);
+                                }
+                                else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
+                                break;
+                            }
                         }
                     }
                 }
@@ -164,40 +199,52 @@ namespace WDT_S3546932
         // Display Inventory Based on Threshold
         public override List<StoreStock> displayInventoryThres(string StoreName)
         {
-            command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres; Int32.TryParse(Thres, out thres);
+            command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres = command.convertInt(Thres);
+
             String storeNameFile = command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json";
 
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
 
-            Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock", "Re-Stock");
-
-            foreach (var product in productList)
+            if (command.checkInt(Thres, thres) == true)
             {
-                if (product.CurrentStock <= thres)
+                Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("\n{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock"); command.colourReset();
+
+                foreach (var product in productList)
                 {
-                    Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true);
-                }
-            }
-
-            command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestProcess = Console.ReadLine();
-            int requestID; Int32.TryParse(requestProcess, out requestID); command.displayMessage("[Request number]: " + requestID);
-            command.displayMessageOneLine("Please Enter the Amount you would like to Request: "); string quant = Console.ReadLine(); int Quantity; Int32.TryParse(quant, out Quantity);
-
-            foreach (var product in productList)
-            {
-                    if (product.ReStock == true && product.CurrentStock <= thres)
+                    if (product.CurrentStock <= thres)
                     {
-                        if (product.ID == requestID)
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true); command.colourReset();
+                    }
+                }
+                Console.ForegroundColor = ConsoleColor.Cyan; command.displayMessage("Blue: [All Items based on threshold that need Restocking]"); command.colourReset();
+            }
+            else { displayInventory(StoreName); }
+
+
+            command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid);
+            if (command.checkInt(requestid, requestID) == true)
+            {
+                command.displayMessageOneLine("Please Enter the Quantity you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
+                if (command.checkInt(quant, Quantity))
+                {
+                    foreach (var product in productList)
+                    {
+                        if (product.ReStock == true && product.CurrentStock <= thres)
                         {
-                            requestForStock(product.ProductName, StoreName, Quantity);
+                            if (product.ID == requestID)
+                            {
+                                requestForStock(product.ProductName, StoreName, Quantity);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            command.displayError("Not in the List");
                             break;
                         }
                     }
-                    else
-                    {
-                        command.displayError("Not in the List");
-                        break;
-                    }
+                }
             }
 
             return productList;
@@ -228,7 +275,7 @@ namespace WDT_S3546932
             {
                 if (productName == storeProduct.ProductRequested)
                 {
-                    if (storeProduct.CurrentStock > owner.checkCurrentStock(storeProduct.ProductRequested)) { storeProduct.StockAvailability = false; } else { storeProduct.StockAvailability = true; }
+                    if (Quantity > owner.checkCurrentStock(storeProduct.ProductRequested)) { storeProduct.StockAvailability = false; } else { storeProduct.StockAvailability = true; }
 
                     //Adding a new Object using the already available stock object //
                     stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName, storeProduct.ProductRequested, Quantity, owner.checkCurrentStock(productName), false, storeProduct.StockAvailability));
@@ -262,7 +309,7 @@ namespace WDT_S3546932
                 if (productName == product.ProductName && product.CurrentStock > Quantity)
                 {
                     //Adding a new Object using the already available stock object //
-                    stock.Add(new StoreStock(product.ID, StoreName, productName, product.CurrentStock = Quantity, false, product.Cost));
+                    stock.Add(new StoreStock(product.ID, StoreName.ToUpper(), productName, product.CurrentStock = Quantity, false, Math.Round(product.Cost,2)));
                 }else if(productName == product.ProductName && product.CurrentStock < Quantity)
                 {
                     command.displayError("Sorry We have: " + product.CurrentStock + " In Stock at the moment");
@@ -278,7 +325,6 @@ namespace WDT_S3546932
             var appendRequest = JsonConvert.SerializeObject(stock, Formatting.Indented);
             File.WriteAllText(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", appendRequest);
             jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json", productName, Quantity);
-            Console.WriteLine(appendRequest);
         }
     }
     #endregion

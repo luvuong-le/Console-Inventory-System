@@ -473,26 +473,30 @@ namespace WDT_S3546932
 
         public List<StoreStock> searchByProduct(List<StoreStock> store, string ProductName)
         {
-            Console.ForegroundColor = ConsoleColor.White; Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", "ID", "Product Name", "Current Stock", "Cost"); command.colourReset();
-            foreach (var product in store)
+            if (store.Any(item => item.ProductName == ProductName))
             {
-                if(ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))
+                Console.ForegroundColor = ConsoleColor.White; Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", "ID", "Product Name", "Current Stock", "Cost"); command.colourReset();
+                foreach (var product in store)
                 {
-                    Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", product.ID, product.ProductName, product.CurrentStock, "$" + product.Cost.ToString("N2"));
-
-                    command.displayMessageOneLine("Would you like to purchase this Item? [Yes/No]: "); string purchase = Console.ReadLine();
-
-                    if (purchase.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                    if (ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))
                     {
-                        command.displayMessageOneLine("Enter Quantity: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
-                        if (command.checkInt(quant, Quantity) == true)
+                        Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", product.ID, product.ProductName, product.CurrentStock, "$" + product.Cost.ToString("N2"));
+
+                        command.displayMessageOneLine("Would you like to purchase this Item? [Yes/No]: "); string purchase = Console.ReadLine();
+
+                        if (purchase.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                         {
-                            addProduct(itemCart, store, product.ProductName, product.Store, Quantity); purchaseProduct(product.ProductName, product.Store, Quantity);
-                            purchaseTotal += product.Cost; displayItemCart(); displayProduct(product.Store);
+                            command.displayMessageOneLine("Enter Quantity: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
+                            if (command.checkInt(quant, Quantity) == true)
+                            {
+                                addProduct(itemCart, store, product.ProductName, product.Store, Quantity); purchaseProduct(product.ProductName, product.Store, Quantity);
+                                purchaseTotal += product.Cost; displayItemCart(); displayProduct(product.Store);
+                            }
                         }
                     }
-                }else { continue; }
-            }
+                    else { continue; }
+                }
+            }else { command.displayError("No Product found with that name"); }
             return store;
         }
     }

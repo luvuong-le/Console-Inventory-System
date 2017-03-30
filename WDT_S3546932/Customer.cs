@@ -476,7 +476,7 @@ namespace WDT_S3546932
             Console.ForegroundColor = ConsoleColor.White; Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", "ID", "Product Name", "Current Stock", "Cost"); command.colourReset();
             foreach (var product in store)
             {
-                if(ProductName == product.ProductName)
+                if(ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", product.ID, product.ProductName, product.CurrentStock, "$" + product.Cost.ToString("N2"));
 

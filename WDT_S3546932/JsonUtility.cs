@@ -87,38 +87,7 @@ namespace WDT_S3546932
             return false;
         }
 
-        public void updateQuantityStockRequest(string fileName, string ProductName, int Quantity)
-        {
-            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(fileName));
-            foreach (var product in productList)
-            {
-
-                if (product.ProductRequested == ProductName || product.ProductRequested == ProductName && product.Processed != true)
-                {
-                    command.displayMessage("Product Name Found");
-                    if (product.CurrentStock >= Quantity)
-                    {
-                        command.displayMessage("Updating....");
-                        Thread.Sleep(2000);
-                        command.displayMessage("Current Stock: {0} " + product.CurrentStock);
-                        product.CurrentStock = product.CurrentStock - Quantity;
-                        command.displayMessage("New Current Stock: {0} " + product.CurrentStock);
-                        command.displayMessage("Update Complete");
-                        if (product.Processed == false) { product.Processed = true; }
-                        if (product.CurrentStock == 0) { product.StockAvailability = false; }
-                        break;
-                    }
-                    else
-                    {
-                        command.displayMessage("Cannot Update.");
-                    }
-                }
-            }
-
-            var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
-            File.WriteAllText(fileName, updatedList);
-            //Console.WriteLine(updatedList);
-        }
+      
         public void updateQuantityOwner(string fileName, string ProductName, int Quantity)
         {
             List<OwnerStock> productList = JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(fileName));
@@ -143,6 +112,32 @@ namespace WDT_S3546932
             var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
             File.WriteAllText(fileName, updatedList);
         }
+
+        public void updateQuantityStoreStockRequest(int requestID, string fileName, string ProductName, int Quantity, string addSubtract)
+        {
+            List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(fileName));
+            List<Stock> stockrequests = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
+
+            if (productList.Any(item => item.ProductName == ProductName))
+            {
+                foreach (var product in productList)
+                {
+                    if (product.ProductName == ProductName)
+                    {
+                        Thread.Sleep(2000);
+                        if (addSubtract == "minus") { product.CurrentStock = product.CurrentStock - Quantity; } else if (addSubtract == "add") { product.CurrentStock = product.CurrentStock + Quantity; }
+                        foreach (var request in stockrequests) { if (request.ID == requestID && request.Processed == false) { request.Processed = true; } else { continue; } }
+                    }
+                }
+            }else { command.displayError("No Product With that Name"); }
+
+
+
+            var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
+            File.WriteAllText(fileName, updatedList);
+            var updatedStockRequests = JsonConvert.SerializeObject(stockrequests, Formatting.Indented);
+            File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", updatedStockRequests);
+      }
 
         public void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract)
         {

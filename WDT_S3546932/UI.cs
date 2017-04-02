@@ -38,11 +38,12 @@ namespace WDT_S3546932
 
     interface JCommands
     {
-        void updateQuantityStockRequest(string fileName, string ProductName, int Quantity);
-
+   
         void updateQuantityOwner(string fileName, string ProductName, int Quantity);
 
         void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract);
+
+        void updateQuantityStoreStockRequest(int requestID, string fileName, string ProductName, int Quantity, string addSubtract);
 
         //Takes in a file name and reads through the json file //
         string JsonReader(String fileName);
@@ -89,7 +90,7 @@ namespace WDT_S3546932
 
         abstract public void AddNewInventory(String StoreName);
 
-        abstract public void requestForStock(String productName, String StoreName, int Quantity);
+        abstract public List<Stock> requestForStock(String productName, String StoreName, int Quantity);
 
         abstract public void AddProduct(String productName, String StoreName, int Quantity);
     }

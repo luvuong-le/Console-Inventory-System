@@ -2,8 +2,8 @@
   {
     "ID": 1,
     "ProductName": "Rabbit",
-    "CurrentStock": 20,
-    "StockAvailability": true,
+    "CurrentStock": 10,
+    "StockAvailability": false,
     "Cost": 25.0
   },
   {
@@ -100,7 +100,7 @@
   {
     "ID": 15,
     "ProductName": "Magic Table",
-    "CurrentStock": 4,
+    "CurrentStock": 12,
     "StockAvailability": true,
     "Cost": 50.0
   }

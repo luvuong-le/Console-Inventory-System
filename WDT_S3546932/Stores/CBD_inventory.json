@@ -3,7 +3,7 @@
     "ID": 1,
     "Store": "CBD",
     "ProductName": "Rabbit",
-    "CurrentStock": 10,
+    "CurrentStock": 18,
     "ReStock": false,
     "Cost": 25.0
   },
@@ -115,7 +115,7 @@
     "ID": 15,
     "Store": "CBD",
     "ProductName": "Magic Table",
-    "CurrentStock": 10,
+    "CurrentStock": 13,
     "ReStock": false,
     "Cost": 50.0
   }

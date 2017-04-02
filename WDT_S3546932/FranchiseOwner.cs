@@ -16,7 +16,7 @@ namespace WDT_S3546932
         Utility command = new Utility();
 
         JsonUtility jsonCommand = new JsonUtility();
-
+        
         #region AddInventory
         //Add New Inventory 
         public override void AddNewInventory(string storeName)
@@ -114,7 +114,9 @@ namespace WDT_S3546932
                                         if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                                         {
                                             //Process Add Inventory //
-                                            AddProduct(product.ProductName, storeName, Quantity);
+                                            requestForStock(product.ProductName, storeName, Quantity);
+                                            command.displayMessage("Successfully Requested Product, Please wait for a response from the Head Office.");
+                                            AddProduct(product.ProductName, storeName, Quantity = 0);
                                         }
                                         else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
                                         return;
@@ -184,7 +186,7 @@ namespace WDT_S3546932
                                 {
                                     requestForStock(product.ProductName, StoreName, Quantity);
                                 }
-                                else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
+                                else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); break; }
                                 break;
                             }
                         }
@@ -253,9 +255,12 @@ namespace WDT_S3546932
 
         #region requestStock
         //Request For Stock, Appends to the StockRequest.json File//
-        public override void requestForStock(string productName, string StoreName, int Quantity)
-        { 
-            command.displayMessage("Requesting Stock");
+        public override List<Stock> requestForStock(string productName, string StoreName, int Quantity)
+        {
+            //Access Owner Inventory //
+            List<OwnerStock> products = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
+
+            command.displayMessage("Requesting");
 
             //Creating a new Local List of type Stock//
             List<Stock> stock = new List<Stock>();
@@ -264,31 +269,28 @@ namespace WDT_S3546932
             using (var streamReader = new StreamReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"))
             {
                 var jsonData = streamReader.ReadToEnd(); stock = JsonConvert.DeserializeObject<List<Stock>>(jsonData);
-                //Console.WriteLine(jsonData);
             }
             
-            //Creating a local list of stockRequest to allow access to the Stock Class Variables //
-            List<Stock> stockRequests = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"));
-
-            //Looping through the Stock Class//
-            foreach (var storeProduct in stockRequests)
+            //Looping through the Owner Inventory To find a Match, If a match is found, Add new Stock Request//
+            foreach (var storeProduct in products)
             {
-                if (productName == storeProduct.ProductRequested)
-                {
-                    if (Quantity > owner.checkCurrentStock(storeProduct.ProductRequested)) { storeProduct.StockAvailability = false; } else { storeProduct.StockAvailability = true; }
+                    if (productName == storeProduct.ProductName)
+                    {
+                        if (Quantity > owner.checkCurrentStock(storeProduct.ProductName)) { storeProduct.StockAvailability = false; } else { storeProduct.StockAvailability = true; }
 
-                    //Adding a new Object using the already available stock object //
-                    stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName, storeProduct.ProductRequested, Quantity, owner.checkCurrentStock(productName), false, storeProduct.StockAvailability));
-                }
+                        //Adding a new Object using the already available stock object //
+                        stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName.ToUpper(), storeProduct.ProductName, Quantity, owner.checkCurrentStock(productName), false, storeProduct.StockAvailability));
+                    }
             }
 
             //Append the Results and convert the Object back into a JSON String //
             var appendRequest = JsonConvert.SerializeObject(stock, Formatting.Indented);
             File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", appendRequest);
-            Console.WriteLine(appendRequest);
+            return stock; //Returns New List of Stock Requests
         }
         #endregion
 
+        //Optional Adds The Product Based on the Owners Current Inventory //
         #region addProduct
         public override void AddProduct(String productName, String StoreName, int Quantity)
         {

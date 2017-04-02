@@ -60,7 +60,7 @@ namespace WDT_S3546932
 
             if (user_inp.Equals("P", StringComparison.OrdinalIgnoreCase))
             {
-                command.displayMessage("Going to Next Page");
+                Console.ForegroundColor = ConsoleColor.White;  command.displayMessage("Going to Next Page"); command.colourReset();
 
                 foreach (var product in store)
                 {

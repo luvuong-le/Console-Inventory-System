@@ -4,17 +4,26 @@
     "StoreName": "CBD",
     "ProductRequested": "Rabbit",
     "Quantity": 10,
-    "CurrentStock": 20,
-    "Processed": false,
-    "StockAvailability": true
+    "CurrentStock": 0,
+    "Processed": true,
+    "StockAvailability": false
   },
   {
     "ID": 2,
     "StoreName": "CBD",
-    "ProductRequested": "Extending Cane",
-    "Quantity": 20,
-    "CurrentStock": 15,
-    "Processed": false,
-    "StockAvailability": false
+    "ProductRequested": "Magic Table",
+    "Quantity": 2,
+    "CurrentStock": 14,
+    "Processed": true,
+    "StockAvailability": true
+  },
+  {
+    "ID": 3,
+    "StoreName": "EAST",
+    "ProductRequested": "Magic Table",
+    "Quantity": 12,
+    "CurrentStock": 24,
+    "Processed": true,
+    "StockAvailability": true
   }
 ]

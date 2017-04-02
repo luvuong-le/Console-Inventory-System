@@ -128,7 +128,7 @@ namespace WDT_S3546932
                     if (request.ID == requestID)
                     {
                         command.displayMessage("Request Found");
-                        if (request.StockAvailability == false || request.Quantity > request.CurrentStock && request.Processed == false)
+                        if (request.StockAvailability == false && request.Quantity > request.CurrentStock && request.Processed == false)
                         {
                             command.displayError("Unavailable Stock to complete this request");
                             break;
@@ -143,10 +143,10 @@ namespace WDT_S3546932
                             if (request.Processed == false)
                             {
                                 jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json", ProductName, Quantity);
-                                jsonCommand.updateQuantityStockRequest(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", ProductName, Quantity);
                                 if (request.StoreName == StoreName && request.Processed == false)
                                 {
-                                    jsonCommand.updateQuantityStore(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", ProductName, Quantity, "add");
+                                    jsonCommand.updateQuantityStoreStockRequest(requestID , command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", ProductName, Quantity, "add");
+                                    request.Processed = true;
                                 }
                             }
                             break;

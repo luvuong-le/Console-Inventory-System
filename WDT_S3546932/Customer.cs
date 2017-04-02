@@ -108,7 +108,8 @@ namespace WDT_S3546932
             }
             else if (user_inp.Equals("R", StringComparison.OrdinalIgnoreCase))
             {
-                Menu.CustomerMenu Cmenu = new Menu.CustomerMenu(); Cmenu.displayMenu();
+                command.displayMessageOneLine("Would you like book into a workshop before leaving? [Yes/No]: "); string bookWorkshopChoice = Console.ReadLine();
+                if (bookWorkshopChoice.Equals("Yes", StringComparison.OrdinalIgnoreCase)) { bookWorkshop(workshopTimes, storeName); } else { Menu.CustomerMenu Cmenu = new Menu.CustomerMenu(); Cmenu.displayMenu();  }
             }
             else if (user_inp.Equals("C", StringComparison.OrdinalIgnoreCase))
             {

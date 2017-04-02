@@ -149,6 +149,7 @@ namespace WDT_S3546932
                                     request.Processed = true;
                                 }
                             }
+                            command.displayMessage("[SUCCESS] Processing Stock Request was Successful");
                             break;
                         }
                     }

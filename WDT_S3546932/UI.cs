@@ -67,10 +67,6 @@ namespace WDT_S3546932
         abstract public List<Stock> displayAllStockRequestBool(List<Stock> StockList);
 
         abstract public int checkCurrentStock(string productName);
-
-        //Updates the quantities During runtime and  saves to file //
-       // abstract public void updateQuantity(string fileName, string ProductName, int Quantity);
-
     }
 
     abstract class CustomerCLI

@@ -25,5 +25,14 @@
     "CurrentStock": 24,
     "Processed": true,
     "StockAvailability": true
+  },
+  {
+    "ID": 4,
+    "StoreName": "CBD",
+    "ProductRequested": "Rabbit",
+    "Quantity": 1,
+    "CurrentStock": 10,
+    "Processed": true,
+    "StockAvailability": true
   }
 ]

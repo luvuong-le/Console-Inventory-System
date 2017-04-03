@@ -36,17 +36,17 @@ namespace WDT_S3546932
             }
         }
 
-        public String[] getStoreNames()
+        public String[] getFileNames(string folderName)
         { 
-            String[] filenames = Directory.GetFiles(getCurrentDirectory() + "/Stores");
+            String[] filenames = Directory.GetFiles(getCurrentDirectory() + "/" + folderName);
             
             return filenames;
         }
 
         public bool checkStoreName(string storeName, String[] filenames)
         {
-            string nameOfStore = "";
 
+            string nameOfStore = "";
             for (int i = 0; i < filenames.Length; i++)
             {
                 nameOfStore = Path.GetFileNameWithoutExtension(filenames[i]).Split('_')[0];

@@ -20,13 +20,12 @@ namespace WDT_S3546932
         List<customerPurchase> itemCart = new List<customerPurchase>();
 
         #region displayProduct
-        public override List<StoreStock> displayProduct(string store)
+        public List<StoreStock> displayProduct(string store, List<StoreStock> storeStock)
         {
             productListCount = 0;
-            List<StoreStock> products = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(store, "/Stores/") + "_inventory.json"));
 
             Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", "ID", "Product Name", "Current Stock", "Cost"); command.colourReset();
-            foreach (var product in products)
+            foreach (var product in storeStock)
             {
                 if (productListCount < 5 && product.CurrentStock == 0)
                 {
@@ -43,16 +42,16 @@ namespace WDT_S3546932
                 }
             }
 
-            customerOptions(store, products);
+            customerOptions(store, storeStock);
 
-            return products;
+            return storeStock;
         }
         #endregion
 
         #region CustomerOptions
-        public void customerOptions(string storeName, List<StoreStock> store)
+        public void customerOptions(string storeName, List<StoreStock> storeStock)
         {
-            List<WorkshopTimes> workshopTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
+            List<WorkshopTimes> workshopTimes = jsonCommand.getWorkShopTimes(storeName);
             command.colourChange();  command.displayMessage("Green: [Stock Available]"); command.colourReset(); Console.ForegroundColor = ConsoleColor.Red; command.displayMessage("Red: [Out of Stock]"); command.colourReset();
             Console.ForegroundColor = ConsoleColor.White;  command.displayMessage("[Legend: 'P' Next Page | 'R' Return to Menu  | 'B' Previous Page | 'C' Complete Transaction | 'W' Book Workshop | ID Number Based on Item | 'S' Search by Name]"); command.colourReset();
 
@@ -62,32 +61,32 @@ namespace WDT_S3546932
             {
                 Console.ForegroundColor = ConsoleColor.White;  command.displayMessage("Going to Next Page"); command.colourReset();
 
-                foreach (var product in store)
+                foreach (var product in storeStock)
                 {
-                    if (product.ID > productListCount && productListCount <= store.Count && product.CurrentStock == 0)
+                    if (product.ID > productListCount && productListCount <= storeStock.Count && product.CurrentStock == 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", product.ID, product.ProductName, product.CurrentStock, "$" + product.Cost.ToString("N2"));
                         productListCount++;
                         command.colourReset();
-                    } else if (product.ID > productListCount && productListCount <= store.Count && product.CurrentStock > 0)
+                    } else if (product.ID > productListCount && productListCount <= storeStock.Count && product.CurrentStock > 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", product.ID, product.ProductName, product.CurrentStock, "$" + product.Cost.ToString("N2"));
                         productListCount++;
                         command.colourReset();
                     }
-                    else if (product.ID < productListCount && productListCount >= store.Count) { command.displayError("End Of Items...Returning to first page"); productListCount = 0; displayProduct(storeName); break; }
+                    else if (product.ID < productListCount && productListCount >= storeStock.Count) { command.displayError("End Of Items...Returning to first page"); productListCount = 0; displayProduct(storeName, storeStock); break; }
 
                 }
-                customerOptions(storeName, store);
+                customerOptions(storeName, storeStock);
             }
             else if (user_inp.Equals("B", StringComparison.OrdinalIgnoreCase))
             {
                 command.displayMessage("Going to Previous Page");
                 productListCount = 0;
                 Console.ForegroundColor = ConsoleColor.White; Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock"); command.colourReset();
-                foreach (var product in store)
+                foreach (var product in storeStock)
                 {
                     if (productListCount < 5 && product.CurrentStock == 0)
                     {
@@ -104,7 +103,7 @@ namespace WDT_S3546932
                         command.colourReset();
                     }
                 }
-                customerOptions(storeName, store);
+                customerOptions(storeName, storeStock);
             }
             else if (user_inp.Equals("R", StringComparison.OrdinalIgnoreCase))
             {
@@ -114,12 +113,12 @@ namespace WDT_S3546932
             else if (user_inp.Equals("C", StringComparison.OrdinalIgnoreCase))
             {
                 command.displayMessage("Completing Transaction");
-                if (purchaseComplete == true && itemCart.Count != 0) { printReciept(itemCart, store, bookedTotal, storeName); }
-                else if (purchaseComplete == false && itemCart.Count != 0) { purchaseComplete = true; printReciept(itemCart, store, bookedTotal, storeName); }
-                else if (itemCart.Count == 0) { purchaseComplete = false; printReciept(itemCart, store, bookedTotal, storeName); }
+                if (purchaseComplete == true && itemCart.Count != 0) { printReciept(itemCart, storeStock, bookedTotal, storeName); }
+                else if (purchaseComplete == false && itemCart.Count != 0) { purchaseComplete = true; printReciept(itemCart, storeStock, bookedTotal, storeName); }
+                else if (itemCart.Count == 0) { purchaseComplete = false; printReciept(itemCart, storeStock, bookedTotal, storeName); }
             }
             else if (user_inp.Equals("W", StringComparison.OrdinalIgnoreCase)) { bookWorkshop(workshopTimes, storeName); }
-            else if (user_inp.Equals("S", StringComparison.OrdinalIgnoreCase)) { command.displayMessageOneLine("Enter the Name of the Product: "); string productSearch = Console.ReadLine();  searchByProduct(store,productSearch); }
+            else if (user_inp.Equals("S", StringComparison.OrdinalIgnoreCase)) { command.displayMessageOneLine("Enter the Name of the Product: "); string productSearch = Console.ReadLine();  searchByProduct(storeStock, productSearch); }
             else if (jsonCommand.matchID(storeName, item_ID) == true) //Checks if the ID input was valid
             {
                 command.displayMessageOneLine("Please Enter the Amount you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
@@ -127,7 +126,7 @@ namespace WDT_S3546932
                 {
                     if (purchaseComplete == false)
                     {
-                        foreach (var product in store)
+                        foreach (var product in storeStock)
                         {
                             if (product.ID == item_ID)
                             {
@@ -140,14 +139,14 @@ namespace WDT_S3546932
                                     if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                                     {
                                         //Process purchase product  //
-                                        addProduct(itemCart, store, product.ProductName, product.Store, Quantity);
-                                        purchaseProduct(product.ProductName, storeName, Quantity);
+                                        addProduct(itemCart, storeStock, product.ProductName, product.Store, Quantity);
+                                        purchaseProduct(product.ProductName, storeName, Quantity, storeStock);
                                         purchaseTotal += product.Cost; displayItemCart();
                                         command.displayMessageOneLine("Keep Purchasing [Yes/No]: "); string more = Console.ReadLine();
                                         if (more.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                                         {
                                             productListCount = 0;
-                                            displayProduct(storeName);
+                                            displayProduct(storeName, storeStock);
                                             continue;
                                         }
                                         else if (more.Equals("No", StringComparison.OrdinalIgnoreCase))
@@ -170,8 +169,8 @@ namespace WDT_S3546932
                                         command.displayError("Invalid Input! Must be Yes/No");
                                     }
                                 }
-                                else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName); return; }
-                                else if (product.CurrentStock == 0) { command.displayError(product.CurrentStock + " in Stock "); displayProduct(storeName); return; }
+                                else if (product.CurrentStock < Quantity) { command.displayError("Not enough stock"); displayProduct(storeName, storeStock); return; }
+                                else if (product.CurrentStock == 0) { command.displayError(product.CurrentStock + " in Stock "); displayProduct(storeName, storeStock); return; }
                             }
                             else
                             {
@@ -186,13 +185,11 @@ namespace WDT_S3546932
 
         #endregion
 
-        public List<WorkshopTimes> showWorkShopTimes(string storeName)
+        public List<WorkshopTimes> showWorkShopTimes(string storeName, List<WorkshopTimes> workshopTimes)
         {
-            List<WorkshopTimes> workshopsTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json"));
-
             command.displayTitle("Session Times");
             Console.WriteLine("{0,5} {1,25} {2,25} {3,15} {4,15} {5,25}", "ID", "Type", "Session Times", "Number of People Booked", "Places left", "Workshop Availability");
-            foreach (var session in workshopsTimes)
+            foreach (var session in workshopTimes)
             {
                 if (session.full == true)
                 {
@@ -207,7 +204,7 @@ namespace WDT_S3546932
 
             Console.WriteLine();
 
-            return workshopsTimes;
+            return workshopTimes;
         }
 
         public void displayItemCart()
@@ -215,10 +212,9 @@ namespace WDT_S3546932
             Console.WriteLine("{0,15} {1,15}", "Product Name", "Quantity");
             foreach (var item in itemCart) { Console.WriteLine("{0,15} {1,15}", item.ProductName, item.Quantity); }
         }
-        public List<Workshop> showWorkShopBookings(string storeName)
-        {
-            List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_bookings.json"));
 
+        public List<Workshop> showWorkShopBookings(string storeName, List<Workshop> workshopBookings)
+        {
             command.displayTitle("Current Bookings");
             Console.WriteLine("{0,15} {1,25} {2,25} {3,25}", "Name", "Session", "Time", "Booking Reference");
 
@@ -231,20 +227,17 @@ namespace WDT_S3546932
         }
 
         #region displayWorkshops
-        public override void displayWorkShop(string storeName)
+        public void displayWorkShop(string storeName)
         {
-            showWorkShopTimes(storeName);
+            showWorkShopTimes(storeName, jsonCommand.getWorkShopTimes(storeName));
 
-            showWorkShopBookings(storeName);
-
+            showWorkShopBookings(storeName, jsonCommand.getBookings(storeName));
         }
         #endregion
 
         #region purchaseProduct
-        public override void purchaseProduct(String productName, String StoreName, int Quantity)
+        public void purchaseProduct(String productName, String StoreName, int Quantity, List<StoreStock> storeStock)
         {
-            List<StoreStock> storeStock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"));
-
             //Looping through the Stock Class//
             foreach (var product in storeStock)
             {
@@ -268,7 +261,7 @@ namespace WDT_S3546932
         }
         #endregion
 
-        public List<customerPurchase> printReciept(List<customerPurchase> products, List<StoreStock> store, int bookedTotal, string storeName)
+        public List<customerPurchase> printReciept(List<customerPurchase> products, List<StoreStock> storeStock, int bookedTotal, string storeName)
         {
             command.displayTitle("Purchased at: " + storeName.ToUpper() + " LTD");  Console.ForegroundColor = ConsoleColor.Green; command.displayMessage("Served By: Lu-Vuong ");
             Console.WriteLine("Date: " + DateTime.Now + "\n");
@@ -280,11 +273,11 @@ namespace WDT_S3546932
                 Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", "Item Number", "Product", "Quantity", "Price");
                 for (int i = 0; i < products.Count; i++)
                 {
-                    for (int j = 0; j < store.Count; j++)
+                    for (int j = 0; j < storeStock.Count; j++)
                     {
-                        if (products[i].ProductName == store[j].ProductName)
+                        if (products[i].ProductName == storeStock[j].ProductName)
                         {
-                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + store[j].Cost.ToString("N2"));
+                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + storeStock[j].Cost.ToString("N2"));
                         }
                     }
                 }    
@@ -299,11 +292,11 @@ namespace WDT_S3546932
                 command.displayMessage("Number of Items: " + itemCart.Count);
                 for (int i = 0; i < products.Count; i++)
                 {
-                    for (int j = 0; j < store.Count; j++)
+                    for (int j = 0; j < storeStock.Count; j++)
                     {
-                        if (products[i].ProductName == store[j].ProductName)
+                        if (products[i].ProductName == storeStock[j].ProductName)
                         {
-                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + store[j].Cost.ToString("N2"));
+                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + storeStock[j].Cost.ToString("N2"));
                         }
                     }
                 }
@@ -312,10 +305,10 @@ namespace WDT_S3546932
             }
         }
 
-        public void addProduct(List<customerPurchase> purchasedProducts, List<StoreStock> store, String productName, String StoreName, int Quantity)
+        public void addProduct(List<customerPurchase> purchasedProducts, List<StoreStock> storeStock, String productName, String StoreName, int Quantity)
         {
             //Looping through the Stock Class//
-            foreach (var product in store)
+            foreach (var product in storeStock)
             {
                 if (productName == product.ProductName && product.CurrentStock >= Quantity)
                 {
@@ -351,7 +344,7 @@ namespace WDT_S3546932
 
         public void bookWorkshop(List<WorkshopTimes> workshopTimes, string storeName)
         {
-            showWorkShopTimes(storeName);
+            showWorkShopTimes(storeName, jsonCommand.getWorkShopTimes(storeName));
             Console.WriteLine("You have Booked into " + bookedTotal + " Workshops");
             command.displayMessageOneLine("\n\nEnter the Workshop ID you would like to book into: "); string book = Console.ReadLine(); int workshopID = command.convertInt(book);
             if (command.checkInt(book, workshopID))
@@ -371,9 +364,9 @@ namespace WDT_S3546932
                                 {
                                     command.displayMessageOneLine("\nEnter Name: "); string name = Console.ReadLine();
                                     Console.WriteLine();
-                                    if (bookRef == false) { bookingRef = command.generateBookingReference(7); bookRef = true; addBooking(workshopTimes, workshopID, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
+                                    if (bookRef == false) { bookingRef = command.generateBookingReference(7); bookRef = true; addBooking(workshopTimes, jsonCommand.getBookings(storeName), workshopID, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
 
-                                    else if (bookRef == true) { command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n"); addBooking(workshopTimes, workshopID, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
+                                    else if (bookRef == true) { command.displayMessageOneLine(name + " Your Booking Reference is: " + bookingRef + "\n"); addBooking(workshopTimes, jsonCommand.getBookings(storeName), workshopID, storeName, name, bookingRef, chosen.sessionTimes, chosen.type); }
 
                                     break;
                                 }
@@ -388,10 +381,8 @@ namespace WDT_S3546932
             } else { bookWorkshop(workshopTimes, storeName); }
         }
 
-        public void addBooking(List<WorkshopTimes> workshopTimes, int ID, string storename, string name, string bookingRef, string time, string session)
+        public void addBooking(List<WorkshopTimes> workshopTimes, List<Workshop> workshopBookings, int ID, string storename, string name, string bookingRef, string time, string session)
         {
-            List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storename, "/Workshops/") + "_bookings.json"));
-
             //Creating a new Local List of type Stock//
             List<Workshop> workshop = new List<Workshop>();
 
@@ -407,13 +398,13 @@ namespace WDT_S3546932
                 {
                     foreach (var booking in workshop)
                     {
-                            if (checkBooking(name, bookingRef, storename, session, time) == false) 
+                            if (checkBooking(jsonCommand.getBookings(storename),name, bookingRef, storename, session, time) == false) 
                             {
                                 workshop.Add(new Workshop(name, session, time, bookingRef));
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("|Name: " + workshop.LastOrDefault().Name + "\n|Session: " + workshop.LastOrDefault().Session + "\n|Time: " +
                                                     workshop.LastOrDefault().Time + "\n|Booking Reference: " + workshop.LastOrDefault().BookingRef); break;
-                            }else if(checkBooking(name, bookingRef, storename, session, time) == true)
+                            }else if(checkBooking(jsonCommand.getBookings(storename), name, bookingRef, storename, session, time) == true)
                             {
                                 command.displayError("You are already booked into this Session"); return;
                             }
@@ -427,10 +418,8 @@ namespace WDT_S3546932
             bookedTotal++;
         }
 
-        public bool checkBooking(string name, string bookingref, string storename,string session, string time)
+        public bool checkBooking(List<Workshop> workshopBookings, string name, string bookingref, string storename,string session, string time)
         {
-            List<Workshop> workshopBookings = JsonConvert.DeserializeObject<List<Workshop>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storename, "/Workshops/") + "_bookings.json"));
-
             foreach (var bookings in workshopBookings)
             {
                 if (name == bookings.Name && bookings.Session == session && bookings.Time == time)
@@ -472,12 +461,12 @@ namespace WDT_S3546932
             return workshopTimes;
         }
 
-        public List<StoreStock> searchByProduct(List<StoreStock> store, string ProductName)
+        public List<StoreStock> searchByProduct(List<StoreStock> storeStock, string ProductName)
         {
-            if (store.Any(item => item.ProductName == ProductName))
+            if (storeStock.Any(item => item.ProductName == ProductName))
             {
                 Console.ForegroundColor = ConsoleColor.White; Console.WriteLine("{0,10} {1,25} {2,25} {3,15}", "ID", "Product Name", "Current Stock", "Cost"); command.colourReset();
-                foreach (var product in store)
+                foreach (var product in storeStock)
                 {
                     if (ProductName.Equals(product.ProductName, StringComparison.OrdinalIgnoreCase))
                     {
@@ -490,15 +479,15 @@ namespace WDT_S3546932
                             command.displayMessageOneLine("Enter Quantity: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
                             if (command.checkInt(quant, Quantity) == true)
                             {
-                                addProduct(itemCart, store, product.ProductName, product.Store, Quantity); purchaseProduct(product.ProductName, product.Store, Quantity);
-                                purchaseTotal += product.Cost; displayItemCart(); displayProduct(product.Store);
+                                addProduct(itemCart, storeStock, product.ProductName, product.Store, Quantity); purchaseProduct(product.ProductName, product.Store, Quantity, storeStock);
+                                purchaseTotal += product.Cost; displayItemCart(); displayProduct(product.Store, storeStock);
                             }
                         }
                     }
                     else { continue; }
                 }
             }else { command.displayError("No Product found with that name"); }
-            return store;
+            return storeStock;
         }
     }
 }

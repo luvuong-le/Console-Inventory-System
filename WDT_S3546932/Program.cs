@@ -14,8 +14,6 @@ namespace WDT_S3546932
             /* ---------- Driver Displaying Main Menu ------------- */
             Menu.mainMenu Main = new Menu.mainMenu();
             Main.displayMenu();
-            
-
         }
     }
 }

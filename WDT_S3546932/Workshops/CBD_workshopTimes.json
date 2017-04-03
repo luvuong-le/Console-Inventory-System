@@ -3,8 +3,8 @@
     "ID": 1,
     "type": "Morning",
     "sessionTimes": "8:30 - 10:30",
-    "numBooking": 6,
-    "avabililty": 4,
+    "numBooking": 7,
+    "avabililty": 3,
     "full": true
   },
   {

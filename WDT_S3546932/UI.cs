@@ -10,27 +10,27 @@ namespace WDT_S3546932
     interface ICommands
     {
         //Displays Title 
-        string displayTitle(String title);
+        string displayTitle(string title);
 
         //Displays a Message to the User
-        string displayMessage(String message);
+        string displayMessage(string message);
 
         string displayMessageOneLine(string message);
 
         //Displays an [ERROR] Message
-        string displayError(String error);
+        string displayError(string error);
 
         string getCurrentDirectory();
 
         string getJsonDataDirectory(string filename, string folder);
 
-        String[] getStoreNames();
+        string[] getFileNames(string folderName);
 
-        bool checkStoreName(string storeName, String[] filenames);
+        bool checkStoreName(string storeName, string[] filenames);
 
-        void printAllStoreNames(String[] filenames);
+        void printAllStoreNames(string[] filenames);
 
-        bool checkInt(String request, int Quantity);
+        bool checkInt(string request, int Quantity);
 
         string generateBookingReference(int size);
 
@@ -46,7 +46,7 @@ namespace WDT_S3546932
         void updateQuantityStoreStockRequest(int requestID, string fileName, string ProductName, int Quantity, string addSubtract);
 
         //Takes in a file name and reads through the json file //
-        string JsonReader(String fileName);
+        string JsonReader(string fileName);
 
         bool matchID(string storename, int ItemID);
 
@@ -55,39 +55,52 @@ namespace WDT_S3546932
         List<int> returnAllIDs(string storeName);
     }
 
-    abstract class OwnerCLI
+    interface OwnerCLI
     {
 
         //Displays all the products in Owner Inventory 
-        abstract public List<OwnerStock> displayAllProductLines();
+        List<OwnerStock> displayAllProductLines(List<OwnerStock> OwnerInventory);
 
         // Display All Stock Requests // 
-        abstract public List<Stock> displayAllStockRequests(List<Stock> StockList);
+        List<Stock> displayAllStockRequests(List<Stock> StockList);
 
-        abstract public List<Stock> displayAllStockRequestBool(List<Stock> StockList);
+        List<Stock> displayAllStockRequestBool(List<Stock> StockList);
 
-        abstract public int checkCurrentStock(string productName);
+        int checkCurrentStock(string productName);
     }
 
-    abstract class CustomerCLI
+    interface CustomerCLI
     {
-        abstract public List<StoreStock> displayProduct(string StoreName);
+        List<StoreStock> displayProduct(string StoreName, List<StoreStock> storeStock);
 
-        abstract public void displayWorkShop(string storeName);
+        void displayWorkShop(string storeName);
 
-        abstract public void purchaseProduct(String productName, String StoreName, int Quantity);
+        void purchaseProduct(string productName, string StoreName, int Quantity, List<StoreStock> storeStock);
+
+        void addProduct(List<customerPurchase> purchasedProducts, List<StoreStock> storeStock, String productName, String StoreName, int Quantity);
+
+        void bookWorkshop(List<WorkshopTimes> workshopTimes, string storeName);
+
+        List<WorkshopTimes> updateBookingDetails(List<WorkshopTimes> workshopTimes, int ID, string storename, string name, string bookingRef, string time, string session);
+
+        List<StoreStock> searchByProduct(List<StoreStock> storeStock, string ProductName);
+
+        List<customerPurchase> printReciept(List<customerPurchase> products, List<StoreStock> storeStock, int bookedTotal, string storeName);
+
+
     }
 
-    abstract class FranchiseCLI
+    interface FranchiseCLI
     {
-        abstract public List<StoreStock> displayInventory(string StoreName);
+        List<StoreStock> displayInventory(string StoreName, List<StoreStock> storeStock);
 
-        abstract public List<StoreStock> displayInventoryThres(string StoreName);
+        List<StoreStock> displayInventoryThres(string StoreName, List<StoreStock> storeStock);
 
-        abstract public void AddNewInventory(String StoreName);
+        void AddNewInventory(string StoreName, List<OwnerStock> OwnerInventory, List<StoreStock> storeStock);
 
-        abstract public List<Stock> requestForStock(String productName, String StoreName, int Quantity);
+        List<Stock> requestForStock(string productName, string StoreName, int Quantity);
 
-        abstract public void AddProduct(String productName, String StoreName, int Quantity);
+        void AddProduct(string productName, string StoreName, int Quantity);
+
     }
 }

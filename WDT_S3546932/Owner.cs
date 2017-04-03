@@ -17,53 +17,49 @@ namespace WDT_S3546932
         JsonUtility jsonCommand = new JsonUtility();
 
         #region displayAllProductLines
-        public override List<OwnerStock> displayAllProductLines()
+        public List<OwnerStock> displayAllProductLines(List<OwnerStock> OwnerInventory)
         {
-            List<OwnerStock> productList = null;
             try
             {
                 Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
 
-                productList = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
-                foreach (var product in productList)
+                foreach (var product in OwnerInventory)
                 {
                     Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock);
                 }
             } catch(Exception){
                 command.displayError("");
             }
-            return productList;
+            return OwnerInventory;
         }
         #endregion
 
         #region displayStockRequests
-        public override List<Stock> displayAllStockRequests(List<Stock> productList)
+        public List<Stock> displayAllStockRequests(List<Stock> stockRequests)
         {
-            displayAllStock(productList);
-            stockRequest(productList);
-            return productList;
+            displayAllStock(stockRequests);
+            stockRequest(stockRequests);
+            return stockRequests;
         }
         #endregion
 
         #region displayStockRequestsBool
-        public override List<Stock> displayAllStockRequestBool(List<Stock> productList)
+        public List<Stock> displayAllStockRequestBool(List<Stock> stockRequests)
         {
             command.displayMessageOneLine("Enter [True/False]: "); String choice = Console.ReadLine();
 
-            productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
-
-            foreach (var request in productList)
+            foreach (var request in stockRequests)
             {
                 if (choice.Equals("True", StringComparison.OrdinalIgnoreCase))
                 {
-                    displayOptionStock(productList, true);
-                    stockRequest(productList);
+                    displayOptionStock(stockRequests, true);
+                    stockRequest(stockRequests);
                     break;
                 }
                 else if (choice.Equals("False", StringComparison.OrdinalIgnoreCase))
                 {
-                    displayOptionStock(productList, false);
-                    stockRequest(productList);
+                    displayOptionStock(stockRequests, false);
+                    stockRequest(stockRequests);
                     break;
                 }else
                 {
@@ -71,7 +67,7 @@ namespace WDT_S3546932
                 }
 
             }
-            return productList;
+            return stockRequests;
         }
         #endregion
 
@@ -117,12 +113,12 @@ namespace WDT_S3546932
         }
         #region StockRequest
         // Calls and Updates Details in StockRequest.json, Storename.json, OwnersInventory.json //
-        public List<Stock> stockRequest(List<Stock> productList)
+        public List<Stock> stockRequest(List<Stock> stockRequests)
         {
-                command.displayMessageOneLine("Enter Request To Process[ID]: "); String requestProcess = Console.ReadLine(); int requestID = command.convertInt(requestProcess);
+            command.displayMessageOneLine("Enter Request To Process[ID]: "); String requestProcess = Console.ReadLine(); int requestID = command.convertInt(requestProcess);
             if (command.checkInt(requestProcess, requestID) == true)
             {
-                foreach (var request in productList)
+                foreach (var request in stockRequests)
                 {
 
                     if (request.ID == requestID)
@@ -153,17 +149,17 @@ namespace WDT_S3546932
                             break;
                         }
                     }
-                    else if (requestID > productList.Count) { command.displayError("No such ID"); break; }
+                    else if (requestID > stockRequests.Count) { command.displayError("No such ID"); break; }
                     else { if (request.ID != requestID) { continue; } }
                 }
             }
-            return productList;
+            return stockRequests;
         }
         #endregion
 
 
         #region checkCurrentStock
-        public override int checkCurrentStock(string productName)
+        public int checkCurrentStock(string productName)
         {
             List<OwnerStock> ownerStock = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
 

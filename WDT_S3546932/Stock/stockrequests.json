@@ -34,5 +34,14 @@
     "CurrentStock": 10,
     "Processed": true,
     "StockAvailability": true
+  },
+  {
+    "ID": 5,
+    "StoreName": "CBD",
+    "ProductRequested": "Hat",
+    "Quantity": 1,
+    "CurrentStock": 11,
+    "Processed": false,
+    "StockAvailability": true
   }
 ]

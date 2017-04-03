@@ -15,6 +15,16 @@ namespace WDT_S3546932
     {
         Utility command = new Utility();
 
+        public List<StoreStock> getStoreData(string storeName) { List<StoreStock> stores = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storeName, "/Stores/") + "_inventory.json")); return stores; }
+
+        public List<OwnerStock> getOwnerFile() { List<OwnerStock> owner =  JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json")); return owner; }
+
+        public List<Stock> getStockRequestData() { List<Stock> stockRequest = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json")); return stockRequest; }
+
+        public List<Workshop> getBookings(string storeName) { List<Workshop> bookings = JsonConvert.DeserializeObject<List<Workshop>>(JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_bookings.json")); return bookings; }
+
+        public List<WorkshopTimes> getWorkShopTimes(string storeName) { List<WorkshopTimes> workshopTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json")); return workshopTimes; }
+
         public string JsonReader(string fileName)
         {
             String json = " ";

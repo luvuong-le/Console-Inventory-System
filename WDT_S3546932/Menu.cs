@@ -20,7 +20,6 @@ namespace WDT_S3546932
 
         static Utility command = new Utility(); static bool StoreName = false; static bool storeNameSet = false;
 
-
         /* ---------- Displays The Main Menu  ------------------ */
         public class mainMenu : Menu
         {
@@ -51,10 +50,10 @@ namespace WDT_S3546932
         public class OwnerMenu : Menu
         {
             Owner Owner = new Owner();
-            private List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
 
             public override void displayMenu()
             {
+
                 command.displayTitle(" \n Welcome to Marvellous Magic (Owner)");
                 do
                 {
@@ -64,9 +63,9 @@ namespace WDT_S3546932
 
                     switch (usrInp)
                     {
-                        case 1: command.displayTitle("Displaying All Stock Requests"); Owner.displayAllStockRequests(productList); continue;
-                        case 2: command.displayTitle("Displaying Stock Requests (True/False)"); Owner.displayAllStockRequestBool(productList); continue;
-                        case 3: command.displayTitle("Displaying All Product Lines"); Owner.displayAllProductLines(); continue;
+                        case 1: command.displayTitle("Displaying All Stock Requests"); Owner.displayAllStockRequests(jsonCommand.getStockRequestData()); continue;
+                        case 2: command.displayTitle("Displaying Stock Requests (True/False)"); Owner.displayAllStockRequestBool(jsonCommand.getStockRequestData()); continue;
+                        case 3: command.displayTitle("Displaying All Product Lines"); Owner.displayAllProductLines(jsonCommand.getOwnerFile()); continue;
                         case 4: Menu.mainMenu main = new Menu.mainMenu();  main.displayMenu(); continue;
                         case 5: Environment.Exit(0); continue;
                         default: command.displayError("Must be in Range of [1] - [5]!"); continue;
@@ -85,9 +84,9 @@ namespace WDT_S3546932
                 {
                     if (storeNameSet == false)
                     {
-                        command.displayMessageOneLine("\nCurrent Stores are: "); command.printAllStoreNames(command.getStoreNames());
+                        command.displayMessageOneLine("\nCurrent Stores are: "); command.printAllStoreNames(command.getFileNames("Stores"));
                         command.displayMessageOneLine("\n\nEnter Store Name: "); string storeNameOption = Console.ReadLine(); //Change to Store ID for submission //
-                        if (command.checkStoreName(storeNameOption, command.getStoreNames()) == true)
+                        if (command.checkStoreName(storeNameOption, command.getFileNames("Stores")) == true)
                         {
                             StoreName = true;
                             storeName = storeNameOption.ToUpper();
@@ -98,15 +97,15 @@ namespace WDT_S3546932
                     //Check if Store name equals Current Store Names //
                     while (StoreName == true)
                     {
-                        command.displayTitle("\n Welcome to Marvellous Magic (Franchise Holder - Olinda) Store: " + storeName);
+                        command.displayTitle("\n Welcome to Marvellous Magic (Franchise Holder) Store: " + storeName);
                         command.displayMessage(" 1. Display Inventory \n 2. Display Inventory (Threshold) \n 3. Add New Inventory Item \n 4. Return to Main Menu \n 5. Exit");
                         Console.ForegroundColor = ConsoleColor.White; Console.Write("\n Enter Option [1] - [4]: "); string_usr_inp = Console.ReadLine(); Int32.TryParse(string_usr_inp, out usrInp); command.colourReset();
 
                         switch (usrInp)
                         {
-                            case 1: command.displayMessage("Displaying Inventory for: " + storeName); franchiseOwner.displayInventory(storeName); continue;
-                            case 2: command.displayMessage("Displaying Inventory Threshold"); franchiseOwner.displayInventoryThres(storeName);  continue;
-                            case 3: command.displayMessage("Adding New Inventory Item"); franchiseOwner.AddNewInventory(storeName); continue;
+                            case 1: command.displayMessage("Displaying Inventory for: " + storeName); franchiseOwner.displayInventory(storeName, jsonCommand.getStoreData(storeName)); continue;
+                            case 2: command.displayMessage("Displaying Inventory Threshold"); franchiseOwner.displayInventoryThres(storeName, jsonCommand.getStoreData(storeName));  continue;
+                            case 3: command.displayMessage("Adding New Inventory Item"); franchiseOwner.AddNewInventory(storeName, jsonCommand.getOwnerFile(), jsonCommand.getStoreData(storeName)); continue;
                             case 4: Menu.mainMenu main = new Menu.mainMenu(); storeNameSet = false; StoreName = false; main.displayMenu(); continue;
                             case 5: Environment.Exit(0); continue;
                             default: command.displayError("Must be in Range of [1] - [5]!"); continue;
@@ -127,10 +126,10 @@ namespace WDT_S3546932
                 {
                     if (storeNameSet == false)
                     {
-                        command.displayMessageOneLine("\nCurrent Stores are: "); command.printAllStoreNames(command.getStoreNames());
+                        command.displayMessageOneLine("\nCurrent Stores are: "); command.printAllStoreNames(command.getFileNames("Stores"));
                         command.displayMessageOneLine("\n\nEnter Store Name: "); string storeNameOption = Console.ReadLine(); //Change to Store ID for submission //
 
-                        if (command.checkStoreName(storeNameOption, command.getStoreNames()) == true)
+                        if (command.checkStoreName(storeNameOption, command.getFileNames("Stores")) == true)
                         {
                             StoreName = true;
                             storeName = storeNameOption.ToUpper();
@@ -149,7 +148,7 @@ namespace WDT_S3546932
 
                             switch (usrInp)
                             {
-                                case 1: command.displayMessage("Displaying Products"); customer.displayProduct(storeName); continue;
+                                case 1: command.displayMessage("Displaying Products"); customer.displayProduct(storeName, jsonCommand.getStoreData(storeName)); continue;
                                 case 2: command.displayMessage("Displaying Workshops"); customer.displayWorkShop(storeName); continue;
                                 case 3: Menu.mainMenu main = new Menu.mainMenu(); storeNameSet = false; StoreName = false; main.displayMenu(); continue;
                                 case 4: Environment.Exit(0); continue;

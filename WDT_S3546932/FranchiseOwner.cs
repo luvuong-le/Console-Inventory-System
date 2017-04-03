@@ -19,18 +19,15 @@ namespace WDT_S3546932
         
         #region AddInventory
         //Add New Inventory 
-        public override void AddNewInventory(string storeName)
+        public void AddNewInventory(string storeName, List<OwnerStock> OwnerInventory, List<StoreStock> storeStock)
         {
             //Display List of Products in OwnerInventory that is not Currently in Store File //
-            List<OwnerStock> OwnerProducts = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
-            List<StoreStock> storeStock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory(storeName, "/Stores/") + "_inventory.json"));
-
             //Display Owner Stock // 
             command.displayMessage("Owner Inventory: ");
 
             Console.WriteLine("{0,10} {1,25} {2,25}", "ID", "Product Name", "Current Stock");
 
-            foreach (var product in OwnerProducts)
+            foreach (var product in OwnerInventory)
             {
                 Console.WriteLine("{0,10} {1,25} {2,25}", product.ID, product.ProductName, product.CurrentStock);
             }
@@ -51,7 +48,7 @@ namespace WDT_S3546932
                 }
             }
 
-            int ownerCount = OwnerProducts.Count; int storeCount = storeStock.Count;
+            int ownerCount = OwnerInventory.Count; int storeCount = storeStock.Count;
 
             if(storeCount != ownerCount)
             {
@@ -67,7 +64,7 @@ namespace WDT_S3546932
 
                 List<int> ownerList = new List<int>();
 
-                foreach (var owner in OwnerProducts)
+                foreach (var owner in OwnerInventory)
                 {
                     ownerList.Add(owner.ID);
                 }
@@ -77,7 +74,7 @@ namespace WDT_S3546932
 
                 // Go through the Owner Stock and make  REQUEST TO STOCK and update to the store file and add that item in ///
 
-                foreach (var product in OwnerProducts)
+                foreach (var product in OwnerInventory)
                 {
                     foreach (var id in difference)
                     {
@@ -97,7 +94,7 @@ namespace WDT_S3546932
                         //Prompt User to Choose an ID Number and Request it Based on the List //
                         foreach (var test in difference)
                         {
-                            foreach (var product in OwnerProducts)
+                            foreach (var product in OwnerInventory)
                             {
                                 if (itemID == test && product.ID == itemID)
                                 {
@@ -135,19 +132,15 @@ namespace WDT_S3546932
 
         #region DisplayInventory
         //Display Inventory and Request For Stock in StockRequest.json //
-        public override List<StoreStock> displayInventory(string StoreName)
+        public List<StoreStock> displayInventory(string StoreName, List<StoreStock> storeStock)
         {
             command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres = command.convertInt(Thres);
-
-                String storeNameFile = command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json";
-
-                List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
 
             if (command.checkInt(Thres, thres) == true)
             {
                 Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("\n{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock"); command.colourReset();
 
-                foreach (var product in productList)
+                foreach (var product in storeStock)
                 {
                     if (product.CurrentStock <= thres)
                     {
@@ -161,7 +154,7 @@ namespace WDT_S3546932
                 }
                 command.colourChange(); command.displayMessage("Green: [Threshold that needs Restocking]"); command.colourReset(); Console.ForegroundColor = ConsoleColor.Red; command.displayMessage("Red: [Below Threshold, Does not need Restocking]"); command.colourReset();
             }
-            else { displayInventory(StoreName); }
+            else { displayInventory(StoreName, storeStock); }
 
             command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid); 
     
@@ -170,7 +163,7 @@ namespace WDT_S3546932
                 command.displayMessageOneLine("Please Enter the Quantity you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
                 if (command.checkInt(quant, Quantity) == true)
                 {
-                    foreach (var product in productList)
+                    foreach (var product in storeStock)
                     {
                         if (product.ID == requestID)
                         {
@@ -193,35 +186,33 @@ namespace WDT_S3546932
                     }
                 }
             }
-            return productList;
+            return storeStock;
         }
         #endregion
 
         #region DisplayInventoryThres
         // Display Inventory Based on Threshold
-        public override List<StoreStock> displayInventoryThres(string StoreName)
+        public List<StoreStock> displayInventoryThres(string StoreName, List<StoreStock> storeStock)
         {
+            int productRestock = 0;
             command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres = command.convertInt(Thres);
-
-            String storeNameFile = command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json";
-
-            List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(jsonCommand.JsonReader(storeNameFile));
 
             if (command.checkInt(Thres, thres) == true)
             {
                 Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("\n{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock"); command.colourReset();
 
-                foreach (var product in productList)
+                foreach (var product in storeStock)
                 {
                     if (product.CurrentStock <= thres)
                     {
+                        productRestock += 1;
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true); command.colourReset();
-                    }
+                    }else if(productRestock == 0) { command.displayError("No Items to be Restocked!"); break; }
                 }
                 Console.ForegroundColor = ConsoleColor.Cyan; command.displayMessage("Blue: [All Items based on threshold that need Restocking]"); command.colourReset();
             }
-            else { displayInventory(StoreName); }
+            else { displayInventory(StoreName, storeStock); }
 
 
             command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid);
@@ -230,7 +221,7 @@ namespace WDT_S3546932
                 command.displayMessageOneLine("Please Enter the Quantity you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
                 if (command.checkInt(quant, Quantity))
                 {
-                    foreach (var product in productList)
+                    foreach (var product in storeStock)
                     {
                         if (product.ReStock == true && product.CurrentStock <= thres)
                         {
@@ -249,16 +240,16 @@ namespace WDT_S3546932
                 }
             }
 
-            return productList;
+            return storeStock;
         }
         #endregion
 
         #region requestStock
         //Request For Stock, Appends to the StockRequest.json File//
-        public override List<Stock> requestForStock(string productName, string StoreName, int Quantity)
+        public List<Stock> requestForStock(string productName, string StoreName, int Quantity)
         {
             //Access Owner Inventory //
-            List<OwnerStock> products = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
+            List<OwnerStock> ownerInventory = jsonCommand.getOwnerFile();
 
             command.displayMessage("Requesting");
 
@@ -272,14 +263,14 @@ namespace WDT_S3546932
             }
             
             //Looping through the Owner Inventory To find a Match, If a match is found, Add new Stock Request//
-            foreach (var storeProduct in products)
+            foreach (var product in ownerInventory)
             {
-                    if (productName == storeProduct.ProductName)
+                    if (productName == product.ProductName)
                     {
-                        if (Quantity > owner.checkCurrentStock(storeProduct.ProductName)) { storeProduct.StockAvailability = false; } else { storeProduct.StockAvailability = true; }
+                        if (Quantity > owner.checkCurrentStock(product.ProductName)) { product.StockAvailability = false; } else { product.StockAvailability = true; }
 
                         //Adding a new Object using the already available stock object //
-                        stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName.ToUpper(), storeProduct.ProductName, Quantity, owner.checkCurrentStock(productName), false, storeProduct.StockAvailability));
+                        stock.Add(new Stock(jsonCommand.lastRequestID() + 1, StoreName.ToUpper(), product.ProductName, Quantity, owner.checkCurrentStock(productName), false, product.StockAvailability));
                     }
             }
 
@@ -292,7 +283,7 @@ namespace WDT_S3546932
 
         //Optional Adds The Product Based on the Owners Current Inventory //
         #region addProduct
-        public override void AddProduct(String productName, String StoreName, int Quantity)
+        public void AddProduct(String productName, String StoreName, int Quantity)
         {
             //Creating a new Local List of type Stock//
             List<StoreStock> stock = new List<StoreStock>();
@@ -303,7 +294,7 @@ namespace WDT_S3546932
                 var jsonData = streamReader.ReadToEnd(); stock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonData);
             }
 
-            List<OwnerStock> ownerInventory = JsonConvert.DeserializeObject<List<OwnerStock>>(jsonCommand.JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json"));
+            List<OwnerStock> ownerInventory = jsonCommand.getOwnerFile();
 
             //Looping through the Stock Class//
             foreach (var product in ownerInventory)

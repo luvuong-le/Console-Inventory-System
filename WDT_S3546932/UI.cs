@@ -38,7 +38,16 @@ namespace WDT_S3546932
 
     interface JCommands
     {
-   
+        List<Stock> getStockRequestData();
+
+        List<OwnerStock> getOwnerFile();
+
+        List<StoreStock> getStoreData(string storeName);
+
+        List<Workshop> getBookings(string storeName);
+
+        List<WorkshopTimes> getWorkShopTimes(string storeName);
+
         void updateQuantityOwner(string fileName, string ProductName, int Quantity);
 
         void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract);

@@ -50,11 +50,11 @@ namespace WDT_S3546932
 
         void updateQuantityOwner(string fileName, string ProductName, int Quantity);
 
-        void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract);
+        List<StoreStock> updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract);
 
         void updateQuantityStoreStockRequest(int requestID, string fileName, string ProductName, int Quantity, string addSubtract);
 
-        //Takes in a file name and reads through the json file //
+        //Takes in a file name and reads through the json file s
         string JsonReader(string fileName);
 
         bool matchID(string storename, int ItemID);

@@ -149,7 +149,7 @@ namespace WDT_S3546932
             File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", updatedStockRequests);
       }
 
-        public void updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract)
+        public List<StoreStock> updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract)
         {
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(fileName));
             foreach (var product in productList)
@@ -173,6 +173,7 @@ namespace WDT_S3546932
 
             var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
             File.WriteAllText(fileName, updatedList);
+            return productList;
         }
     }
 }

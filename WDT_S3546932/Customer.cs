@@ -145,8 +145,7 @@ namespace WDT_S3546932
                                         command.displayMessageOneLine("Keep Purchasing [Yes/No]: "); string more = Console.ReadLine();
                                         if (more.Equals("Yes", StringComparison.OrdinalIgnoreCase))
                                         {
-                                            productListCount = 0;
-                                            displayProduct(storeName, storeStock);
+                                            displayProduct(storeName, jsonCommand.getStoreData(storeName));
                                             continue;
                                         }
                                         else if (more.Equals("No", StringComparison.OrdinalIgnoreCase))
@@ -277,7 +276,7 @@ namespace WDT_S3546932
                     {
                         if (products[i].ProductName == storeStock[j].ProductName)
                         {
-                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + storeStock[j].Cost.ToString("N2"));
+                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + storeStock[j].Cost * products[i].Quantity + ".00");
                         }
                     }
                 }    
@@ -296,7 +295,7 @@ namespace WDT_S3546932
                     {
                         if (products[i].ProductName == storeStock[j].ProductName)
                         {
-                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + storeStock[j].Cost.ToString("N2"));
+                            Console.WriteLine("{0,15} {1,15} {2,15} {3,15}", products[i].purchaseItemNumber, products[i].ProductName, products[i].Quantity, "$" + storeStock[j].Cost * products[i].Quantity + ".00");
                         }
                     }
                 }

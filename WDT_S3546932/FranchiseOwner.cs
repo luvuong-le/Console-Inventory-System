@@ -208,7 +208,7 @@ namespace WDT_S3546932
                         productRestock += 1;
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true); command.colourReset();
-                    }else if(productRestock == 0) { command.displayError("No Items to be Restocked!"); break; }
+                    }else if(productRestock == 0) { command.displayError("No Items to be Restocked!"); Menu.FranchiseOwner Fmenu = new Menu.FranchiseOwner(); Fmenu.displayMenu(); }
                 }
                 Console.ForegroundColor = ConsoleColor.Cyan; command.displayMessage("Blue: [All Items based on threshold that need Restocking]"); command.colourReset();
             }
@@ -239,7 +239,6 @@ namespace WDT_S3546932
                     }
                 }
             }
-
             return storeStock;
         }
         #endregion

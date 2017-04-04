@@ -110,13 +110,5 @@
     "CurrentStock": 15,
     "ReStock": false,
     "Cost": 5.5
-  },
-  {
-    "ID": 15,
-    "Store": "EAST",
-    "ProductName": "Magic Table",
-    "CurrentStock": 12,
-    "ReStock": false,
-    "Cost": 50.0
   }
 ]

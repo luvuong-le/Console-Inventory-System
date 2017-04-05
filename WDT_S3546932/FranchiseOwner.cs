@@ -108,24 +108,24 @@ namespace WDT_S3546932
                                         Console.WriteLine("\n{0,0} {1,15} {2,15}", product.ID, product.ProductName, "Quantity: " + Quantity);
 
                                         command.displayMessageOneLine("Would you like to Continue [Yes/No]: "); string choice = Console.ReadLine();
-                                        if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                                        if (choice.Equals("Yes".Trim(), StringComparison.OrdinalIgnoreCase))
                                         {
                                             //Process Add Inventory //
                                             requestForStock(product.ProductName, storeName, Quantity);
                                             command.displayMessage("Successfully Requested Product, Please wait for a response from the Head Office.");
                                             AddProduct(product.ProductName, storeName, Quantity = 0);
                                         }
-                                        else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
+                                        else if (choice.Equals("No".Trim(), StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); }
                                         return;
                                     }
                                 }
                             }
                         }
                     }
-                    else if(difference.Any(item => item != itemID && itemID <= difference.Count)) { command.displayError("You Already have that Item in Stock"); return; } 
+                    else if(difference.Any(item => item != itemID)) { command.displayError("You already have that Item in Stock"); return; } 
                     else if(difference.Any(item => itemID > item)) { command.displayError("No Such ID"); return; }
                 }
-                }else { command.displayError("You Already Have All Stock In Your Inventory"); return; }
+                }else { command.displayError("You already Have All Stock In Your Inventory"); return; }
             }
 
         #endregion
@@ -175,17 +175,17 @@ namespace WDT_S3546932
                             else
                             {
                                 Console.ForegroundColor = ConsoleColor.Red; command.displayMessageOneLine("[ERROR] You have enough stock, Would you like to Continue [Yes/No]: "); string choice = Console.ReadLine(); command.colourReset();
-                                if (choice.Equals("Yes", StringComparison.OrdinalIgnoreCase))
+                                if (choice.Equals("Yes".Trim(), StringComparison.OrdinalIgnoreCase))
                                 {
                                     requestForStock(product.ProductName, StoreName, Quantity);
                                 }
-                                else if (choice.Equals("No", StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); break; }
+                                else if (choice.Equals("No".Trim(), StringComparison.OrdinalIgnoreCase)) { command.displayMessage("Ok. Returning to Menu"); break; }
                                 break;
                             }
                         }
                     }
                 }
-            }
+            }else { Menu.FranchiseOwner franchiseMenu = new Menu.FranchiseOwner(); franchiseMenu.displayMenu(); }
             return storeStock;
         }
         #endregion
@@ -212,7 +212,7 @@ namespace WDT_S3546932
                 }
                 Console.ForegroundColor = ConsoleColor.Cyan; command.displayMessage("Blue: [All Items based on threshold that need Restocking]"); command.colourReset();
             }
-            else { displayInventory(StoreName, storeStock); }
+            else { displayInventoryThres(StoreName, storeStock); }
 
 
             command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid);
@@ -238,7 +238,7 @@ namespace WDT_S3546932
                         }
                     }
                 }
-            }
+            } else { Menu.FranchiseOwner franchiseMenu = new Menu.FranchiseOwner(); franchiseMenu.displayMenu(); }
             return storeStock;
         }
         #endregion
@@ -256,7 +256,7 @@ namespace WDT_S3546932
             List<Stock> stock = new List<Stock>();
 
             //Reading through the stockrequests.json file and with that jsonData, converting the json data into Object List<Stock> //
-            using (var streamReader = new StreamReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"))
+            using (var streamReader = new StreamReader(command.getJsonDataDirectory("stockrequests".Trim(), "/Stock/") + ".json"))
             {
                 var jsonData = streamReader.ReadToEnd(); stock = JsonConvert.DeserializeObject<List<Stock>>(jsonData);
             }
@@ -275,7 +275,7 @@ namespace WDT_S3546932
 
             //Append the Results and convert the Object back into a JSON String //
             var appendRequest = JsonConvert.SerializeObject(stock, Formatting.Indented);
-            File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", appendRequest);
+            File.WriteAllText(command.getJsonDataDirectory("stockrequests".Trim(), "/Stock/") + ".json", appendRequest);
             return stock; //Returns New List of Stock Requests
         }
         #endregion
@@ -288,7 +288,7 @@ namespace WDT_S3546932
             List<StoreStock> stock = new List<StoreStock>();
 
             //Reading through the stockrequests.json file and with that jsonData, converting the json data into Object List<Stock> //
-            using (var streamReader = new StreamReader(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json"))
+            using (var streamReader = new StreamReader(command.getJsonDataDirectory(StoreName.Trim(), "/Stores/") + "_inventory.json"))
             {
                 var jsonData = streamReader.ReadToEnd(); stock = JsonConvert.DeserializeObject<List<StoreStock>>(jsonData);
             }
@@ -315,8 +315,8 @@ namespace WDT_S3546932
 
             //Append the Results and convert the Object back into a JSON String //
             var appendRequest = JsonConvert.SerializeObject(stock, Formatting.Indented);
-            File.WriteAllText(command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", appendRequest);
-            jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json", productName, Quantity);
+            File.WriteAllText(command.getJsonDataDirectory(StoreName.Trim(), "/Stores/") + "_inventory.json", appendRequest);
+            jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners".Trim(), "/Stock/") + "_inventory.json", productName, Quantity);
         }
     }
     #endregion

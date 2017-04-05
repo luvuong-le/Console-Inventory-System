@@ -15,15 +15,15 @@ namespace WDT_S3546932
     {
         Utility command = new Utility();
 
-        public List<StoreStock> getStoreData(string storeName) { List<StoreStock> stores = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storeName, "/Stores/") + "_inventory.json")); return stores; }
+        public List<StoreStock> getStoreData(string storeName) { List<StoreStock> stores = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storeName.Trim(), "/Stores/") + "_inventory.json")); return stores; }
 
-        public List<OwnerStock> getOwnerFile() { List<OwnerStock> owner =  JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json")); return owner; }
+        public List<OwnerStock> getOwnerFile() { List<OwnerStock> owner =  JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners".Trim(), "/Stock/") + "_inventory.json")); return owner; }
 
-        public List<Stock> getStockRequestData() { List<Stock> stockRequest = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json")); return stockRequest; }
+        public List<Stock> getStockRequestData() { List<Stock> stockRequest = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests".Trim(), "/Stock/") + ".json")); return stockRequest; }
 
-        public List<Workshop> getBookings(string storeName) { List<Workshop> bookings = JsonConvert.DeserializeObject<List<Workshop>>(JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_bookings.json")); return bookings; }
+        public List<Workshop> getBookings(string storeName) { List<Workshop> bookings = JsonConvert.DeserializeObject<List<Workshop>>(JsonReader(command.getJsonDataDirectory(storeName.Trim(), "/Workshops/") + "_bookings.json")); return bookings; }
 
-        public List<WorkshopTimes> getWorkShopTimes(string storeName) { List<WorkshopTimes> workshopTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(JsonReader(command.getJsonDataDirectory(storeName, "/Workshops/") + "_workshopTimes.json")); return workshopTimes; }
+        public List<WorkshopTimes> getWorkShopTimes(string storeName) { List<WorkshopTimes> workshopTimes = JsonConvert.DeserializeObject<List<WorkshopTimes>>(JsonReader(command.getJsonDataDirectory(storeName.Trim(), "/Workshops/") + "_workshopTimes.json")); return workshopTimes; }
 
         public string JsonReader(string fileName)
         {
@@ -48,8 +48,8 @@ namespace WDT_S3546932
 
         public List<int> returnAllIDs(String storeName)
         {
-            List<StoreStock> storeProducts = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storeName, "/Stores/") + "_inventory.json"));
-            List<OwnerStock> ownerProducts = JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners", "/Stock/") + ".json"));
+            List<StoreStock> storeProducts = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storeName.Trim(), "/Stores/") + "_inventory.json"));
+            List<OwnerStock> ownerProducts = JsonConvert.DeserializeObject<List<OwnerStock>>(JsonReader(command.getJsonDataDirectory("owners".Trim(), "/Stock/") + ".json"));
 
             List<int> storeList = new List<int>();
             foreach (var store in storeProducts)
@@ -61,7 +61,7 @@ namespace WDT_S3546932
 
         public int lastRequestID()
         {
-            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
+            List<Stock> productList = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests".Trim(), "/Stock/") + ".json"));
             int ID = 0;
             foreach (var reqID in productList)
             {
@@ -73,7 +73,7 @@ namespace WDT_S3546932
 
         public bool matchID(string storename, int ItemID)
         {
-            List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storename, "/Stores/") + "_inventory.json"));
+            List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(command.getJsonDataDirectory(storename.Trim(), "/Stores/") + "_inventory.json"));
 
             if (productList.Any(item => item.ID == ItemID))
             {
@@ -126,7 +126,7 @@ namespace WDT_S3546932
         public void updateQuantityStoreStockRequest(int requestID, string fileName, string ProductName, int Quantity, string addSubtract)
         {
             List<StoreStock> productList = JsonConvert.DeserializeObject<List<StoreStock>>(JsonReader(fileName));
-            List<Stock> stockrequests = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json"));
+            List<Stock> stockrequests = JsonConvert.DeserializeObject<List<Stock>>(JsonReader(command.getJsonDataDirectory("stockrequests".Trim(), "/Stock/") + ".json"));
 
             if (productList.Any(item => item.ProductName == ProductName))
             {
@@ -146,7 +146,7 @@ namespace WDT_S3546932
             var updatedList = JsonConvert.SerializeObject(productList, Formatting.Indented);
             File.WriteAllText(fileName, updatedList);
             var updatedStockRequests = JsonConvert.SerializeObject(stockrequests, Formatting.Indented);
-            File.WriteAllText(command.getJsonDataDirectory("stockrequests", "/Stock/") + ".json", updatedStockRequests);
+            File.WriteAllText(command.getJsonDataDirectory("stockrequests".Trim(), "/Stock/") + ".json", updatedStockRequests);
       }
 
         public List<StoreStock> updateQuantityStore(string fileName, string ProductName, int Quantity, string addSubtract)

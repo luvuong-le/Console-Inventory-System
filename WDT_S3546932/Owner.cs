@@ -50,13 +50,13 @@ namespace WDT_S3546932
 
             foreach (var request in stockRequests)
             {
-                if (choice.Equals("True", StringComparison.OrdinalIgnoreCase))
+                if (choice.Equals("True".Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     displayOptionStock(stockRequests, true);
                     stockRequest(stockRequests);
                     break;
                 }
-                else if (choice.Equals("False", StringComparison.OrdinalIgnoreCase))
+                else if (choice.Equals("False".Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     displayOptionStock(stockRequests, false);
                     stockRequest(stockRequests);
@@ -138,10 +138,10 @@ namespace WDT_S3546932
                             String StoreName = request.StoreName;
                             if (request.Processed == false)
                             {
-                                jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners", "/Stock/") + "_inventory.json", ProductName, Quantity);
+                                jsonCommand.updateQuantityOwner(command.getJsonDataDirectory("owners".Trim(), "/Stock/") + "_inventory.json", ProductName, Quantity);
                                 if (request.StoreName == StoreName && request.Processed == false)
                                 {
-                                    jsonCommand.updateQuantityStoreStockRequest(requestID , command.getJsonDataDirectory(StoreName, "/Stores/") + "_inventory.json", ProductName, Quantity, "add");
+                                    jsonCommand.updateQuantityStoreStockRequest(requestID , command.getJsonDataDirectory(StoreName.Trim(), "/Stores/") + "_inventory.json", ProductName, Quantity, "add");
                                     request.Processed = true;
                                 }
                             }

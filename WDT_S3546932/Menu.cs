@@ -16,34 +16,34 @@ namespace WDT_S3546932
 
         static JsonUtility jsonCommand = new JsonUtility();
 
-        private static string string_usr_inp; private static int usrInp; private static string storeName;
+        private string string_usr_inp; private int usrInp; private static string storeName;
 
-        static Utility command = new Utility(); static bool StoreName = false; static bool storeNameSet = false;
+        static Utility command = new Utility(); static bool StoreName = false; static bool storeNameSet = false; 
 
         /* ---------- Displays The Main Menu  ------------------ */
         public class mainMenu : Menu
         {
             public override void displayMenu()
             {
-                int usrInp;
                 do
                 {
                     command.displayTitle(" \n Welcome to Marvellous Magic");
                     command.displayMessage(" 1. Owner \n 2. Franchise Owner \n 3. Customer \n 4. Quit");
-                    Console.ForegroundColor = ConsoleColor.White; Console.Write("\n Enter Option [1] - [4]: "); string string_usr_inp = Console.ReadLine(); command.colourReset();
-                    Int32.TryParse(string_usr_inp, out usrInp);
+                    Console.ForegroundColor = ConsoleColor.White; Console.Write("\n Enter Option [1] - [4]: "); string string_usr_inp = Console.ReadLine(); command.colourReset(); usrInp = command.convertInt(string_usr_inp);
 
-                /* Begin Switch Statement */
-                switch (usrInp)
-                {
-                    case 1: Menu.OwnerMenu Omenu = new Menu.OwnerMenu(); Omenu.displayMenu(); continue;
-                    case 2: Menu.FranchiseOwner Fmenu = new Menu.FranchiseOwner(); Fmenu.displayMenu(); command.displayMessage("Franchise Owner"); continue;
-                    case 3: Menu.CustomerMenu Cmenu = new Menu.CustomerMenu(); Cmenu.displayMenu(); command.displayMessage("Customer Menu"); continue;
-                    case 4: Environment.Exit(0); break;
-                    default: command.displayError("Must be in range! [1] - [4]"); continue;
-
-                } 
-            } while (usrInp != 4); }
+                    if (command.checkInt(string_usr_inp, usrInp))
+                    {
+                        /* Begin Switch Statement */
+                        switch (usrInp)
+                        {
+                            case 1: Menu.OwnerMenu Omenu = new Menu.OwnerMenu(); Omenu.displayMenu(); continue;
+                            case 2: Menu.FranchiseOwner Fmenu = new Menu.FranchiseOwner(); Fmenu.displayMenu(); continue;
+                            case 3: Menu.CustomerMenu Cmenu = new Menu.CustomerMenu(); Cmenu.displayMenu(); continue;
+                            case 4: Environment.Exit(0); break;
+                            default: command.displayError("Must be in range! [1] - [4]"); continue;
+                        }
+                    }
+                } while (usrInp != 4); }
         }
 
         /* ---------- Owner Class Derived from Base Class []----------- */

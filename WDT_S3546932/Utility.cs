@@ -50,9 +50,9 @@ namespace WDT_S3546932
             for (int i = 0; i < filenames.Length; i++)
             {
                 nameOfStore = Path.GetFileNameWithoutExtension(filenames[i]).Split('_')[0];
-                if (nameOfStore.Equals(storeName, StringComparison.OrdinalIgnoreCase)){ return true; }
+                if (nameOfStore.Trim().Equals(storeName.Trim(), StringComparison.OrdinalIgnoreCase)){ return true; }
 
-                else if (!nameOfStore.Equals(storeName, StringComparison.OrdinalIgnoreCase)) { continue; }
+                else if (!nameOfStore.Trim().Equals(storeName.Trim(), StringComparison.OrdinalIgnoreCase)) { continue; }
             }
             return false;
         }
@@ -90,12 +90,12 @@ namespace WDT_S3546932
 
         public bool Continue(string message)
         {
-            displayMessageOneLine(message + "[Yes/No/Exit]: ");
+            displayMessageOneLine(message + "[Yes/No]: ");
             string yesorno = Console.ReadLine();
 
-            if (yesorno.Equals("Yes", StringComparison.OrdinalIgnoreCase)){
+            if (yesorno.Trim().Equals("Yes".Trim(), StringComparison.OrdinalIgnoreCase)){
                 return true;
-            } else if (yesorno.Equals("No", StringComparison.OrdinalIgnoreCase)){
+            } else if (yesorno.Trim().Equals("No".Trim(), StringComparison.OrdinalIgnoreCase)){
                 return false;
             }   return false;
         }

@@ -3,32 +3,32 @@
     "ID": 1,
     "type": "Morning",
     "sessionTimes": "8:30 - 10:30",
-    "numBooking": 7,
-    "avabililty": 3,
-    "full": true
+    "numBooking": 9,
+    "avabililty": 1,
+    "full": false
   },
   {
     "ID": 2,
     "type": "Morning",
     "sessionTimes": "10:30 - 12:30",
-    "numBooking": 9,
-    "avabililty": 1,
-    "full": true
+    "numBooking": 1,
+    "avabililty": 9,
+    "full": false
   },
   {
     "ID": 3,
     "type": "Afternoon",
     "sessionTimes": "12:30 - 2:30",
-    "numBooking": 3,
-    "avabililty": 7,
-    "full": true
+    "numBooking": 0,
+    "avabililty": 10,
+    "full": false
   },
   {
     "ID": 4,
     "type": "Afternoon",
     "sessionTimes": "2:30 - 4:30",
-    "numBooking": 10,
-    "avabililty": 0,
+    "numBooking": 1,
+    "avabililty": 9,
     "full": false
   }
 ]

@@ -10,23 +10,5 @@
     "Session": "Afternoon",
     "Time": "2:30 - 4:30",
     "BookingRef": "5231083"
-  },
-  {
-    "Name": "wqin",
-    "Session": "Morning",
-    "Time": "8:30 - 10:30",
-    "BookingRef": "7193903"
-  },
-  {
-    "Name": "Lu",
-    "Session": "Morning",
-    "Time": "8:30 - 10:30",
-    "BookingRef": "1033186"
-  },
-  {
-    "Name": "Winnie",
-    "Session": "Morning",
-    "Time": "8:30 - 10:30",
-    "BookingRef": "1414004"
   }
 ]

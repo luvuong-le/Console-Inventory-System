@@ -200,51 +200,46 @@ namespace WDT_S3546932
         // Display Inventory Based on Threshold
         public List<StoreStock> displayInventoryThres(string StoreName, List<StoreStock> storeStock)
         {
-            int productRestock = 0;
             command.displayMessageOneLine("Enter a Threshold for Re-Stocking: "); string Thres = Console.ReadLine(); int thres = command.convertInt(Thres);
 
             if (command.checkInt(Thres, thres) == true)
             {
-                Console.ForegroundColor = ConsoleColor.White;  Console.WriteLine("\n{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock"); command.colourReset();
-
-                foreach (var product in storeStock)
+                if (storeStock.Any(item => item.CurrentStock <= thres))
                 {
-                    if (product.CurrentStock <= thres)
-                    {
-                        productRestock += 1;
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true); command.colourReset();
-                    }else if(productRestock == 0) { command.displayError("No Items to be Restocked!"); Menu.FranchiseOwner Fmenu = new Menu.FranchiseOwner(); Fmenu.displayMenu(); }
-                }
-                Console.ForegroundColor = ConsoleColor.Cyan; command.displayMessage("Blue: [All Items based on threshold that need Restocking]"); command.colourReset();
-            }
-            else { displayInventoryThres(StoreName, storeStock); }
+                    Console.ForegroundColor = ConsoleColor.White; Console.WriteLine("\n{0,10} {1,25} {2,25} {3,35}", "ID", "Product Name", "Current Stock", "Re-Stock"); command.colourReset();
 
-
-            command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid);
-            if (command.checkInt(requestid, requestID) == true)
-            {
-                command.displayMessageOneLine("Please Enter the Quantity you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
-                if (command.checkInt(quant, Quantity))
-                {
                     foreach (var product in storeStock)
                     {
-                        if (product.ReStock == true && product.CurrentStock <= thres)
+                        if (product.CurrentStock <= thres)
                         {
-                            if (product.ID == requestID)
-                            {
-                                requestForStock(product.ProductName, StoreName, Quantity);
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            command.displayError("Not in the List");
-                            break;
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("{0,10} {1,25} {2,25} {3,35}", product.ID, product.ProductName, product.CurrentStock, product.ReStock = true); command.colourReset();
                         }
                     }
-                }
-            } else { Menu.FranchiseOwner franchiseMenu = new Menu.FranchiseOwner(); franchiseMenu.displayMenu(); }
+                    Console.ForegroundColor = ConsoleColor.Cyan; command.displayMessage("Blue: [All Items based on threshold that need Restocking]"); command.colourReset();
+                    command.displayMessageOneLine("\nEnter Request To Process[ID]: "); string requestid = Console.ReadLine(); int requestID = command.convertInt(requestid);
+                    if (command.checkInt(requestid, requestID) == true)
+                    {
+                        command.displayMessageOneLine("Please Enter the Quantity you would like to Purchase: "); string quant = Console.ReadLine(); int Quantity = command.convertInt(quant);
+                        if (command.checkInt(quant, Quantity) == true)
+                        {
+                            if (storeStock.Any(item => item.ID == requestID && item.CurrentStock <= thres))
+                            {
+                                foreach (var product in storeStock)
+                                {
+                                    if (product.ID == requestID && product.CurrentStock <= thres)
+                                    {
+                                        requestForStock(product.ProductName, StoreName, Quantity);
+                                        break;
+                                    }
+                                }
+                            } else { command.displayError("Not in the list"); }
+                        }
+                    }
+                    else { Menu.FranchiseOwner franchiseMenu = new Menu.FranchiseOwner(); franchiseMenu.displayMenu(); }
+                } else { command.displayError("No items need to be restocked"); Menu.FranchiseOwner franchiseOwner = new Menu.FranchiseOwner(); franchiseOwner.displayMenu(); }
+            }
+            else { displayInventoryThres(StoreName, storeStock); }
             return storeStock;
         }
         #endregion
@@ -291,7 +286,7 @@ namespace WDT_S3546932
         #endregion
 
         /*
-         * Add Product: Addes the product to the current stores stock
+         * Add Product: Adds the product to the current stores stock
          */
         #region addProduct
         public void AddProduct(String productName, String StoreName, int Quantity)

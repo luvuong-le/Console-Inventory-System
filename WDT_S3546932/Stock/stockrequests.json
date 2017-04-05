@@ -16,32 +16,5 @@
     "CurrentStock": 14,
     "Processed": true,
     "StockAvailability": true
-  },
-  {
-    "ID": 3,
-    "StoreName": "EAST",
-    "ProductRequested": "Magic Table",
-    "Quantity": 12,
-    "CurrentStock": 24,
-    "Processed": true,
-    "StockAvailability": true
-  },
-  {
-    "ID": 4,
-    "StoreName": "CBD",
-    "ProductRequested": "Rabbit",
-    "Quantity": 1,
-    "CurrentStock": 10,
-    "Processed": true,
-    "StockAvailability": true
-  },
-  {
-    "ID": 5,
-    "StoreName": "CBD",
-    "ProductRequested": "Hat",
-    "Quantity": 1,
-    "CurrentStock": 11,
-    "Processed": false,
-    "StockAvailability": true
   }
 ]

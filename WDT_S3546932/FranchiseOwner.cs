@@ -17,6 +17,12 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
         
+        /*
+         * Add Inventory: Creates a new list of the owner inventory and store stock. 
+         * Foreach item in the list these new lists will store the ID and then run a comparison with each of the new lists to see which id is not there
+         * Which ever item is different the user is able to choose that item and add it to their store inventory. If the item already exists there will be an error message.
+         */
+
         #region AddInventory
         //Add New Inventory 
         public void AddNewInventory(string storeName, List<OwnerStock> OwnerInventory, List<StoreStock> storeStock)
@@ -243,6 +249,10 @@ namespace WDT_S3546932
         }
         #endregion
 
+        /*
+         * Request Stock: Makes a request for stock based on the product name and quantity. IF the product name is valid the request is made and left until the owner processes the request.
+         */
+
         #region requestStock
         //Request For Stock, Appends to the StockRequest.json File//
         public List<Stock> requestForStock(string productName, string StoreName, int Quantity)
@@ -280,7 +290,9 @@ namespace WDT_S3546932
         }
         #endregion
 
-        //Optional Adds The Product Based on the Owners Current Inventory //
+        /*
+         * Add Product: Addes the product to the current stores stock
+         */
         #region addProduct
         public void AddProduct(String productName, String StoreName, int Quantity)
         {

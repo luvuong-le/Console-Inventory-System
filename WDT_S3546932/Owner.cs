@@ -16,6 +16,10 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
+        /*
+         * Displays All Items in the inventory to user
+         */
+
         #region displayAllProductLines
         public List<OwnerStock> displayAllProductLines(List<OwnerStock> OwnerInventory)
         {
@@ -43,6 +47,11 @@ namespace WDT_S3546932
         }
         #endregion
 
+        /*
+         * Displays inventory based on the users input of true or false.
+         * If true: displays stock requests based on requests that have stock available
+         * if false: displays stock requests based on requests that have less stock then the requested amount
+         */
         #region displayStockRequestsBool
         public List<Stock> displayAllStockRequestBool(List<Stock> stockRequests)
         {
@@ -71,6 +80,9 @@ namespace WDT_S3546932
         }
         #endregion
 
+        /*
+         * Displays all stock requests
+         */
         public List<Stock> displayAllStock(List<Stock> stockRequests)
         {
             if (stockRequests.Count == 0)
@@ -111,8 +123,11 @@ namespace WDT_S3546932
             }
             return stockRequests;
         }
+
+        /*
+         * Calls and Updates Details in StockRequest.json, Storename.json, OwnersInventory.json if the id is valid
+         */
         #region StockRequest
-        // Calls and Updates Details in StockRequest.json, Storename.json, OwnersInventory.json //
         public List<Stock> stockRequest(List<Stock> stockRequests)
         {
             command.displayMessageOneLine("Enter Request To Process[ID]: "); String requestProcess = Console.ReadLine(); int requestID = command.convertInt(requestProcess);
@@ -157,7 +172,9 @@ namespace WDT_S3546932
         }
         #endregion
 
-
+        /*
+         * Checks the current stock in the owner inventory of a specific item 
+         */
         #region checkCurrentStock
         public int checkCurrentStock(string productName)
         {

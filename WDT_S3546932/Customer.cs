@@ -13,7 +13,7 @@ namespace WDT_S3546932
 
         JsonUtility jsonCommand = new JsonUtility();
 
-        int productListCount; int purchaseNumber = 0; double purchaseTotal = 0; int bookedTotal = 0; string bookingRef = null;
+        static int productListCount; int purchaseNumber = 0; double purchaseTotal = 0; int bookedTotal = 0; string bookingRef = null;
 
         bool purchaseComplete = false; bool bookRef = false;
 
@@ -48,6 +48,15 @@ namespace WDT_S3546932
         }
         #endregion
 
+        /*
+         * Customer Options: Displays the Options the Customer has once the products has been loaded 
+         * "P": Next Page
+         * "W": Book a Workshop
+         * "S": Search Product
+         * "R": Return to Menu
+         * "C": Complete Transaction 
+         * ID: Choose a number and the product is chosen for purchase
+         */
         #region CustomerOptions
         public void customerOptions(string storeName, List<StoreStock> storeStock)
         {
@@ -138,7 +147,7 @@ namespace WDT_S3546932
 
                                     if (choice.Trim().Equals("Yes".Trim(), StringComparison.OrdinalIgnoreCase))
                                     {
-                                        //Process purchase product  //
+                                        //Process purchase product //
                                         addProduct(itemCart, storeStock, product.ProductName, product.Store, Quantity);
                                         purchaseProduct(product.ProductName, storeName, Quantity, storeStock);
                                         purchaseTotal += product.Cost * Quantity; displayItemCart();
@@ -150,17 +159,13 @@ namespace WDT_S3546932
                                         }
                                         else if (more.Trim().Equals("No".Trim(), StringComparison.OrdinalIgnoreCase))
                                         {
-                                            //purchaseComplete = true;
                                             command.displayMessageOneLine("Would you like to book into a workshop? [Yes/No]: "); string workshop = Console.ReadLine();
-                                            //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
                                             if (workshop.Trim().Equals("Yes".Trim(), StringComparison.OrdinalIgnoreCase)) { showWorkShopTimes(storeName, jsonCommand.getWorkShopTimes(storeName)); bookWorkshop(workshopTimes, storeName); return; } else { command.displayMessage("Ok. Returning to Menu"); return; }
                                         }
                                     }
                                     else if (choice.Trim().Equals("No".Trim(), StringComparison.OrdinalIgnoreCase))
                                     {
-                                        //purchaseComplete = false;
                                         command.displayMessageOneLine("Would you like to book into a workshop? [Yes/No]: "); string workshop = Console.ReadLine();
-                                        //Compare workshops entered to purchasecOMPLETE to see if discount is added // //Workshopbooked = true/false //
                                         if (workshop.Trim().Equals("Yes".Trim(), StringComparison.OrdinalIgnoreCase)) { showWorkShopTimes(storeName, jsonCommand.getWorkShopTimes(storeName)); bookWorkshop(workshopTimes, storeName); return; } else { command.displayMessage("Ok. Returning to Menu"); return; }
                                     }
                                     else
@@ -179,11 +184,15 @@ namespace WDT_S3546932
                     }
                     else if (purchaseComplete == true) { command.displayError("Your Shopping Session has Finished, Please exit and Log back in to Start Fresh"); }
                 }
-            }
+            }else { displayProduct(storeName, storeStock); }
         }
 
         #endregion
 
+        /*
+         * ShowWorkShopTimes: Displays Workshop Times to the user. If the specific workshop has 0 places available then the colour code will be red to display so. Otherwise 
+         * Will display green if there is still space in the workshop time. 
+         */
         public List<WorkshopTimes> showWorkShopTimes(string storeName, List<WorkshopTimes> workshopTimes)
         {
             command.displayTitle("Workshop Times");
@@ -206,6 +215,9 @@ namespace WDT_S3546932
             return workshopTimes;
         }
 
+        /*
+         * Displays the Current Item Cart To the User 
+         */
         public void displayItemCart()
         {
             Console.WriteLine("{0,15} {1,15}", "Product Name", "Quantity");
@@ -235,6 +247,9 @@ namespace WDT_S3546932
         }
         #endregion
 
+        /*
+         * Purchase Product: Processes the purchase and updates the quantity in the corresponding JSON File only if the Product Name matches and the Current Stock is Greater than the Quantity Requested.
+         */
         #region purchaseProduct
         public void purchaseProduct(String productName, String StoreName, int Quantity, List<StoreStock> storeStock)
         {
@@ -260,6 +275,9 @@ namespace WDT_S3546932
         }
         #endregion
 
+        /*
+         * Print Reciept: Prints the reciept based on if the user has booked into a workshop or not. This is determined if the bookedTotal is 0 or not. The discount is added accordingly
+         */
         public List<customerPurchase> printReciept(List<customerPurchase> products, List<StoreStock> storeStock, int bookedTotal, string storeName)
         {
             command.displayTitle("Purchased at: " + storeName.ToUpper() + " LTD");  Console.ForegroundColor = ConsoleColor.Green; command.displayMessage("Served By: Lu-Vuong ");
@@ -306,6 +324,9 @@ namespace WDT_S3546932
             }
         }
 
+        /*
+         * Add Product: Adds a new product and creates the item in the customer purchase list
+         */
         public void addProduct(List<customerPurchase> purchasedProducts, List<StoreStock> storeStock, String productName, String StoreName, int Quantity)
         {
             //Looping through the Stock Class//
@@ -343,6 +364,10 @@ namespace WDT_S3546932
             }
         }
 
+        /*
+         * Book Workshop: Prompts the user for the workshop ID and then confirms if the user wants to book. If the session is full however, an error message will be returned 
+         * Otherwise the booking calls upon addBooking to add the booking Item.
+         */
         public void bookWorkshop(List<WorkshopTimes> workshopTimes, string storeName)
         {
             Console.WriteLine("\nYou have Booked into " + bookedTotal + " Workshops");
@@ -381,6 +406,10 @@ namespace WDT_S3546932
             } else { bookWorkshop(workshopTimes, storeName); }
         }
 
+        /*
+         * Add Booking: Checks if the booking is already made through the users and workshop details. If the user is already booked into that session they cannot book again
+         * Otherwise the new booking will be displayed to the user.
+         */
         public void addBooking(List<WorkshopTimes> workshopTimes, List<Workshop> workshopBookings, int ID, string storename, string name, string bookingRef, string time, string session)
         {
             //Creating a new Local List of type Stock//
@@ -418,6 +447,10 @@ namespace WDT_S3546932
             bookedTotal++;
         }
 
+        /*
+         * Check Booking: Checks the booking based on The users name,session and time. 
+         * if the booking ref is equal it will return false else true
+         */
         public bool checkBooking(List<Workshop> workshopBookings, string name, string bookingref, string storename,string session, string time)
         {
             foreach (var bookings in workshopBookings)
@@ -436,6 +469,10 @@ namespace WDT_S3546932
             }
             return false;
         }
+
+        /*
+         * Update the JSON file for the corresponding workshop file in the store
+         */
         public List<WorkshopTimes> updateBookingDetails(List<WorkshopTimes> workshopTimes, int ID, string storename, string name, string bookingRef, string time, string session)
         {
             foreach (var times in workshopTimes)
@@ -461,6 +498,10 @@ namespace WDT_S3546932
             return workshopTimes;
         }
 
+        /*
+         * Search By Product: Searches the List for a item with the same name, regardless or plural or singular
+         * Example: the item Cards will be found if written as 'cards' or 'card'
+         */
         public List<StoreStock> searchByProduct(List<StoreStock> storeStock, string ProductName)
         {
             if (storeStock.Any(item => item.ProductName.Trim().Equals(ProductName.Trim(), StringComparison.OrdinalIgnoreCase)) ||
